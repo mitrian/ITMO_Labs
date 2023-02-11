@@ -1,0 +1,22 @@
+<root>
+	<day name="Вторник">
+		<lesson name="Информатика (Лек)">
+			<time time="08:20-09:50" />
+			<place audience="Актовый зал" building="ул.Ломоносова, д.9, лит. М" />
+			<teacher name="Балакшин Павел Валерьевич" />
+			<format format="Очно - дистанционный"/>
+		</lesson>
+		<lesson name="Основы профессиональной деятельности (Лек)">
+			<time time="10:00-11:30" />
+			<place audience="Актовый зал" building="ул.Ломоносова, д.9, лит. М" />
+			<teacher name="Клименков Сергей Викторович" />
+			<format format="Очно - дистанционный" />
+		</lesson>
+		<lesson name="Программирование (Лек)">
+			<time time="11:40-13:10" />
+			<place audience="1223" building="ул.Ломоносова, д.9, лит. М" />
+			<teacher name="Письмак Алексей Евгеньевич" />
+			<format format="Очно - дистанционный" />
+		</lesson>
+	</day>
+</root>
