@@ -8,11 +8,13 @@ public class Person {
     private Country nationality; //Поле может быть null
     private Location location; //Поле может быть null
 
-    public Person( Double weight, Color hairColor){
 
+    private Person(Builder builder){
+        this.weight = builder.weight;
+        this.hairColor = builder.hairColor;
+        this.nationality = builder.nationality;
+        this.location = builder.location;
     }
-
-    private Person(){}
 
     public static boolean checkWeight(Double weight){
         return (weight>0);
@@ -34,39 +36,51 @@ public class Person {
         return location;
     }
 
-    public static Builder newBuilder(){
-        return new Person().new Builder();
-    }
+    public static class Builder{
 
-    public class Builder{
-        private Builder(){}
-
-        public Builder setWeight(Double weight){
-            Person.this.weight = weight;
-
-            return this;
+        private Double weight; //Поле не может быть null, Значение поля должно быть больше 0
+        private Color hairColor; //Поле не может быть null
+        private Country nationality; //Поле может быть null
+        private Location location; //Поле может быть null
+        public Builder(Double weight, Color hairColor){
+            this.weight = weight;
+            this.hairColor = hairColor;
         }
 
-        public Builder setHairColor(Color hairColor){
-            Person.this.hairColor = hairColor;
+//        public Builder setWeight(Double weight){
+//            Person.this.weight = weight;
+//
+//            return this;
+//        }
 
-            return this;
-        }
+//        public Builder setHairColor(Color hairColor){
+//            Person.this.hairColor = hairColor;
+//
+//            return this;
+//        }
 
         public Builder setNationality(Country nationality){
-            Person.this.nationality = nationality;
+            this.nationality = nationality;
 
             return this;
         }
 
         public Builder setLocation(Location location){
-            Person.this.location = location;
+            this.location = location;
 
             return this;
         }
 
         public Person build(){
-            return Person.this;
+            return new Person(this);
         }
+    }
+
+    @Override
+    public String toString(){
+        return "(weight = " + weight +
+                ", hairColor = " + hairColor +
+                ", nationality = " + nationality +
+                ", location = " + location + ")";
     }
 }

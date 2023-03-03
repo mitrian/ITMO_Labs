@@ -77,6 +77,9 @@ public class Worker implements Comparable<Worker> {
         return this.id.compareTo(o.id);
     }
 
+    public static boolean checkSalary(int salary){
+        return salary>0;
+    }
     public static class Builder{
 
         private Long id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
@@ -149,5 +152,18 @@ public class Worker implements Comparable<Worker> {
         public Worker build(){
             return new  Worker(this);
         }
+
+    }
+    @Override
+    public String toString(){
+        return "id = " + id +
+                ", name = " + name +
+                ", coordinates = " + coordinates.toString() +
+                ", creationDate = " + creationDate +
+                ", salary = " + salary +
+                ", startDate = " + startDate +
+                ", endDate = " + endDate +
+                ", status = " + status +
+                ", person = " + person.toString();
     }
 }

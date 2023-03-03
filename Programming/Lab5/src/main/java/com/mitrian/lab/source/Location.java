@@ -49,4 +49,12 @@ public class Location {
             return Location.this;
         }
     }
+
+    @Override
+    public String toString(){
+        return "(x = " + x +
+                ", y = " + y +
+                ", z = " + z + ")";
+
+    }
 }
