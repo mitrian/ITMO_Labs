@@ -29,10 +29,16 @@ public class Main {
             Date endDate = AddCommand.readEndDate(scanner);
             Status status = AddCommand.readStatus(scanner);
             Person p = AddCommand.readPerson(scanner);
+
+
+
 //            Coordinates c = Coordinates.newBuilder()
 //                    .setX(x)
 //                    .setY(y)
 //                    .build();
+
+
+
             Worker w = new Worker.Builder(name, c, startDate, p)
                     .setSalary(salary)
                     .setEndDate(endDate)

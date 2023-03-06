@@ -1,12 +1,23 @@
 package com.mitrian.lab.commands;
 
-import com.mitrian.lab.Command;
+import com.mitrian.lab.utils.AbstractCommand;
 
-public class HelpCommand implements Command {
+public class HelpCommand extends AbstractCommand {
+    private String descriptor = "вывести справку по доступным командам";
 
-    public HelpCommand(){}
     @Override
-    public void execute() {
+    public boolean execute(String[] args) {
+        return false;
+    }
 
+    @Override
+    public boolean execute() {
+
+        return false;
+    }
+
+    @Override
+    public String getDescriptor() {
+        return descriptor;
     }
 }
