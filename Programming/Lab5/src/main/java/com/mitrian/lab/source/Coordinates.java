@@ -20,9 +20,9 @@ public class Coordinates {
         return new Coordinates().new Builder();
     }
 
-    public class Builder{
+    public  class Builder{
 
-        private Builder(){}
+        public Builder(){}
 
         public Builder setX(int x){
             Coordinates.this.x = x;

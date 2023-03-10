@@ -19,8 +19,8 @@ public class RemoveHeadCommand extends AbstractCommand {
     @Override
     public boolean execute() {
         try {
-            LinkedListCollection.WorkersCollection.get(0).toString();
-            LinkedListCollection.WorkersCollection.remove(0);
+            LinkedListCollection.workersCollection.get(0).toString();
+            LinkedListCollection.workersCollection.remove(0);
         } catch (Exception e){
             printer.print("Коллекция пуста");
             return false;

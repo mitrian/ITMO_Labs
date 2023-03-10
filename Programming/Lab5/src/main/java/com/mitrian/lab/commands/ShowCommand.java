@@ -1,8 +1,6 @@
 package com.mitrian.lab.commands;
 
-import com.mitrian.lab.Command;
 import com.mitrian.lab.LinkedListCollection;
-import com.mitrian.lab.WorkersCollectionReceiver;
 import com.mitrian.lab.utils.AbstractCommand;
 import com.mitrian.lab.utils.ConsolePrinter;
 import com.mitrian.lab.utils.Printer;
@@ -29,10 +27,16 @@ public class ShowCommand extends AbstractCommand {
     @Override
     public boolean execute(){
         try{
-            for (int i = 0; i < LinkedListCollection.WorkersCollection.size(); i++){
-                printer.print(LinkedListCollection.WorkersCollection.get(i).toString());
+            if (LinkedListCollection.workersCollection.size() == 0){
+                printer.print("Коллекция пуста"+"\n");
+                return true;
+            } else{
+                for (int i = 0; i < LinkedListCollection.workersCollection.size(); i++){
+                    System.out.println(LinkedListCollection.workersCollection.get(i).toString());
+                }
+                return true;
             }
-            return true;
+
         } catch (Exception e){
             return false;
         }

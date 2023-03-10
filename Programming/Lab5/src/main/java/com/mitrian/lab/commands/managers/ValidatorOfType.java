@@ -2,15 +2,23 @@ package com.mitrian.lab.commands.managers;
 
 import com.mitrian.lab.source.*;
 import com.mitrian.lab.utils.ConsolePrinter;
+import com.mitrian.lab.utils.ExtraCheck;
 import com.mitrian.lab.utils.Printer;
 import com.mitrian.lab.utils.exceptions.ForcedShutdownException;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Date;
 import java.util.Scanner;
 
 public class ValidatorOfType {
     static Printer printer = new ConsolePrinter();
+
+    final static DateTimeFormatter formatter  = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss ");
 
     public static Long validation(long type) throws ForcedShutdownException {
         while (true) {
@@ -21,7 +29,7 @@ public class ValidatorOfType {
                     throw new ForcedShutdownException();
                 }
 
-                type = Long.valueOf(scanner.nextLine());
+                type = Long.valueOf(scanner.nextLine().trim());
                 return type;
 
             } catch (NumberFormatException e) {
@@ -41,7 +49,7 @@ public class ValidatorOfType {
 
                 type = scanner.nextLine();
 
-                if (type != null && type.trim().isEmpty()) {
+                if (type != null && !type.trim().isEmpty()) {
                     return type;
                 }
             } catch (IllegalArgumentException e) {
@@ -51,7 +59,7 @@ public class ValidatorOfType {
     }
 
 
-    public static Integer validation(int type) throws ForcedShutdownException {
+    public static Integer validation(int type, ExtraCheck dop, ExtraCheck dop1) throws ForcedShutdownException {
         while (true) {
             Scanner scanner = new Scanner(System.in);
 
@@ -59,8 +67,19 @@ public class ValidatorOfType {
                 if (!scanner.hasNext()) {
                     throw new ForcedShutdownException();
                 }
+                int localType = type;
+                String localScanner = scanner.nextLine().trim();
+                type = Integer.parseInt(localScanner);
+                if ( dop1.equals(ExtraCheck.NULL) && localScanner.equals("")){
+                    return null;
+                }
+                if (dop.equals(ExtraCheck.LESS885) && type>884){
+                    throw new NumberFormatException();
+                }
+                if (dop.equals(ExtraCheck.MORE0) && type<0){
+                    throw new NumberFormatException();
+                }
 
-                type = Integer.valueOf(scanner.nextLine());
                 return type;
 
             } catch (NumberFormatException e) {
@@ -73,45 +92,62 @@ public class ValidatorOfType {
     public static ZonedDateTime validation(ZonedDateTime type) throws ForcedShutdownException {
         while (true) {
             Scanner scanner = new Scanner(System.in);
+//
+//            try {
+//                printer.print("Пример для ввода "+ ZonedDateTime.now()+":");
+//
+//                if (!scanner.hasNext()) {
+//                    throw new ForcedShutdownException();
+//                }
+//
+//                type = ZonedDateTime.parse(scanner.nextLine());
+//                return type;
+//
+//
+//            } catch (DateTimeParseException e) {
+//                printer.print("Введены некорректные данные, повторите ввод: "+"\n");
+//            }
 
             try {
-                printer.print("Пример для ввода: 2023-02-21T17:41:27.4415691+03:00[Europe/Moscow]");
+                printer.print("Пример для ввода( 2019-03-27 10:15:30 am -05:00 ):");
 
                 if (!scanner.hasNext()) {
                     throw new ForcedShutdownException();
                 }
 
-                type = ZonedDateTime.parse(scanner.nextLine());
-                return type;
+
+                type = ZonedDateTime.parse(scanner.nextLine(),formatter);
+                return type.withZoneSameInstant(ZoneId.systemDefault());
+
 
             } catch (DateTimeParseException e) {
-                printer.print("Введены некорректные данные, повторите ввод: ");
+                printer.print("Введены некорректные данные, повторите ввод: "+"\n");
             }
         }
     }
 
 
     //разобраться как это проверить
-//    public static Date validation(String type) throws ForcedShutdownException {
-//        while (true){
-//            Scanner scanner = new Scanner(System.in);
-//
-//            try{
-//                printer.print("Пример для ввода: 2008-10-28");
-//
-//                if (!scanner.hasNext()){
-//                    throw new ForcedShutdownException();
-//                }
-//
-//                type = String.valueOf(new SimpleDateFormat("yyyy-MM-dd").parse(type));
-//
-//                return type.;
-//
-//            } catch (ParseException e){
-//                printer.print("Введены некорректные данные, повторите ввод: ");
-//            }
-//        }
-//    }
+    public static Date validation(Date type) throws ForcedShutdownException {
+        while (true){
+            Scanner scanner = new Scanner(System.in);
+
+            try{
+                printer.print("пример для ввода( 2008-10-28 ):");
+
+                if (!scanner.hasNext()){
+                    throw new ForcedShutdownException();
+                }
+
+                type = new SimpleDateFormat("yyyy-MM-dd").parse(scanner.nextLine());
+
+                return type;
+
+            } catch (ParseException e){
+                printer.print("Введены некорректные данные, повторите ввод: ");
+            }
+        }
+    }
 
     public static Status validation(Status type) throws ForcedShutdownException {
         while (true){
@@ -119,7 +155,7 @@ public class ValidatorOfType {
             String nullChecker;
 
             try {
-                printer.print("Введите одно из предложенных значений: FIRED, HIRED, RECOMMENDED_FOR_PROMOTION, REGULAR, PROBATION");
+                printer.print("Предложенные значения( FIRED, HIRED, RECOMMENDED_FOR_PROMOTION, REGULAR, PROBATION ): ");
 
                 printer.print("");
                 if (!scanner.hasNext()) {
@@ -132,18 +168,17 @@ public class ValidatorOfType {
                     return null;
                 }
 
-
                 type = Status.valueOf(nullChecker);
 
                 return type;
 
             } catch (IllegalArgumentException e) {
-                printer.print("Введены некорректные данные, повторите ввод: ");
+                printer.print("Введены некорректные данные, повторите ввод. ");
             }
         }
     }
 
-    public static Double validation(Double type) throws ForcedShutdownException {
+    public static Double validation(Double type, ExtraCheck dop) throws ForcedShutdownException {
         while (true) {
             Scanner scanner = new Scanner(System.in);
 
@@ -152,8 +187,13 @@ public class ValidatorOfType {
                 if (!scanner.hasNext()) {
                     throw new ForcedShutdownException();
                 }
-                if (!Double.isFinite(type)){
-                    type = Double.valueOf(scanner.nextLine());
+                Double localType = type;
+                String localScanner = scanner.nextLine();
+                type = Double.parseDouble(localScanner);
+                if (dop.equals(ExtraCheck.MORE0) && type <= 0){
+                    throw new NumberFormatException();
+                }
+                if (!Double.isInfinite(type)){
                     return type;
                 }
 
@@ -169,7 +209,7 @@ public class ValidatorOfType {
             Scanner scanner = new Scanner(System.in);
 
             try {
-                printer.print("Введите одно из предложенных значений: GREEN, RED, WHITE, BROWN");
+                printer.print("Возмжные значения: GREEN, RED, WHITE, BROWN");
 
                 printer.print("");
                 if (!scanner.hasNext()) {
@@ -181,7 +221,7 @@ public class ValidatorOfType {
                 return type;
 
             } catch (IllegalArgumentException e) {
-                printer.print("Введены некорректные данные, повторите ввод: ");
+                printer.print("Введены некорректные данные, повторите ввод. ");
             }
         }
     }
@@ -198,7 +238,7 @@ public class ValidatorOfType {
                     throw new ForcedShutdownException();
                 }
 
-                type = Country.valueOf(scanner.nextLine());
+                type = Country.valueOf(scanner.nextLine().trim());
 
                 return type;
 

@@ -7,5 +7,5 @@ import java.util.List;
 
 public class LinkedListCollection {
 
-    public static List<Worker> WorkersCollection= new LinkedList();
+    public static List<Worker> workersCollection = new LinkedList();
 }

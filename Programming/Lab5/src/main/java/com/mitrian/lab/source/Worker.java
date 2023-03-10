@@ -15,12 +15,10 @@ public class Worker implements Comparable<Worker> {
     private Status status; //Поле может быть null
     private Person person; //Поле не может быть null
 
-    private static Long idCounter = 0L;
 
 
 
     private Worker(Builder builder) {
-        this.id = idCounter++;
         this.name = builder.name;
         this.coordinates = builder.coordinates;
         this.creationDate = ZonedDateTime.now();
@@ -64,9 +62,6 @@ public class Worker implements Comparable<Worker> {
         return person;
     }
 
-    public static void setIdCounter(Long idCounter){
-        Worker.idCounter = idCounter;
-    }
 
 //    public static Builder newBuilder(){
 //        return new Worker().new Builder();

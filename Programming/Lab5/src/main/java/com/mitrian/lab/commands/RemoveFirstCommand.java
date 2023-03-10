@@ -6,6 +6,7 @@ import com.mitrian.lab.utils.ConsolePrinter;
 import com.mitrian.lab.utils.Printer;
 
 public class RemoveFirstCommand extends AbstractCommand {
+    private String descriptor = "Удалить первый элемент из коллекции";
     Printer printer = new ConsolePrinter();
 
     @Override
@@ -17,8 +18,13 @@ public class RemoveFirstCommand extends AbstractCommand {
     @Override
     public boolean execute() {
         try {
-            LinkedListCollection.WorkersCollection.remove(0);
-            return true;
+            if (LinkedListCollection.workersCollection.size()>0) {
+                LinkedListCollection.workersCollection.remove(0);
+                return true;
+            } else {
+                return false;
+            }
+
         }catch (Exception e){
             return false;
         }
@@ -26,6 +32,6 @@ public class RemoveFirstCommand extends AbstractCommand {
 
     @Override
     public String getDescriptor() {
-        return null;
+        return descriptor;
     }
 }

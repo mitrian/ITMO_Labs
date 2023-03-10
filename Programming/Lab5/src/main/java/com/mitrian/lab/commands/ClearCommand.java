@@ -22,7 +22,7 @@ public class ClearCommand extends AbstractCommand {
     @Override
     public boolean execute() {
         try {
-            LinkedListCollection.WorkersCollection.clear();
+            LinkedListCollection.workersCollection.clear();
             return true;
         } catch (Exception e){
             return false;

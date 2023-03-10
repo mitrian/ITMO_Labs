@@ -18,7 +18,7 @@ public class ExitCommand extends AbstractCommand {
     @Override
     public boolean execute() {
         try{
-            System.exit(1);
+            System.exit(0);
             return true;
         } catch (Exception e){
             return false;
