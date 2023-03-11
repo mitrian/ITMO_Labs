@@ -13,18 +13,18 @@ public class RemoveByIdCommand extends AbstractCommand {
     Printer printer = new ConsolePrinter();
 
     @Override
-    public boolean execute(String[] args) {
+    public boolean execute(String args) {
         try{
-            int id;
+            long id;
             try{
-                id = Integer.parseInt(args[0]);
+                id = Long.parseLong(args);
             } catch (NumberFormatException e ) {
                 printer.print("Введенное значение id некорректно");
 
                 do {
                     printer.print("Повторите ввод");
 
-                    id = ValidatorOfType.validation(0, ExtraCheck.NOTHING, ExtraCheck.NOTHING);
+                    id = ValidatorOfType.validationLong();
 
                 } while (true);
             }

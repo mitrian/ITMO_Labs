@@ -10,7 +10,7 @@ public class ExitCommand extends AbstractCommand {
     Printer printer = new ConsolePrinter(){};
 
     @Override
-    public boolean execute(String[] args) {
+    public boolean execute(String args) {
         printer.print("Не указывайте аргументы при использовании данной команды");
         return false;
     }

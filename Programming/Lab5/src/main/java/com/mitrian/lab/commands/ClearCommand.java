@@ -14,7 +14,7 @@ public class ClearCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean execute(String[] args) {
+    public boolean execute(String args) {
         printer.print("Не указывайте аргументы при использовании данной команды");
         return false;
     }

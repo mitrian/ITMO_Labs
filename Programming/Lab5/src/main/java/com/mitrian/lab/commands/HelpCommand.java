@@ -5,7 +5,6 @@ import com.mitrian.lab.utils.AbstractCommand;
 import com.mitrian.lab.utils.ConsolePrinter;
 import com.mitrian.lab.utils.Printer;
 
-import java.util.Iterator;
 import java.util.Map;
 
 public class HelpCommand extends AbstractCommand {
@@ -13,7 +12,7 @@ public class HelpCommand extends AbstractCommand {
     Printer printer = new ConsolePrinter();
 
     @Override
-    public boolean execute(String[] args) {
+    public boolean execute(String args) {
         printer.print("Не указывайте аргументы при использовании данной команды");
         return false;
     }
@@ -21,12 +20,6 @@ public class HelpCommand extends AbstractCommand {
     @Override
     public boolean execute() {
         try {
-//            Iterator it = CommandCollection.commandDescription.entrySet().iterator();
-//            while (it.hasNext()){
-//                Map.Entry pair = (Map.Entry)it.next();
-//                System.out.println(pair.getKey()+" -> "+pair.getValue());
-//            }
-//            System.out.println("fwfw");
             for (Map.Entry<String, String> entry: CommandCollection.commandDescription.entrySet()){
                 String key = entry.getKey();
                 String value = entry.getValue();

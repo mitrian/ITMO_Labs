@@ -1,5 +1,7 @@
 package com.mitrian.lab.source;
 
+import com.mitrian.lab.IdCollection;
+
 import java.time.ZonedDateTime;
 import java.util.Date;
 
@@ -19,6 +21,7 @@ public class Worker implements Comparable<Worker> {
 
 
     private Worker(Builder builder) {
+        this.id = IdCollection.createWorkerId();
         this.name = builder.name;
         this.coordinates = builder.coordinates;
         this.creationDate = ZonedDateTime.now();

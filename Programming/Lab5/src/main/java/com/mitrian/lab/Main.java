@@ -9,6 +9,7 @@ import com.mitrian.lab.source.*;
 import com.mitrian.lab.utils.AbstractCommand;
 import com.mitrian.lab.utils.ConsolePrinter;
 import com.mitrian.lab.utils.Printer;
+import sun.misc.Signal;
 
 import java.text.ParseException;
 import java.time.ZonedDateTime;
@@ -46,6 +47,9 @@ public class Main {
         printer.print("Для списка возможных команд воспользуйтесь help"+"\n");
 
         while (true) {
+            Signal.handle(new Signal("INT"),(handler)->{
+                printer.print("SignalCatch");
+            });
             String command;
             String[] arguments;
             while (true) {
@@ -75,7 +79,7 @@ public class Main {
                     strArgs = "";
                 }
 
-                arguments = strArgs.split(",");
+                arguments = strArgs.split(" ");
 
                 try {
                     if (!key.contains(command)) {
@@ -91,9 +95,9 @@ public class Main {
                 if ((CommandCollection.commandCollection.get(command)).execute()) {
                     System.out.println("---Команда выполнена---");
                 } else {
-                    System.out.println("---Ошибка выполнения---");
+                    System.out.println("\n"+"---Ошибка выполнения---");
                 }
-            } else if ((CommandCollection.commandCollection.get(command)).execute(arguments)) {
+            } else if ((CommandCollection.commandCollection.get(command)).execute(arguments[0])) {
                 System.out.println("---Команда выполнена---");
             } else {
                 System.out.println("\n"+"---Ошибка выполнения---");

@@ -11,7 +11,7 @@ public class RemoveHeadCommand extends AbstractCommand {
 
 
     @Override
-    public boolean execute(String[] args) {
+    public boolean execute(String args) {
         printer.print("Не указывайте аргументы при использовании данной команды");
         return false;
     }
@@ -19,7 +19,7 @@ public class RemoveHeadCommand extends AbstractCommand {
     @Override
     public boolean execute() {
         try {
-            LinkedListCollection.workersCollection.get(0).toString();
+            printer.print(LinkedListCollection.workersCollection.get(0).toString());
             LinkedListCollection.workersCollection.remove(0);
         } catch (Exception e){
             printer.print("Коллекция пуста");

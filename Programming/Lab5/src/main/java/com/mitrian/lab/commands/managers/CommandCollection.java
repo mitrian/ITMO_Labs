@@ -16,7 +16,7 @@ public class CommandCollection {
         commandCollection.put("show", new ShowCommand());
         commandDescription.put("show", new ShowCommand().getDescriptor());
         commandCollection.put("add", new AddCommand());
-        commandDescription.put("add", new AddCommand().getDescriptor);
+        commandDescription.put("add", new AddCommand().getDescriptor());
         //commandCollection.put("updateId", new HelpCommand()); //так можно???
        // commandDescription.put("updateId",new U)
         commandCollection.put("remove_by_id", new RemoveByIdCommand());
