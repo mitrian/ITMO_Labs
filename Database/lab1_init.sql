@@ -6,12 +6,18 @@ CREATE TYPE translation_status AS ENUM(
 CREATE TABLE human(
     id SERIAL PRIMARY KEY,
     name VARCHAR(32) NOT NULL,
-    height INT
+    height INT NOT NULL
+);
+CREATE TABLE galaxy(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(32) NOT NULL,
+    location VARCHAR(32) NOT NULL
 );
 CREATE TABLE planet(
     id SERIAL PRIMARY KEY,
     name VARCHAR(32) NOT NULL,
-    type_of_surface VARCHAR(32) NOT NULL
+    type_of_surface VARCHAR(32) NOT NULL,
+    id_galaxy INT REFERENCES galaxy(id)
 );
 CREATE TABLE  robot(
     id SERIAL PRIMARY KEY,
@@ -25,24 +31,18 @@ CREATE TABLE human_group(
     pozition_near_planet VARCHAR(32) NOT NULL,
     id_planet INT REFERENCES planet(id)
 );
-CREATE TABLE galaxy(
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(32) NOT NULL,
-    location VARCHAR(32) NOT NULL,
-    id_planet INT REFERENCES planet(id)
-);
 CREATE TABLE eyes(
     id SERIAL PRIMARY KEY,
     possibility_of_translation BOOLEAN,
     translation_status translation_status,
-    id_robot INT REFERENCES robot(id)
+    id_robot INT NOT NULL REFERENCES robot(id)
 );
 CREATE TABLE robots_of_group(
     id_group INT REFERENCES human_group(id),
     id_robot INT UNIQUE REFERENCES robot(id)
 );
 CREATE TABLE group_members(
-    id_human INT REFERENCES human(id),
-    id_group INT REFERENCES human_group(id)
+    id_human INT NOT NULL REFERENCES human(id),
+    id_group INT NOT NULL REFERENCES human_group(id)
 );
 COMMIT;
