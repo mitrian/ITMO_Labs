@@ -21,16 +21,4 @@ public class ConsoleCommandReader {
             return parser.parseCommand(scanner.nextLine());
         }
     }
-
-    public String readConsoleCommand(){
-        return readLine()[0];
-    }
-
-    public String readConsoleArguments(){
-        if (readLine().length > 2){
-            return "Уберите лишние данные при вводе";
-        } else {
-            return readLine()[1];
-        }
-    }
 }

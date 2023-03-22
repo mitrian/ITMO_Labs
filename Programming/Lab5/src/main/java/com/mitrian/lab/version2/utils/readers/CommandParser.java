@@ -2,6 +2,8 @@ package com.mitrian.lab.version2.utils.readers;
 
 import com.mitrian.lab.version2.commands.managers.CommandCollection;
 
+import java.util.stream.Stream;
+
 public class CommandParser {
     private CommandCollection commands;
 
@@ -17,7 +19,7 @@ public class CommandParser {
             if (localScanner.length > 2) {
                 return new String[]{"Количество аргументов у команды должно равняться одному"};
             } else {
-                return localScanner;
+                return Stream.concat(Stream.of(localScanner), Stream.of(new String[]{""})).toArray(String[]::new);
             }
         } else {
             return new String[]{"Такой команды не существует"};
