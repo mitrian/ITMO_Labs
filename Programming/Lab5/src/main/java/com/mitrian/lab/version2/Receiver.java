@@ -43,6 +43,7 @@ public class Receiver {
             return localOutput;
         }
     }
+
     public void add() throws ForcedShutdownException {
         workersCollection.add(new WorkerInitializer(printer).createWorkerObject());
         }

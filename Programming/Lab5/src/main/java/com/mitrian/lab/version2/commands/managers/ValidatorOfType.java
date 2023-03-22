@@ -1,6 +1,6 @@
 package com.mitrian.lab.version2.commands.managers;
 
-import com.mitrian.lab.version2.Color;
+import com.mitrian.lab.version2.source.Color;
 import com.mitrian.lab.version2.source.Country;
 import com.mitrian.lab.version2.source.Status;
 import com.mitrian.lab.version2.utils.ConsolePrinter;

@@ -1,4 +1,4 @@
-package com.mitrian.lab.version2;
+package com.mitrian.lab.version2.source.initializer;
 
 import java.util.HashSet;
 

@@ -1,6 +1,6 @@
 package com.mitrian.lab.version2.commands.managers;
 
-import com.mitrian.lab.version2.ConsoleCommandReader;
+import com.mitrian.lab.version2.utils.readers.ConsoleCommandReader;
 import com.mitrian.lab.version2.Receiver;
 import com.mitrian.lab.version2.commands.*;
 import com.mitrian.lab.version2.utils.AbstractCommand;
@@ -29,5 +29,9 @@ public class CommandCollection {
         commandCollection.put("info", new InfoCommand(receiver, commandReader, printer));
         commandCollection.put("show", new ShowCommand(receiver, commandReader, printer));
         commandCollection.put("add", new AddCommand(receiver, commandReader, printer));
+    }
+
+    public HashMap<String, AbstractCommand> getCommandCollection(){
+        return commandCollection;
     }
 }

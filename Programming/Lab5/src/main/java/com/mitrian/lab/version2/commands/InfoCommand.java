@@ -1,6 +1,6 @@
 package com.mitrian.lab.version2.commands;
 
-import com.mitrian.lab.version2.ConsoleCommandReader;
+import com.mitrian.lab.version2.utils.readers.ConsoleCommandReader;
 import com.mitrian.lab.version2.Receiver;
 import com.mitrian.lab.version2.utils.AbstractCommand;
 import com.mitrian.lab.version2.utils.Printer;
@@ -21,7 +21,7 @@ public class InfoCommand extends AbstractCommand {
     @Override
     public boolean execute() throws ForcedShutdownException {
         try{
-            if ("".equals(commandReader.readConsoleArguments())){
+            if ("".equals(commandReader.readLine()[1])){
                 printer.print(receiver.info());
                 return true;
             } else {

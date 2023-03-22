@@ -1,6 +1,6 @@
 package com.mitrian.lab.version2.commands;
 
-import com.mitrian.lab.version2.ConsoleCommandReader;
+import com.mitrian.lab.version2.utils.readers.ConsoleCommandReader;
 import com.mitrian.lab.version2.Receiver;
 import com.mitrian.lab.version2.utils.AbstractCommand;
 import com.mitrian.lab.version2.utils.Printer;
@@ -24,7 +24,7 @@ public class ExitCommand extends AbstractCommand {
     @Override
     public boolean execute() {
         try{
-            if ("".equals(commandReader.readConsoleArguments())){
+            if ("".equals(commandReader.readLine()[1])){
                 receiver.exit();
                 return true;
             } else {

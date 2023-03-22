@@ -1,17 +1,11 @@
 package com.mitrian.lab.version2.commands;
 
-import com.mitrian.lab.version2.ConsoleCommandReader;
-import com.mitrian.lab.version2.LinkedListCollection;
+import com.mitrian.lab.version2.utils.readers.ConsoleCommandReader;
 import com.mitrian.lab.version2.Receiver;
-import com.mitrian.lab.version2.source.Status;
-import com.mitrian.lab.version2.source.Worker;
 import com.mitrian.lab.version2.commands.managers.ValidatorOfType;
 import com.mitrian.lab.version2.utils.AbstractCommand;
-import com.mitrian.lab.version2.utils.ConsolePrinter;
 import com.mitrian.lab.version2.utils.Printer;
 import com.mitrian.lab.version2.utils.exceptions.ForcedShutdownException;
-
-import java.util.List;
 
 public class RemoveByIdCommand extends AbstractCommand {
     Receiver receiver;
@@ -20,7 +14,7 @@ public class RemoveByIdCommand extends AbstractCommand {
     private Printer printer;
     private ConsoleCommandReader commandReader;
 
-
+    private String[] line;
     private String name = "remove_by_id";
 
     public RemoveByIdCommand(Receiver receiver, ConsoleCommandReader commandReader, Printer printer){
@@ -32,13 +26,14 @@ public class RemoveByIdCommand extends AbstractCommand {
     @Override
     public boolean execute() throws ForcedShutdownException {
         try{
-            if ("".equals(commandReader.readConsoleArguments())){
+            line = commandReader.readLine();
+            if ("".equals(line[1])){
                 printer.print("Для использования данной команды необходимо ввести аргумент");
                 return false;
             } else{
                 long id;
                 try{
-                    id = Long.parseLong(commandReader.readConsoleArguments());
+                    id = Long.parseLong(line[1]);
                 } catch (NumberFormatException e ) {
                     printer.print("Введенное значение id некорректно");
                     do {

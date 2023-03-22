@@ -1,10 +1,9 @@
 package com.mitrian.lab.version2.source;
 
-import com.mitrian.lab.version2.IdCollection;
+import com.mitrian.lab.version2.source.initializer.IdCollection;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.Date;
 
 public class Worker implements Comparable<Worker> {

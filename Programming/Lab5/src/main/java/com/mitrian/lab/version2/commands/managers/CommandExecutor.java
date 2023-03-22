@@ -1,4 +1,4 @@
-package com.mitrian.lab.version2;
+package com.mitrian.lab.version2.commands.managers;
 
 import com.mitrian.lab.version2.utils.AbstractCommand;
 import com.mitrian.lab.version2.utils.exceptions.ForcedShutdownException;

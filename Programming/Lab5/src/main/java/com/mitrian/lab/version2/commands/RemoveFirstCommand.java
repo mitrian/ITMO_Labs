@@ -1,13 +1,9 @@
 package com.mitrian.lab.version2.commands;
 
-import com.mitrian.lab.version2.ConsoleCommandReader;
-import com.mitrian.lab.version2.LinkedListCollection;
+import com.mitrian.lab.version2.utils.readers.ConsoleCommandReader;
 import com.mitrian.lab.version2.Receiver;
-import com.mitrian.lab.version2.source.Worker;
 import com.mitrian.lab.version2.utils.AbstractCommand;
 import com.mitrian.lab.version2.utils.Printer;
-
-import java.util.List;
 
 public class RemoveFirstCommand extends AbstractCommand {
     private String descriptor = "Удалить первый элемент из коллекции";
@@ -27,7 +23,7 @@ public class RemoveFirstCommand extends AbstractCommand {
     @Override
     public boolean execute() {
         try {
-            if ("".equals(commandReader.readConsoleArguments())){
+            if ("".equals(commandReader.readLine()[1])){
                 receiver.removeFirst();
                 return true;
             } else {

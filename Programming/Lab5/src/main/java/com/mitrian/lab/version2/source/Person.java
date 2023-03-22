@@ -1,7 +1,5 @@
 package com.mitrian.lab.version2.source;
 
-import com.mitrian.lab.version2.Color;
-
 public class Person {
     private Double weight; //Поле не может быть null, Значение поля должно быть больше 0
     private Color hairColor; //Поле не может быть null

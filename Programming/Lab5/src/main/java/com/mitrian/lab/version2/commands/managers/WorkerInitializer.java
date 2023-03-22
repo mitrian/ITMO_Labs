@@ -2,6 +2,7 @@ package com.mitrian.lab.version2.commands.managers;
 
 import com.mitrian.lab.version2.*;
 import com.mitrian.lab.version2.source.*;
+import com.mitrian.lab.version2.source.initializer.IdCollection;
 import com.mitrian.lab.version2.utils.Printer;
 import com.mitrian.lab.version2.utils.exceptions.ForcedShutdownException;
 

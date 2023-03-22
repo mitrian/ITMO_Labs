@@ -1,7 +1,7 @@
 package com.mitrian.lab.version2.commands;
 
 import com.mitrian.lab.version1.source.Status;
-import com.mitrian.lab.version2.ConsoleCommandReader;
+import com.mitrian.lab.version2.utils.readers.ConsoleCommandReader;
 import com.mitrian.lab.version2.Receiver;
 import com.mitrian.lab.version2.utils.AbstractCommand;
 import com.mitrian.lab.version2.utils.Printer;
@@ -15,6 +15,8 @@ public class FilterByStatusCommand extends AbstractCommand {
     private String name = "info";
     private Receiver receiver;
 
+    private String[] line;
+
     public FilterByStatusCommand(Receiver receiver, ConsoleCommandReader commandReader, Printer printer){
         this.receiver = receiver;
         this.commandReader = commandReader;
@@ -24,8 +26,9 @@ public class FilterByStatusCommand extends AbstractCommand {
     @Override
     public boolean execute() throws ForcedShutdownException {
         try{
-            if (!"".equals(commandReader.readConsoleCommand())){
-                printer.print(receiver.filterByStatus(Status.valueOf(commandReader.readConsoleArguments())));
+            line = commandReader.readLine();
+            if (!"".equals(line[0])){
+                printer.print(receiver.filterByStatus(Status.valueOf(line[1])));
                 return true;
             } else {
                 printer.print("Для использования данной команды необходимо ввести аргумент");
@@ -39,11 +42,11 @@ public class FilterByStatusCommand extends AbstractCommand {
 
     @Override
     public String getDescriptor() {
-        return null;
+        return descriptor;
     }
 
     @Override
     public String getName() {
-        return null;
+        return name;
     }
 }

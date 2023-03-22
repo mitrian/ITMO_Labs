@@ -1,12 +1,9 @@
 package com.mitrian.lab.version2.commands;
 
-import com.mitrian.lab.version2.ConsoleCommandReader;
+import com.mitrian.lab.version2.utils.readers.ConsoleCommandReader;
 import com.mitrian.lab.version2.Receiver;
-import com.mitrian.lab.version2.commands.managers.CommandCollection;
 import com.mitrian.lab.version2.utils.AbstractCommand;
 import com.mitrian.lab.version2.utils.Printer;
-
-import java.util.Map;
 
 public class HelpCommand extends AbstractCommand {
     private String descriptor = "вывести справку по доступным командам";
@@ -27,7 +24,7 @@ public class HelpCommand extends AbstractCommand {
     @Override
     public boolean execute() {
         try {
-            if ("".equals(commandReader.readConsoleArguments())){
+            if ("".equals(commandReader.readLine()[0])){
 //                for (Map.Entry<String, String> entry: CommandCollection.commandDescription.entrySet()){
 //                    String key = entry.getKey();
 //                    String value = entry.getValue();
