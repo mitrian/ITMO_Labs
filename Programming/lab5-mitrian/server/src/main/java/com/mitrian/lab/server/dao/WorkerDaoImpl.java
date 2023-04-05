@@ -6,6 +6,7 @@ import com.mitrian.lab.common.data.Worker;
 import com.mitrian.lab.common.exceptions.CollectionException;
 import com.mitrian.lab.server.collection.Collection;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,8 +21,8 @@ public class WorkerDaoImpl implements Dao<Worker> {
 
 
     @Override
-    public StringBuffer show() {
-        return workerCollection.show();
+    public List<Worker> getAllElements() {
+        return workerCollection.getAllElements();
     }
 
     @Override
@@ -30,12 +31,12 @@ public class WorkerDaoImpl implements Dao<Worker> {
     }
 
     @Override
-    public void update(Long id, Worker item) throws CollectionException {
+    public void update(Integer id, Worker item) throws CollectionException {
         workerCollection.update(id, item);
     }
 
     @Override
-    public void remove(Long id) throws CollectionException {
+    public void remove(Integer id) throws CollectionException {
         workerCollection.remove(id);
     }
 
@@ -59,6 +60,8 @@ public class WorkerDaoImpl implements Dao<Worker> {
         return workerCollection.removeHead();
     }
 
+
+
     @Override
     public void removeGreater(Worker item) {
         workerCollection.removeGreater(item);
@@ -72,5 +75,15 @@ public class WorkerDaoImpl implements Dao<Worker> {
     @Override
     public List<Worker> filterByStatus(Status status) {
         return workerCollection.filterByStatus(status);
+    }
+
+    @Override
+    public LocalDate getCreationDate() {
+        return workerCollection.getCreationDate();
+    }
+
+    @Override
+    public int getSize(){
+        return workerCollection.getSize();
     }
 }

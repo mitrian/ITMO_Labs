@@ -2,18 +2,19 @@ package com.mitrian.lab.common.data;
 
 import com.mitrian.lab.common.data.initializer.IdCollection;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Worker implements Comparable<Worker> {
 
-    private Long id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
+    private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
-    private Date creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
+    private LocalDate creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
     private Float salary; //Поле может быть null, Значение поля должно быть больше 0
-    private Date startDate; //Поле не может быть null
-    private LocalDateTime endDate; //Поле может быть null
+    private LocalDate startDate; //Поле не может быть null
+    private Date endDate; //Поле может быть null
     private Status status; //Поле может быть null
     private Person person; //Поле не может быть null
 
@@ -24,12 +25,12 @@ public class Worker implements Comparable<Worker> {
         this.id = IdCollection.createWorkerId();
         this.name = builder.name;
         this.coordinates = builder.coordinates;
-        this.creationDate = Date.from(Instant.now());
+        this.creationDate = LocalDate.now();
         this.startDate = builder.startDate;
         this.person = builder.person;
     }
 
-    public Long getId(){
+    public Integer getId(){
         return id;
     }
 
@@ -41,7 +42,7 @@ public class Worker implements Comparable<Worker> {
         return coordinates;
     }
 
-    public Date getCreationDate(){
+    public LocalDate getCreationDate(){
         return creationDate;
     }
 
@@ -49,11 +50,11 @@ public class Worker implements Comparable<Worker> {
         return salary;
     }
 
-    public Date getStartDate(){
+    public LocalDate getStartDate(){
         return startDate;
     }
 
-    public LocalDateTime getEndDate(){
+    public Date getEndDate(){
         return endDate;
     }
 
@@ -65,17 +66,17 @@ public class Worker implements Comparable<Worker> {
         return person;
     }
 
-    public void setId(Long id){ this.id = id;}
+    public void setId(Integer id){ this.id = id;}
     public void setName(String name){ this.name = name;}
     public void setCoordinates(Coordinates coordinates){ this.coordinates = coordinates;}
 
-    public void setCreationDate() {
-        this.creationDate = Date.from(Instant.now());
+   public void setCreationDate() {
+        this.creationDate = LocalDate.now();
     }
 
     public void setSalary(Float salary){ this.salary = salary;}
-    public void setStartDate(Date startDate){ this.startDate = startDate;}
-    public void setEndDate(LocalDateTime endDate) {this.endDate = endDate;}
+    public void setStartDate(LocalDate startDate){ this.startDate = startDate;}
+    public void setEndDate(Date endDate) {this.endDate = endDate;}
     public void setStatus(Status status){ this.status = status;}
     public void setPerson(Person person){ this.person = person;}
 
@@ -96,17 +97,17 @@ public class Worker implements Comparable<Worker> {
     }
     public static class Builder{
 
-        private Long id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
+        private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
         private String name; //Поле не может быть null, Строка не может быть пустой
         private Coordinates coordinates; //Поле не может быть null
-        private long creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
+        private LocalDate creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
         private Float salary; //Поле может быть null, Значение поля должно быть больше 0
-        private Date startDate; //Поле не может быть null
-        private LocalDateTime endDate; //Поле может быть null
+        private LocalDate startDate; //Поле не может быть null
+        private Date endDate; //Поле может быть null
         private Status status; //Поле может быть null
         private Person person; //Поле не может быть null
 
-        public Builder(String name, Coordinates coordinates, Date startDate, Person person){
+        public Builder(String name, Coordinates coordinates, LocalDate startDate, Person person){
             this.name = name;
             this.coordinates = coordinates;
             this.startDate = startDate;
@@ -125,9 +126,8 @@ public class Worker implements Comparable<Worker> {
 //            return this;
 //        }
 
-        public Builder setCreationDate(Date nowTime){
-            this.creationDate = nowTime.getTime();
-
+        public Builder setCreationDate(){
+            this.creationDate = LocalDate.now();
             return this;
         }
 
@@ -150,9 +150,8 @@ public class Worker implements Comparable<Worker> {
         }
 
 
-        public Builder setEndDate(LocalDateTime endDate){
+        public Builder setEndDate(Date endDate){
             this.endDate = endDate;
-
             return this;
         }
 
@@ -178,6 +177,6 @@ public class Worker implements Comparable<Worker> {
                 ", startDate = " + startDate +
                 ", endDate = " + endDate +
                 ", status = " + status +
-                ", person = " + person.toString();
+                ", person = " + person.toString()+"";
     }
 }

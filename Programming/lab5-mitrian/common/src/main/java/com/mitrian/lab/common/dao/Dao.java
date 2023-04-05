@@ -2,15 +2,17 @@ package com.mitrian.lab.common.dao;
 
 import com.mitrian.lab.common.data.Status;
 import com.mitrian.lab.common.exceptions.CollectionException;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 public interface Dao<T> {
 
-    StringBuffer show();
+    List<T> getAllElements();
     void add(T item);
-    void update(Long id, T item) throws CollectionException;
-    void remove(Long id) throws CollectionException;
+    void update(Integer id, T item) throws CollectionException;
+    void remove(Integer id) throws CollectionException;
     void clear();
     void save();
     void removeFirst() throws CollectionException;
@@ -19,4 +21,6 @@ public interface Dao<T> {
     Optional<T> getMinByName() throws CollectionException;
     List<T> filterByStatus(Status status);
 
+    LocalDate getCreationDate();
+    int getSize();
 }

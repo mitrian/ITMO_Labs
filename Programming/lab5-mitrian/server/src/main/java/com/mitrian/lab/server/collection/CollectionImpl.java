@@ -6,23 +6,26 @@ import com.mitrian.lab.common.exceptions.CollectionException;
 import com.mitrian.lab.common.exceptions.impl.collection.CollectionEmptyException;
 import com.mitrian.lab.common.exceptions.impl.collection.IdUnavailableException;
 
+import java.io.File;
+import java.time.LocalDate;
 import java.util.*;
 
 public class CollectionImpl implements Collection<Worker> {
 
     private final List<Worker> workers;
 
+  //  private final File file;
+
+    private LocalDate creationDate = LocalDate.now();
+
     public CollectionImpl(){
         workers = new LinkedList<>();
+     //   this.file = file;
     }
 
     @Override
-    public StringBuffer show() {
-        StringBuffer s = new StringBuffer("");
-        for (Worker worker: workers){
-            s.append(worker.toString());
-        }
-        return s;
+    public List<Worker> getAllElements() {
+        return workers;
     }
 
     @Override
@@ -31,7 +34,7 @@ public class CollectionImpl implements Collection<Worker> {
     }
 
     @Override
-    public void update(Long id, Worker item) throws CollectionException {
+    public void update(Integer id, Worker item) throws CollectionException {
         for (Worker worker: workers){
             if (id.compareTo(worker.getId()) == 0){
                 worker.setName(item.getName());
@@ -49,7 +52,7 @@ public class CollectionImpl implements Collection<Worker> {
     }
 
     @Override
-    public void remove(Long id) throws CollectionException {
+    public void remove(Integer id) throws CollectionException {
         Iterator<Worker> iterator = workers.iterator();
         while (iterator.hasNext()){
             Worker worker = iterator.next();
@@ -59,7 +62,6 @@ public class CollectionImpl implements Collection<Worker> {
             }
         }
         throw new IdUnavailableException("Такого id не существует");
-
     }
 
     @Override
@@ -70,6 +72,7 @@ public class CollectionImpl implements Collection<Worker> {
     @Override
     public void save() {
 //        TODO: implement save method
+
     }
 
     @Override
@@ -111,7 +114,20 @@ public class CollectionImpl implements Collection<Worker> {
                 workersByStatus.add(worker);
             }
         }
-
         return workersByStatus;
+    }
+
+    @Override
+    public int getSize(){
+        return workers.size();
+    }
+
+    @Override
+    public LocalDate getCreationDate(){
+        return creationDate;
+    }
+
+    public void setCreationDate(){
+        this.creationDate = LocalDate.now();
     }
 }

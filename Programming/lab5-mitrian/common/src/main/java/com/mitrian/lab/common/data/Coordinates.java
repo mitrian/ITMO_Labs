@@ -1,23 +1,23 @@
 package com.mitrian.lab.common.data;
 public class Coordinates {
-    private long x; //Максимальное значение поля: 884
-    private Long y; //Поле не может быть null
+    private Long x; //Максимальное значение поля: 884
+    private Integer y; //Поле не может быть null
 
     private Coordinates(){}
     public static boolean checkX(int x){
         return x<=884;
     }
 
-    public long getX(){
+    public Long getX(){
         return x;
     }
 
-    public Long getY(){
+    public Integer getY(){
         return y;
     }
 
-    public void setX(int x){this.x = x;}
-    public void setY(Long y){this.y = y;}
+    public void setX(Long x){this.x = x;}
+    public void setY(Integer y){this.y = y;}
 
     public static Builder newBuilder(){
         return new Coordinates().new Builder();
@@ -27,12 +27,12 @@ public class Coordinates {
 
         public Builder(){}
 
-        public Builder setX(long x){
+        public Builder setX(Long x){
             Coordinates.this.x = x;
             return this;
         }
 
-        public Builder setY(Long y){
+        public Builder setY(Integer y){
             Coordinates.this.y = y;
             return this;
         }

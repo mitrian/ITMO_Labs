@@ -1,27 +1,27 @@
 package com.mitrian.lab.common.data;
 
 public class Location {
-    private long x;
-    private int y;
-    private float z;
+    private Long x;
+    private double y;
+    private int z;
 
     private Location(){}
 
-    public long getX(){
+    public Long getX(){
         return x;
     }
 
-    public int getY(){
+    public double getY(){
         return y;
     }
 
-    public float getZ(){
+    public int getZ(){
         return z;
     }
 
     public void setX(long x){ this.x = x;}
-    public void setY(int y){this.y = y;}
-    public void setF(float z){ this.z = z;}
+    public void setY(double y){this.y = y;}
+    public void setF(int z){ this.z = z;}
 
     public static Builder newBuilder(){
         return new Location().new Builder();
@@ -31,21 +31,20 @@ public class Location {
 
         private Builder(){}
 
-        public Builder setX(long x){
+        public Builder setX(Long x){
             Location.this.x = x;
 
             return this;
         }
 
-        public Builder setY(int y){
+        public Builder setY(double y){
             Location.this.y = y;
 
             return this;
         }
 
-        public Builder setZ(float z){
+        public Builder setZ(int z){
             Location.this.z = z;
-
             return this;
         }
 
