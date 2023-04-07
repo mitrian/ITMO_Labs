@@ -53,7 +53,7 @@ public class Console {
                    printer.println("----------------------------------------------------------------------------------------");
                }
            } catch (Exception e){
-               throw new RuntimeException(e);
+               printer.println(e.getMessage());
            }
         }
     }

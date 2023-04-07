@@ -26,7 +26,7 @@ public class HelpCommand extends AbstractCommand {
     public HelpCommand(Printer printer, List<String> arguments) {
         super(printer, 0, arguments, false);
     }
-// TODO
+
     @Override
     public boolean execute() {
         try (BufferedReader reader = new BufferedReader(

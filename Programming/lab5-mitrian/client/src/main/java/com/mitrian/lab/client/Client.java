@@ -28,18 +28,23 @@ public class Client {
     public static void main(String[] args) throws FileException {
         Scanner scanner = new Scanner(System.in);
         Printer printer = new ConsolePriner();
-        // Collection<Worker> workerCollection = new CollectionImpl();
-        Collection<Worker> workerCollection = new CollectionImpl(FileManager.getFileByName(args[0]));
-        Dao<Worker> workerDao = new WorkerDaoImpl(workerCollection);
-        CommandFactory commandFactory = new CommandFactory(printer);
-        Resolver resolver = new SingleCommandResolver(commandFactory);
-        Executor executor = new SingleCommandExecutor(workerDao);
-        Console console = new Console(printer, scanner, resolver, executor);
-        try {
-            workerCollection.load();
-        } catch (IOException | IncorrectFieldException e) {
-            printer.println(e.getMessage());
+        if ( args == null){
+            printer.println("Для запуска укажите файл");
+            System.exit(0);
         }
+        try{
+            Collection<Worker> workerCollection = new CollectionImpl(FileManager.getFileByName(args[0]));
+            Dao<Worker> workerDao = new WorkerDaoImpl(workerCollection);
+            CommandFactory commandFactory = new CommandFactory(printer);
+            Resolver resolver = new SingleCommandResolver(commandFactory);
+            Executor executor = new SingleCommandExecutor(workerDao);
+            Console console = new Console(printer, scanner, resolver, executor);
+
+            try {
+                workerCollection.load();
+            } catch (IOException | IncorrectFieldException e) {
+                printer.println(e.getMessage());
+            }
 //        try (Reader reader = new FileReader(args[0])){
 //            new CsvLoader((FileManager.getFileByName(args[0]))).load(workerCollection.getAllElements());
 //        } catch (FileNotFoundException e) {
@@ -48,7 +53,12 @@ public class Client {
 //            throw new RuntimeException(e);
 //        }
 
-        console.run();
+            console.run();
+
+        } catch (ArrayIndexOutOfBoundsException e){
+            printer.println("Для запуска укажите файл");
+            System.exit(0);
+        }
 
     }
 }
