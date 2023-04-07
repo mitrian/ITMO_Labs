@@ -1,4 +1,4 @@
-package com.mitrian.lab.common.data;
+package com.mitrian.lab.common.elements;
 
 public class Person {
     private Double weight; //Поле не может быть null, Значение поля должно быть больше 0
@@ -50,17 +50,6 @@ public class Person {
             this.hairColor = hairColor;
         }
 
-//        public Builder setWeight(Double weight){
-//            Person.this.weight = weight;
-//
-//            return this;
-//        }
-
-//        public Builder setHairColor(Color hairColor){
-//            Person.this.hairColor = hairColor;
-//
-//            return this;
-//        }
 
         public Builder setNationality(Country nationality){
             this.nationality = nationality;

@@ -1,5 +1,8 @@
 package com.mitrian.lab.common.utils;
 
+/**
+ * Class for printing
+ */
 public class ConsolePriner implements Printer {
 
     @Override

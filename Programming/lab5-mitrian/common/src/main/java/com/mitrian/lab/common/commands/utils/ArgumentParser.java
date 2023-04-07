@@ -1,24 +1,24 @@
 package com.mitrian.lab.common.commands.utils;
 
 import com.mitrian.lab.common.exceptions.IncorrectFieldException;
-import com.mitrian.lab.common.data.Color;
-import com.mitrian.lab.common.data.Country;
-import com.mitrian.lab.common.data.Status;
+import com.mitrian.lab.common.elements.Color;
+import com.mitrian.lab.common.elements.Country;
+import com.mitrian.lab.common.elements.Status;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
-
 
 /**
  * Class for parsing and validating string input to source classes fields
  */
 public class ArgumentParser {
 
-
+    /** Current format field for parsing dates */
     final static DateTimeFormatter formatter  = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 
@@ -36,37 +36,12 @@ public class ArgumentParser {
     }
 
 
-//    /**
-//     * Parse Long fields which are more than comparable
-//     * @param line to parse & number to compare with parsed line
-//     * @return Long field
-//     */
-//    public static Long parseLongLessNumber(String line, Long numberCompare) throws  IncorrectFieldException {
-//        long number;
-//        try {
-//
-//            number = ArgumentParser.parseLong(line);
-//            if (number < numberCompare) {
-//                return number;
-//            }
-//            throw new IncorrectFieldException("Введенные данные имеют неправильный формат. ");
-// //TODO: раздели валидацию и парсинг
-//        } catch (NumberFormatException e) {
-//            throw new IncorrectFieldException("Введенные данные имеют неправильный формат. ");
-//        }
-//
-//    }
-
-
-
-
     /**
      * Parse Float fields
      * @param line to parse
      * @return Float field
      */
     public static Float parseFloat(String line) throws  IncorrectFieldException {
-
         try {
             float localFloat = Float.parseFloat(line.trim());
             if (localFloat != Float.POSITIVE_INFINITY && localFloat != Float.NEGATIVE_INFINITY){
@@ -74,13 +49,10 @@ public class ArgumentParser {
             } else {
                 throw  new NumberFormatException();
             }
-
-
         } catch (NumberFormatException e) {
             throw new IncorrectFieldException("Введенные данные имеют неправильный формат");
         }
     }
-
 
 
     /**
@@ -131,8 +103,6 @@ public class ArgumentParser {
     }
 
 
-
-
     /**
      * Parse Date fields
      * @param line to parse
@@ -143,10 +113,8 @@ public class ArgumentParser {
                 if ("".equals(line)){
                     return null;
                 }
-                Date localDate = new SimpleDateFormat("yyyy-MM-dd").parse(line);
-//                if (localDate == null){
-//                    throw new ParseException("Не надо", 0);
-//                }
+                String localLine = line.trim();
+                Date localDate = new SimpleDateFormat("yyyy-MM-dd").parse(localLine);
                 return localDate;
             } catch (ParseException e){
                 throw new IncorrectFieldException("Введенные данные имеют неправильный формат.");
@@ -155,7 +123,7 @@ public class ArgumentParser {
 
 
     /**
-     * Parse LocalDateTime fields
+     * Parse LocalDate fields
      * @param line to parse
      * @return LocalDateTime field
      */
@@ -167,7 +135,20 @@ public class ArgumentParser {
         }
     }
 
-    //TODO : DateNullable
+
+    /**
+     * Parse LocalDateTime fields
+     * @param line to parse
+     * @return LocalDateTime field
+     */
+    public static LocalDateTime parseLocalDateTime(String line) throws  IncorrectFieldException {
+        try{
+            return LocalDateTime.parse(line.trim(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        } catch (DateTimeParseException e){
+            throw new IncorrectFieldException("Введенные данные имеют неправильный формат.");
+        }
+    }
+
 
     /**
      * Parse Status fields which can be null
@@ -191,11 +172,6 @@ public class ArgumentParser {
      */
     public static Double parseDouble(String line) throws  IncorrectFieldException {
             try {
-//                if (!scanner.hasNextLine()) {
-//                    throw new ForcedShutdownException();
-//                }
-//                Double localType = type;
-//                String localScanner = scanner.nextLine().trim();
                 return Double.parseDouble(line);
             } catch (NumberFormatException e) {
                 throw new IncorrectFieldException("Введенные данные имеют неправильный формат.");
@@ -209,12 +185,6 @@ public class ArgumentParser {
      */
     public static Color parseColor(String line) throws IncorrectFieldException  {
             try {
-//                printer.print("Возможные значения: GREEN, RED, WHITE, BROWN: ");
-//
-//                printer.print("");
-//                if (!scanner.hasNextLine()) {
-//                    throw new ForcedShutdownException();
-//                }
                 return Color.valueOf(line.trim());
             } catch (IllegalArgumentException e) {
                 throw new IncorrectFieldException("Введенные данные имеют неправильный формат.");
@@ -227,16 +197,15 @@ public class ArgumentParser {
      * @return Country field
      */
     public static Country parseCountry(String line) throws IncorrectFieldException {
-            try {
-                if ("".equals(line)){
-                    return null;
-                }
-                return Country.valueOf(line.trim());
-
-            } catch (IllegalArgumentException e) {
-                    throw new IncorrectFieldException("Введенные данные имеют неправильный формат.");
-                }
+        try {
+            if ("".equals(line)){
+                return null;
             }
+            return Country.valueOf(line.trim());
+        } catch (IllegalArgumentException e) {
+            throw new IncorrectFieldException("Введенные данные имеют неправильный формат.");
+        }
     }
+}
 
 

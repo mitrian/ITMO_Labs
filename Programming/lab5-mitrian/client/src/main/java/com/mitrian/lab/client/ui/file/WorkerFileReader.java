@@ -3,14 +3,12 @@ package com.mitrian.lab.client.ui.file;
 
 import com.mitrian.lab.common.commands.utils.ArgumentParser;
 import com.mitrian.lab.common.commands.utils.ArgumentValidator;
-import com.mitrian.lab.common.data.*;
-import com.mitrian.lab.common.data.initializer.IdCollection;
+import com.mitrian.lab.common.elements.*;
+import com.mitrian.lab.common.elements.initializer.IdCollection;
 import com.mitrian.lab.common.exceptions.IncorrectFieldException;
-import com.mitrian.lab.common.exceptions.impl.ReaderException;
-
+import com.mitrian.lab.common.exceptions.ReaderException;
 
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -18,8 +16,10 @@ public class WorkerFileReader {
 
     /** Current scanner field */
     private Scanner scanner;
-
+    /** Current startingDate field to compare it with endDate */
     private LocalDate startingDate;
+
+
     /**
      * Constructor for creating object of Worker Console Reader class
      * @param scanner scanner for initializing scanner field

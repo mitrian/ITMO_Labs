@@ -9,8 +9,6 @@ public class CollectionFileManager {
     }
 
     //TODO: File saving
-    //TODO: script executor client
-
 
 
 

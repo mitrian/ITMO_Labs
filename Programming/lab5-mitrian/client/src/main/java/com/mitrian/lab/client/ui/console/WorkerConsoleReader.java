@@ -4,8 +4,8 @@ import com.mitrian.lab.common.commands.utils.ArgumentParser;
 import com.mitrian.lab.common.commands.utils.ArgumentValidator;
 import com.mitrian.lab.common.exceptions.ForcedShutdownException;
 import com.mitrian.lab.common.exceptions.IncorrectFieldException;
-import com.mitrian.lab.common.data.*;
-import com.mitrian.lab.common.data.initializer.IdCollection;
+import com.mitrian.lab.common.elements.*;
+import com.mitrian.lab.common.elements.initializer.IdCollection;
 import com.mitrian.lab.common.utils.Printer;
 
 import java.time.*;
@@ -74,7 +74,6 @@ public class WorkerConsoleReader {
             }
         }
     }
-//TODO: поменяй исключения
 
     /**
      * Reading startDate for Worker class from console
@@ -161,6 +160,7 @@ public class WorkerConsoleReader {
         Date endDate = readEndDate();
         Status status = readStatus();
         Person p = personCreating.createPersonObject();
+
 
 
         Worker worker = new Worker.Builder(name, c, startDate, p).setCreationDate()

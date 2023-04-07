@@ -2,9 +2,9 @@ package com.mitrian.lab.client.ui.file;
 
 import com.mitrian.lab.common.commands.utils.ArgumentParser;
 import com.mitrian.lab.common.commands.utils.ArgumentValidator;
-import com.mitrian.lab.common.data.Coordinates;
+import com.mitrian.lab.common.elements.Coordinates;
 import com.mitrian.lab.common.exceptions.IncorrectFieldException;
-import com.mitrian.lab.common.exceptions.impl.ReaderException;
+import com.mitrian.lab.common.exceptions.ReaderException;
 
 import java.util.Scanner;
 
@@ -12,6 +12,7 @@ public class CoordinatesFileReader {
 
     /** Current scanner field */
     private Scanner scanner;
+
 
     /**
      * Constructor for creating object of Coordinates Console Reader class

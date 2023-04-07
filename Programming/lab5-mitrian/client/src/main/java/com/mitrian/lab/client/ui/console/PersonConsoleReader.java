@@ -4,10 +4,10 @@ import com.mitrian.lab.common.commands.utils.ArgumentParser;
 import com.mitrian.lab.common.commands.utils.ArgumentValidator;
 import com.mitrian.lab.common.exceptions.ForcedShutdownException;
 import com.mitrian.lab.common.exceptions.IncorrectFieldException;
-import com.mitrian.lab.common.data.Color;
-import com.mitrian.lab.common.data.Country;
-import com.mitrian.lab.common.data.Location;
-import com.mitrian.lab.common.data.Person;
+import com.mitrian.lab.common.elements.Color;
+import com.mitrian.lab.common.elements.Country;
+import com.mitrian.lab.common.elements.Location;
+import com.mitrian.lab.common.elements.Person;
 import com.mitrian.lab.common.utils.Printer;
 
 import java.util.Scanner;
@@ -21,7 +21,6 @@ public class PersonConsoleReader {
     private Scanner scanner;
     /** Current printer field */
     private Printer printer;
-
 
 
     /**

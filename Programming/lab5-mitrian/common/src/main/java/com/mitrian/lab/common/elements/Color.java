@@ -1,4 +1,4 @@
-package com.mitrian.lab.common.data;
+package com.mitrian.lab.common.elements;
 
 public enum Color {
     GREEN,

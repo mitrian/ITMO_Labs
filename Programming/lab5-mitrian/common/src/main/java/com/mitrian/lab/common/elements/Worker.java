@@ -1,9 +1,8 @@
-package com.mitrian.lab.common.data;
+package com.mitrian.lab.common.elements;
 
-import com.mitrian.lab.common.data.initializer.IdCollection;
-import java.time.Instant;
+import com.mitrian.lab.common.elements.initializer.IdCollection;
+
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Worker implements Comparable<Worker> {
@@ -28,6 +27,9 @@ public class Worker implements Comparable<Worker> {
         this.creationDate = LocalDate.now();
         this.startDate = builder.startDate;
         this.person = builder.person;
+        this.salary = builder.salary;
+        this.status = builder.status;
+
     }
 
     public Integer getId(){
@@ -74,27 +76,21 @@ public class Worker implements Comparable<Worker> {
         this.creationDate = LocalDate.now();
     }
 
-    public void setSalary(Float salary){ this.salary = salary;}
+    public void setSalary(Float salary){
+
+        this.salary = salary;
+    }
     public void setStartDate(LocalDate startDate){ this.startDate = startDate;}
     public void setEndDate(Date endDate) {this.endDate = endDate;}
     public void setStatus(Status status){ this.status = status;}
     public void setPerson(Person person){ this.person = person;}
 
 
-
-
-//    public static Builder newBuilder(){
-//        return new Worker().new Builder();
-//    }
     @Override
     public int compareTo(Worker o) {
-        // todo
-        return this.id.compareTo(o.id);
+        return this.name.compareTo(o.name);
     }
 
-    public static boolean checkSalary(int salary){
-        return salary>0;
-    }
     public static class Builder{
 
         private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
@@ -114,34 +110,12 @@ public class Worker implements Comparable<Worker> {
             this.person = person;
         }
 
-//        public Builder setName(String name){
-//            Worker.this.name = name;
-//
-//            return this;
-//        }
-
-//        public Builder setCoordinates(Coordinates coordinates){
-//            Worker.this.coordinates = coordinates;
-//
-//            return this;
-//        }
 
         public Builder setCreationDate(){
             this.creationDate = LocalDate.now();
             return this;
         }
 
-//        public Builder setStartDate(ZonedDateTime startDate){
-//            Worker.this.startDate = startDate;
-//
-//            return this;
-//        }
-
-//        public Builder setPerson(Person person){
-//            Worker.this.person = person;
-//
-//            return this;
-//        }
 
         public Builder setSalary(Float salary){
             this.salary = salary;

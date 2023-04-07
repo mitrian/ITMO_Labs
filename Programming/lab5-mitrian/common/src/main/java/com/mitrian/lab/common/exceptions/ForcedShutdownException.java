@@ -1,5 +1,8 @@
 package com.mitrian.lab.common.exceptions;
 
+/**
+ * Ctrl+D exception
+ */
 public class ForcedShutdownException extends Exception{
 
     private static final String EXCEPTION_PREFIX = "Не нажимайте ctrl+D. ";

@@ -1,7 +1,6 @@
 package com.mitrian.lab.common.commands.cmdclasses;
 
 import com.mitrian.lab.common.commands.AbstractCommand;
-import com.mitrian.lab.common.commands.utils.CommandSource;
 import com.mitrian.lab.common.exceptions.CollectionException;
 import com.mitrian.lab.common.utils.Printer;
 
@@ -11,14 +10,18 @@ import java.util.List;
  * Command class to see information about collection
  */
 public class InfoCommand extends AbstractCommand {
+
+    /** Current name of command field */
+    private String name = "info";
+
+
     /**
      * Constructor for initialize fields
      * @param printer      param for initialize printer field
-     * @param source       param for initialize source field
      * @param arguments    param for initialize arguments field
      */
-    public InfoCommand(Printer printer, CommandSource source, List<String> arguments) {
-        super(printer, source, arguments, false);
+    public InfoCommand(Printer printer, List<String> arguments) {
+        super(printer, 0, arguments, false);
     }
 
     @Override
@@ -27,5 +30,13 @@ public class InfoCommand extends AbstractCommand {
                 "Дата инициализации: " + dao.getCreationDate()+ ";\n" +
                 "Количество элементов: " + dao.getSize());
         return true;
+    }
+
+
+    /**
+     * Getter of name field
+     */
+    public String getNameOfCommand(){
+        return name;
     }
 }

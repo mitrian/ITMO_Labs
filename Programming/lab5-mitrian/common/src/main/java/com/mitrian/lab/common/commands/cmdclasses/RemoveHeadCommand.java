@@ -1,7 +1,6 @@
 package com.mitrian.lab.common.commands.cmdclasses;
 
 import com.mitrian.lab.common.commands.AbstractCommand;
-import com.mitrian.lab.common.commands.utils.CommandSource;
 import com.mitrian.lab.common.exceptions.CollectionException;
 import com.mitrian.lab.common.exceptions.IncorrectCommandArgumentException;
 import com.mitrian.lab.common.utils.Printer;
@@ -13,14 +12,16 @@ import java.util.List;
  */
 public class RemoveHeadCommand extends AbstractCommand {
 
+    /** Current name of command field */
+    private String name = "remove_head";
+
     /**
      * Constructor for initialize fields
      * @param printer param for initialize printer field
-     * @param source param for initialize source field
      * @param arguments param for initialize arguments field
      */
-    public RemoveHeadCommand(Printer printer, CommandSource source, List<String> arguments) {
-        super(printer, source, arguments, false);
+    public RemoveHeadCommand(Printer printer, List<String> arguments) {
+        super(printer, 0, arguments, false);
     }
 
 
@@ -40,5 +41,13 @@ public class RemoveHeadCommand extends AbstractCommand {
             printer.println(e.getMessage());
             return false;
         }
+    }
+
+
+    /**
+     * Getter of name field
+     */
+    public String getNameOfCommand(){
+        return name;
     }
 }

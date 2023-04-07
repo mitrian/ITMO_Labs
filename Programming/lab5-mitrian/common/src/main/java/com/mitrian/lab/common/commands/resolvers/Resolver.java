@@ -5,7 +5,7 @@ import com.mitrian.lab.common.commands.AbstractCommand;
 import java.io.File;
 import java.util.List;
 
-//TODO: check id in collection
+// TODO: check id in collection
 /**
  * Class for retrieving command object and arguments
  */

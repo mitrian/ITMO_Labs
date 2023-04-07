@@ -2,22 +2,23 @@ package com.mitrian.lab.client.ui.file;
 
 import com.mitrian.lab.common.commands.utils.ArgumentParser;
 import com.mitrian.lab.common.commands.utils.ArgumentValidator;
-import com.mitrian.lab.common.data.Color;
-import com.mitrian.lab.common.data.Country;
-import com.mitrian.lab.common.data.Location;
-import com.mitrian.lab.common.data.Person;
+import com.mitrian.lab.common.elements.Color;
+import com.mitrian.lab.common.elements.Country;
+import com.mitrian.lab.common.elements.Location;
+import com.mitrian.lab.common.elements.Person;
 import com.mitrian.lab.common.exceptions.IncorrectFieldException;
-import com.mitrian.lab.common.exceptions.impl.ReaderException;
+import com.mitrian.lab.common.exceptions.ReaderException;
 
 import java.util.Scanner;
 
 public class PersonFileReader {
+
     /** Current scanner field */
     private Scanner scanner;
 
 
     /**
-     * Contracture for creating object of Person Console Reader class
+     * Constructor for creating object of Person Console Reader class
      * @param scanner scanner for initializing scanner field
      */
     public PersonFileReader(Scanner scanner){

@@ -1,7 +1,6 @@
 package com.mitrian.lab.common.commands.cmdclasses;
 
 import com.mitrian.lab.common.commands.AbstractCommand;
-import com.mitrian.lab.common.commands.utils.CommandSource;
 import com.mitrian.lab.common.exceptions.IncorrectCommandArgumentException;
 import com.mitrian.lab.common.utils.Printer;
 
@@ -12,14 +11,17 @@ import java.util.List;
  */
 public class ClearCommand extends AbstractCommand {
 
+    /** Current name of command field */
+    private String name = "clear";
+
+
     /**
      * Constructor for initialize fields
      * @param printer param for initialize printer field
-     * @param source param for initialize source field
      * @param arguments param for initialize arguments field
      */
-    public ClearCommand(Printer printer, CommandSource source, List<String> arguments) {
-        super(printer, source, arguments, false);
+    public ClearCommand(Printer printer, List<String> arguments) {
+        super(printer, 0, arguments, false);
     }
 
 
@@ -42,5 +44,12 @@ public class ClearCommand extends AbstractCommand {
 
     }
 
+
+    /**
+     * Getter of name field
+     */
+    public String getNameOfCommand(){
+        return name;
+    }
 
 }

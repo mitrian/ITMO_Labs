@@ -6,12 +6,27 @@ dependencies {
     implementation project(':server')
 }
 
+sourceSets {
+    main{
+        java {
+            srcDirs = ['src/main/java']
+        }
+        resources {
+            srcDirs = ['src/main/resources']
+        }
+    }
+}
+
 jar {
     manifest {
         attributes 'Main-Class': 'com.mitrian.lab.client.Client'
     }
 
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+
+    into 'resources',{
+        from 'resources'
+    }
 
     from {
         configurations.runtimeClasspath.collect {

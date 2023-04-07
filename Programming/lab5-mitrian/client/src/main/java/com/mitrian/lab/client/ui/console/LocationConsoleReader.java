@@ -4,7 +4,7 @@ import com.mitrian.lab.common.commands.utils.ArgumentParser;
 import com.mitrian.lab.common.commands.utils.ArgumentValidator;
 import com.mitrian.lab.common.exceptions.ForcedShutdownException;
 import com.mitrian.lab.common.exceptions.IncorrectFieldException;
-import com.mitrian.lab.common.data.Location;
+import com.mitrian.lab.common.elements.Location;
 import com.mitrian.lab.common.utils.Printer;
 import java.util.Scanner;
 

@@ -1,7 +1,6 @@
 package com.mitrian.lab.common.commands.cmdclasses;
 
 import com.mitrian.lab.common.commands.AbstractCommand;
-import com.mitrian.lab.common.commands.utils.CommandSource;
 import com.mitrian.lab.common.exceptions.CollectionException;
 import com.mitrian.lab.common.utils.Printer;
 
@@ -12,14 +11,17 @@ import java.util.List;
  */
 public class ShowCommand extends AbstractCommand {
 
+    /** Current name of command field */
+    private String name = "show";
+
+
     /**
      * Constructor for initialize fields
      * @param printer param for initialize printer field
-     * @param source param for initialize source field
      * @param arguments param for initialize arguments field
      */
-    public ShowCommand(Printer printer, CommandSource source, List<String> arguments) {
-        super(printer, source, arguments, false);
+    public ShowCommand(Printer printer, List<String> arguments) {
+        super(printer, 0, arguments, false);
     }
 
 
@@ -31,5 +33,13 @@ public class ShowCommand extends AbstractCommand {
     public boolean execute() throws CollectionException {
         printer.println(dao.getAllElements().toString());
         return true;
+    }
+
+
+    /**
+     * Getter of name field
+     */
+    public String getNameOfCommand(){
+        return name;
     }
 }

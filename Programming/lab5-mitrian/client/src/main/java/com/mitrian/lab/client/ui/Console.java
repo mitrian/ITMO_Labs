@@ -4,13 +4,13 @@ import com.mitrian.lab.common.commands.resolvers.Resolver;
 import com.mitrian.lab.common.commands.AbstractCommand;
 import com.mitrian.lab.common.exetutors.Executor;
 import com.mitrian.lab.common.utils.Printer;
-
 import java.util.Scanner;
 
 /**
  * Class for running this app from console
  */
 public class Console {
+
     /** Current resolver field */
     private final Resolver resolver;
     /** Current scanner field */
@@ -19,6 +19,7 @@ public class Console {
     private final Printer printer;
     /** Current executor field */
     private final Executor executor;
+
 
     /**
      * Constructor for initialize fields
@@ -45,12 +46,11 @@ public class Console {
                 printer.println("НЕ НАДО ТАК");
             }
             String input = scanner.nextLine().trim();
-//            parsing command object from user input
            try{
                AbstractCommand command = resolver.resolve(input);
                if (executor.execute(command)){
-                   printer.println("---Команда успешно выполнена---");
-               };
+                   printer.println("------------------------------------------------------------------------");
+               }
            } catch (Exception e){
                throw new RuntimeException(e);
            }

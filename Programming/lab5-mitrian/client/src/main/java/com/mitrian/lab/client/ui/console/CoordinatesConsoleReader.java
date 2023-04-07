@@ -4,7 +4,7 @@ import com.mitrian.lab.common.commands.utils.ArgumentParser;
 import com.mitrian.lab.common.commands.utils.ArgumentValidator;
 import com.mitrian.lab.common.exceptions.ForcedShutdownException;
 import com.mitrian.lab.common.exceptions.IncorrectFieldException;
-import com.mitrian.lab.common.data.Coordinates;
+import com.mitrian.lab.common.elements.Coordinates;
 import com.mitrian.lab.common.utils.Printer;
 
 import java.util.Scanner;
@@ -18,6 +18,7 @@ public class CoordinatesConsoleReader {
     private Scanner scanner;
     /** Current printer field */
     private Printer printer;
+
 
     /**
      * Constructor for creating object of Coordinates Console Reader class

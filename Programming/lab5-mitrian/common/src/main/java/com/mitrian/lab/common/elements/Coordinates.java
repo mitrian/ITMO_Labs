@@ -1,4 +1,4 @@
-package com.mitrian.lab.common.data;
+package com.mitrian.lab.common.elements;
 public class Coordinates {
     private Long x; //Максимальное значение поля: 884
     private Integer y; //Поле не может быть null

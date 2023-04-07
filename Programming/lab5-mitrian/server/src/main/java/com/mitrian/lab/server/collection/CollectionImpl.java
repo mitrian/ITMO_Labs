@@ -1,38 +1,66 @@
 package com.mitrian.lab.server.collection;
 
-import com.mitrian.lab.common.data.Status;
-import com.mitrian.lab.common.data.Worker;
+import com.mitrian.lab.common.elements.Status;
+import com.mitrian.lab.common.elements.Worker;
 import com.mitrian.lab.common.exceptions.CollectionException;
 import com.mitrian.lab.common.exceptions.impl.collection.CollectionEmptyException;
 import com.mitrian.lab.common.exceptions.impl.collection.IdUnavailableException;
+import com.mitrian.lab.server.file.csv.CsvLoader;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 
+/**
+ * Class to interact with collection
+ */
 public class CollectionImpl implements Collection<Worker> {
 
+    /** Current worker collection */
     private final List<Worker> workers;
-
-  //  private final File file;
-
+    /** Current file */
+    private final File file;
+    /** Current worker creationDate */
     private LocalDate creationDate = LocalDate.now();
 
-    public CollectionImpl(){
+
+    /**
+     * Constructor to create collection and initialize file field
+     * @param file file for initializing file field
+     */
+    public CollectionImpl(File file){
         workers = new LinkedList<>();
-     //   this.file = file;
+        this.file = file;
     }
 
+
+    /**
+     * Getting list of collection elements
+     * @return list of collection elements
+     */
     @Override
     public List<Worker> getAllElements() {
         return workers;
     }
 
+
+    /**
+     * Add element in collection
+     * @param item element to adding
+     */
     @Override
     public void add(Worker item) {
         workers.add(item);
     }
 
+
+    /**
+     * Update element with inputed id
+     * @param id of element
+     * @param item new element
+     * @throws CollectionException some troubles with collection
+     */
     @Override
     public void update(Integer id, Worker item) throws CollectionException {
         for (Worker worker: workers){
@@ -48,6 +76,7 @@ public class CollectionImpl implements Collection<Worker> {
                 return;
             }
         }
+        //TODO: update, рекурсия, запись в csv и его валидация
         throw new IdUnavailableException("Такого id не существует");
     }
 
@@ -70,9 +99,11 @@ public class CollectionImpl implements Collection<Worker> {
     }
 
     @Override
-    public void save() {
+    public void save() throws IOException {
 //        TODO: implement save method
-
+        CsvLoader csvLoader = new CsvLoader(file);
+        csvLoader.load(workers);
+        csvLoader.close();
     }
 
     @Override
@@ -101,7 +132,10 @@ public class CollectionImpl implements Collection<Worker> {
     }
 
     @Override
-    public Optional<Worker> getMinByName(){
+    public Optional<Worker> getMinByName() throws CollectionEmptyException {
+        if (workers.size() == 0){
+            throw new CollectionEmptyException("Коллекция пуста");
+        }
         return Optional.ofNullable(Collections.min(workers, Comparator.comparing(Worker::getName)));
     }
 
@@ -129,5 +163,20 @@ public class CollectionImpl implements Collection<Worker> {
 
     public void setCreationDate(){
         this.creationDate = LocalDate.now();
+    }
+
+    @Override
+    public boolean idUnique(int id) throws IdUnavailableException {
+        int sz = 0;
+        for (Worker worker: workers){
+            if (worker.getId() != id){
+                sz +=1;
+            }
+        }
+        if (sz == workers.size()){
+            return true;
+        } else {
+            throw new IdUnavailableException("Такое id уже существует.");
+        }
     }
 }

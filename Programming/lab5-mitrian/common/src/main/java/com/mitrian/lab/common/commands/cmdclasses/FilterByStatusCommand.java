@@ -1,10 +1,9 @@
 package com.mitrian.lab.common.commands.cmdclasses;
 
 import com.mitrian.lab.common.commands.AbstractCommand;
-import com.mitrian.lab.common.commands.utils.CommandSource;
 import com.mitrian.lab.common.exceptions.IncorrectCommandArgumentException;
-import com.mitrian.lab.common.data.Status;
-import com.mitrian.lab.common.data.Worker;
+import com.mitrian.lab.common.elements.Status;
+import com.mitrian.lab.common.elements.Worker;
 import com.mitrian.lab.common.exceptions.CollectionException;
 import com.mitrian.lab.common.utils.Printer;
 
@@ -15,14 +14,17 @@ import java.util.List;
  */
 public class FilterByStatusCommand extends AbstractCommand {
 
+    /** Current name of command field */
+    private String name = "filter_by_id";
+
+
     /**
      * Constructor for initialize fields
      * @param printer param for initialize printer field
-     * @param source param for initialize source field
      * @param arguments param for initialize arguments field
      */
-    public FilterByStatusCommand(Printer printer, CommandSource source, List<String> arguments) {
-        super(printer, source, arguments, false);
+    public FilterByStatusCommand(Printer printer, List<String> arguments) {
+        super(printer, 1, arguments, false);
     }
 
 
@@ -44,7 +46,14 @@ public class FilterByStatusCommand extends AbstractCommand {
             printer.println(e.getMessage());
             return false;
         }
+    }
 
+
+    /**
+     * Getter of name field
+     */
+    public String getNameOfCommand(){
+        return name;
     }
 
 }

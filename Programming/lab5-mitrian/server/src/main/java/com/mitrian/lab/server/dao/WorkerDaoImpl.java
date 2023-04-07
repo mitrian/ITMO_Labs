@@ -1,11 +1,13 @@
 package com.mitrian.lab.server.dao;
 
 import com.mitrian.lab.common.dao.Dao;
-import com.mitrian.lab.common.data.Status;
-import com.mitrian.lab.common.data.Worker;
+import com.mitrian.lab.common.elements.Status;
+import com.mitrian.lab.common.elements.Worker;
 import com.mitrian.lab.common.exceptions.CollectionException;
+import com.mitrian.lab.common.exceptions.impl.collection.IdUnavailableException;
 import com.mitrian.lab.server.collection.Collection;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -46,7 +48,7 @@ public class WorkerDaoImpl implements Dao<Worker> {
     }
 
     @Override
-    public void save() {
+    public void save() throws IOException {
         workerCollection.save();
     }
 
@@ -85,5 +87,9 @@ public class WorkerDaoImpl implements Dao<Worker> {
     @Override
     public int getSize(){
         return workerCollection.getSize();
+    }
+
+    public boolean idUnique(int id) throws IdUnavailableException {
+        return workerCollection.idUnique(id);
     }
 }
