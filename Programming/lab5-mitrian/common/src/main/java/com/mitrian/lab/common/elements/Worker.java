@@ -110,9 +110,14 @@ public class Worker implements Comparable<Worker> {
             this.person = person;
         }
 
-
         public Builder setCreationDate(){
-            this.creationDate = LocalDate.now();
+            this.creationDate = creationDate;
+            return this;
+        }
+
+
+        public Builder setFileCreationDate(LocalDate creationDate){
+            this.creationDate = creationDate;
             return this;
         }
 
@@ -139,7 +144,6 @@ public class Worker implements Comparable<Worker> {
         public Worker build(){
             return new  Worker(this);
         }
-
     }
     @Override
     public String toString(){

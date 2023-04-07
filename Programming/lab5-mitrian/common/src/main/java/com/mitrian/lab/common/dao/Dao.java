@@ -1,5 +1,6 @@
 package com.mitrian.lab.common.dao;
 
+import com.mitrian.lab.common.elements.Person;
 import com.mitrian.lab.common.elements.Status;
 import com.mitrian.lab.common.exceptions.CollectionException;
 import com.mitrian.lab.common.exceptions.impl.collection.IdUnavailableException;
@@ -8,11 +9,13 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface Dao<T> {
 
 
     List<T> getAllElements();
+    Set<Person> printUniquePerson();
     void add(T item);
     void update(Integer id, T item) throws CollectionException;
     void remove(Integer id) throws CollectionException;

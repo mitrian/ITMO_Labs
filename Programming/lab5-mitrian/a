@@ -12,6 +12,7 @@ GERMANY
 83798123
 8932.12312
 923998
+execute_script b
 add
 VAD
 23
@@ -24,5 +25,7 @@ FIRED
 GREEN
 GERMANY
 83798123
-8932.12312
+8932.123
 923998
+execute_script b
+show

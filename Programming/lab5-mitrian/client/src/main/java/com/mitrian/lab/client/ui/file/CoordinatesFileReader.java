@@ -1,7 +1,7 @@
 package com.mitrian.lab.client.ui.file;
 
-import com.mitrian.lab.common.commands.utils.ArgumentParser;
-import com.mitrian.lab.common.commands.utils.ArgumentValidator;
+import com.mitrian.lab.common.commands.utils.parser.ArgumentParser;
+import com.mitrian.lab.common.commands.utils.validator.ArgumentValidator;
 import com.mitrian.lab.common.elements.Coordinates;
 import com.mitrian.lab.common.exceptions.IncorrectFieldException;
 import com.mitrian.lab.common.exceptions.ReaderException;
@@ -30,7 +30,11 @@ public class CoordinatesFileReader {
      */
     public long readXCoordinates() throws ReaderException {
         try{
-            return ArgumentValidator.validationXCoordinates(ArgumentParser.parseLong(scanner.nextLine()));
+            long x = ArgumentParser.parseLong(scanner.nextLine());
+            if (ArgumentValidator.validationXCoordinates(x)){
+                return x;
+            }
+            return 0L;
         } catch (IncorrectFieldException e) {
             throw new ReaderException("Ошибка при считывании поля x coordinates");
         }
@@ -44,7 +48,11 @@ public class CoordinatesFileReader {
      */
     public Integer readYCoordinates() throws ReaderException {
         try {
-            return ArgumentValidator.validationYCoordinates(ArgumentParser.parseInteger(scanner.nextLine()));
+            Integer y = ArgumentParser.parseInteger(scanner.nextLine());
+            if (ArgumentValidator.validationYCoordinates(y)){
+                return y;
+            }
+            return 0;
         } catch (IncorrectFieldException e) {
             throw new ReaderException("Ошибка при считывании поля y coordinates");
         }

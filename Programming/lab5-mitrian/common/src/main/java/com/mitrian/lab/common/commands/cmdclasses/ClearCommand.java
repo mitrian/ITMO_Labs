@@ -31,18 +31,12 @@ public class ClearCommand extends AbstractCommand {
      */
     @Override
     public boolean execute()  {
-        try {
-            if (arguments.size()!=0){
-                throw new IncorrectCommandArgumentException("Введено неправильное количество аргументов");
-            }
-            dao.clear();
-            return true;
-        } catch (IncorrectCommandArgumentException e){
-            printer.println(e.getMessage());
-            return false;
-        }
+        dao.clear();
+        return true;
 
     }
+
+
 
 
     /**

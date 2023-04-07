@@ -29,17 +29,9 @@ public class ExitCommand extends AbstractCommand {
      */
     @Override
     public boolean execute() {
-        try {
-            if (arguments.size()!=0){
-                throw new IncorrectCommandArgumentException("Введено неправильное количество аргументов");
-            }
-            System.exit(1);
-            printer.println("Завершение работы");
-            return true;
-        } catch (IncorrectCommandArgumentException e){
-            printer.println(e.getMessage());
-            return false;
-        }
+        System.exit(1);
+        printer.println("Завершение работы");
+        return true;
     }
 
 

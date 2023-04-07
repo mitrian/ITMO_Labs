@@ -1,6 +1,7 @@
 package com.mitrian.lab.common.commands.cmdclasses;
 
 import com.mitrian.lab.common.commands.AbstractCommand;
+import com.mitrian.lab.common.elements.Person;
 import com.mitrian.lab.common.exceptions.CollectionException;
 import com.mitrian.lab.common.utils.Printer;
 
@@ -31,8 +32,10 @@ public class PrintUniquePersonCommand extends AbstractCommand {
      */
     @Override
     public boolean execute() throws CollectionException, IOException {
-        //TODO
-        return false;
+        for (Person person: dao.printUniquePerson()){
+            printer.println(person.toString());
+        }
+        return true;
     }
 
 

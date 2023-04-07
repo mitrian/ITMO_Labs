@@ -1,7 +1,7 @@
 package com.mitrian.lab.client.ui.console;
 
-import com.mitrian.lab.common.commands.utils.ArgumentParser;
-import com.mitrian.lab.common.commands.utils.ArgumentValidator;
+import com.mitrian.lab.common.commands.utils.parser.ArgumentParser;
+import com.mitrian.lab.common.commands.utils.validator.ArgumentValidator;
 import com.mitrian.lab.common.exceptions.ForcedShutdownException;
 import com.mitrian.lab.common.exceptions.IncorrectFieldException;
 import com.mitrian.lab.common.elements.*;
@@ -48,7 +48,10 @@ public class WorkerConsoleReader {
                 if (!scanner.hasNextLine()){
                     throw new ForcedShutdownException("Принудительно закрыто");
                 }
-                return ArgumentValidator.validationName(ArgumentParser.parseString(scanner.nextLine()));
+                String name = ArgumentParser.parseString(scanner.nextLine());
+                if (ArgumentValidator.validationName(name)){
+                    return name;
+                }
             } catch (IncorrectFieldException e) {
                 printer.print(e.getMessage()+ " Повторите ввод: ");
             }
@@ -68,7 +71,10 @@ public class WorkerConsoleReader {
                 if (!scanner.hasNextLine()){
                     throw new ForcedShutdownException("Принудительно закрыто");
                 }
-                return ArgumentValidator.validationSalary(ArgumentParser.parseFloat(scanner.nextLine()));
+                Float salary = ArgumentParser.parseFloat(scanner.nextLine());
+                if  (ArgumentValidator.validationSalary(salary)){
+                    return  salary;
+                }
             } catch (IncorrectFieldException e) {
                 printer.print(e.getMessage() + " Повторите ввод: ");
             }
@@ -88,8 +94,10 @@ public class WorkerConsoleReader {
                 if (!scanner.hasNextLine()){
                     throw new ForcedShutdownException("Принудительно закрыто");
                 }
-                startingDate = ArgumentValidator.validationStartDate(ArgumentParser.parseLocalDate(scanner.nextLine()));
-                return startingDate;
+                startingDate = ArgumentParser.parseLocalDate(scanner.nextLine());
+                if (ArgumentValidator.validationStartDate(startingDate)){
+                    return startingDate;
+                }
             } catch (IncorrectFieldException e) {
                 printer.print(e.getMessage() + " Повторите ввод. ");
             }
@@ -111,7 +119,10 @@ public class WorkerConsoleReader {
                 if (!scanner.hasNextLine()){
                     throw new ForcedShutdownException("Принудительно закрыто");
                 }
-                Date endDate = ArgumentValidator.validationEndDate(ArgumentParser.parseDate(scanner.nextLine()),startingDate);
+                Date endDate = ArgumentParser.parseDate(scanner.nextLine());
+                if (ArgumentValidator.validationEndDate(endDate, startingDate)){
+                    return endDate;
+                }
                 //TODO: compare Date
                 return endDate;
             } catch (IncorrectFieldException e) {
@@ -135,7 +146,10 @@ public class WorkerConsoleReader {
                 if (!scanner.hasNextLine()) {
                     throw new ForcedShutdownException("Принудительно закрыто");
                 }
-                return ArgumentValidator.validationStatus(ArgumentParser.parseStatus(scanner.nextLine()));
+                Status status = ArgumentParser.parseStatus(scanner.nextLine());
+                if (ArgumentValidator.validationStatus(status)){
+                    return status;
+                }
             } catch (IncorrectFieldException e) {
                 printer.print(e.getMessage() + " Повторите ввод. ");
             }

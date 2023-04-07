@@ -3,6 +3,7 @@ package com.mitrian.lab.client.resolvers;
 import com.mitrian.lab.client.CommandFactory;
 import com.mitrian.lab.client.ui.file.WorkerFileReader;
 import com.mitrian.lab.common.commands.AbstractCommand;
+import com.mitrian.lab.common.commands.cmdclasses.ExecuteScriptCommand;
 import com.mitrian.lab.common.commands.resolvers.Resolver;
 import com.mitrian.lab.common.exceptions.IncorrectFieldException;
 import com.mitrian.lab.common.exceptions.ReaderException;
@@ -20,8 +21,6 @@ public class FileCommandResolver implements Resolver {
 
     /** Current Command Factory for initialize command object */
     private final CommandFactory commandFactory;
-
-
     /**
      * Constructor for initialize fields
      * @param commandFactory param for initialize commandFactory field
@@ -39,7 +38,11 @@ public class FileCommandResolver implements Resolver {
      * @throws ReaderException wrong Worker field
      */
     @Override
-    public List<AbstractCommand> resolve(File file) throws CommandNotFoundException, NoSuchFileException, ReaderException, IncorrectFieldException {
+    public List<AbstractCommand> resolve(File file) throws CommandNotFoundException, NoSuchFileException, ReaderException, IncorrectFieldException, ScriptRecursionException {
+//        if (openFiles.contains(file.getName())){
+//            throw new ScriptRecursionException("Рекурсия дебил");
+//        }
+//        openFiles.add(file.getName());
         List<AbstractCommand> commands = new ArrayList<>();
         try (Scanner scanner = new Scanner(new InputStreamReader(new FileInputStream(file)))){
             WorkerFileReader workerFileReader = new WorkerFileReader(scanner);
@@ -49,15 +52,17 @@ public class FileCommandResolver implements Resolver {
                         Arrays.copyOfRange(line,1,line.length)
                 );
                 AbstractCommand localCommand = commandFactory.newCommand(line[0],args);
-                if (args.size() != localCommand.getArgAmount()){
-                    throw new IncorrectFieldException("Для команды " + localCommand.getNameOfCommand() +
-                            " указано неправильное количество аргументов");
+                if (localCommand instanceof ExecuteScriptCommand){
+                    localCommand.setResolver(this);
                 }
                 //TODO
                 if (localCommand.getInputElement()){
                     localCommand.setAdditionalArg(workerFileReader.createWorkerObject());
                 }
                 commands.add(localCommand);
+                if (args.size() != localCommand.getArgAmount()){
+                    commands.remove(commands.size()-1);
+                }
             }
             return commands;
         } catch (FileNotFoundException | ScriptRecursionException e) {

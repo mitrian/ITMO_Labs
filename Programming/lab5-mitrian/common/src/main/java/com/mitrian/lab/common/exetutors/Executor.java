@@ -24,7 +24,7 @@ public interface Executor {
      * @return executing status
      * @throws Exception exception depends in impl
      */
-    default boolean execute(List<AbstractCommand> lines) throws Exception {
+    default boolean execute(String fileName, List<AbstractCommand> lines) throws Exception {
         return false;
         //TODO
     }

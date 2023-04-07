@@ -1,6 +1,7 @@
 package com.mitrian.lab.server.dao;
 
 import com.mitrian.lab.common.dao.Dao;
+import com.mitrian.lab.common.elements.Person;
 import com.mitrian.lab.common.elements.Status;
 import com.mitrian.lab.common.elements.Worker;
 import com.mitrian.lab.common.exceptions.CollectionException;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public class WorkerDaoImpl implements Dao<Worker> {
 
@@ -25,6 +27,11 @@ public class WorkerDaoImpl implements Dao<Worker> {
     @Override
     public List<Worker> getAllElements() {
         return workerCollection.getAllElements();
+    }
+
+    @Override
+    public Set<Person> printUniquePerson() {
+        return workerCollection.printUniquePerson();
     }
 
     @Override

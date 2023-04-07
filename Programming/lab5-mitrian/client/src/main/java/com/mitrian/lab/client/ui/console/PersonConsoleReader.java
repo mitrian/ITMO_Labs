@@ -1,7 +1,7 @@
 package com.mitrian.lab.client.ui.console;
 
-import com.mitrian.lab.common.commands.utils.ArgumentParser;
-import com.mitrian.lab.common.commands.utils.ArgumentValidator;
+import com.mitrian.lab.common.commands.utils.parser.ArgumentParser;
+import com.mitrian.lab.common.commands.utils.validator.ArgumentValidator;
 import com.mitrian.lab.common.exceptions.ForcedShutdownException;
 import com.mitrian.lab.common.exceptions.IncorrectFieldException;
 import com.mitrian.lab.common.elements.Color;
@@ -46,7 +46,10 @@ public class PersonConsoleReader {
                 if (!scanner.hasNextLine()){
                     throw new ForcedShutdownException("Принудительно закрыто.");
                 }
-                return ArgumentValidator.validationWeight(ArgumentParser.parseDouble(scanner.nextLine()));
+                Double weight = ArgumentParser.parseDouble(scanner.nextLine());
+                if (ArgumentValidator.validationWeight(weight)){
+                    return weight;
+                }
             } catch (IncorrectFieldException e){
                 printer.print(e.getMessage() + " Повторите ввод: ");
             }
@@ -68,8 +71,10 @@ public class PersonConsoleReader {
                 if (!scanner.hasNextLine()){
                     throw new ForcedShutdownException("Принудительно закрыто.");
                 }
-
-                return ArgumentValidator.validationColor(ArgumentParser.parseColor(scanner.nextLine()));
+                Color hairColor = ArgumentParser.parseColor(scanner.nextLine());
+                if (ArgumentValidator.validationHairColor(hairColor)){
+                    return hairColor;
+                }
             } catch (IncorrectFieldException e) {
                 printer.print(e.getMessage() + " Повторите ввод: ");
             }
@@ -91,7 +96,10 @@ public class PersonConsoleReader {
                 if (!scanner.hasNextLine()){
                     throw new ForcedShutdownException("Принудительно закрыто.");
                 }
-                return ArgumentValidator.validationCountry(ArgumentParser.parseCountry(scanner.nextLine()));
+                Country nationality = ArgumentParser.parseCountry(scanner.nextLine());
+                if (ArgumentValidator.validationCountry(nationality)){
+                    return nationality;
+                }
             } catch (IncorrectFieldException e) {
                 printer.print(e.getMessage()+ " Повторите ввод: ");
             }

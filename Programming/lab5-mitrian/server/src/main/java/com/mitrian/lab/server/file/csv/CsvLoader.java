@@ -16,9 +16,9 @@ import java.util.List;
 public class CsvLoader {
 
     /** Current heading for csv */
-    private final static String[] HEADINGS = { "id", "name", "Coordinates x", "Coordinates y",
-            "creationDate", "salary", "startDate", "endDate", "Status", "person weight",
-            "person hairColor", "person nationality", "location x", "location y", "location z"};
+    private final static String[] HEADINGS = { "id", "name", "Coordinates_x", "Coordinates_y",
+            "creationDate", "salary", "startDate", "endDate", "Status", "person_weight",
+            "person_hairColor", "person_nationality", "location_x", "location_y", "location_z"};
 
     /** Current csv formater for building */
     private CSVFormat csvFormat;

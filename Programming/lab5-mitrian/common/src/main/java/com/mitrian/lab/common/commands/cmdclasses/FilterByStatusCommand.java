@@ -34,18 +34,10 @@ public class FilterByStatusCommand extends AbstractCommand {
      */
     @Override
     public boolean execute() throws CollectionException {
-        try {
-            if (arguments.size() != 1){
-                throw new IncorrectCommandArgumentException("Введено неправильное количество аргументов");
-            }
-            for (Worker element: dao.filterByStatus(Status.valueOf(arguments.get(0)))){
-                printer.println(element.toString());
-            }
-            return true;
-        } catch (IncorrectCommandArgumentException e){
-            printer.println(e.getMessage());
-            return false;
+        for (Worker element: dao.filterByStatus(Status.valueOf(arguments.get(0)))){
+            printer.println(element.toString());
         }
+        return true;
     }
 
 

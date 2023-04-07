@@ -6,7 +6,7 @@ import java.util.HashSet;
 public class IdCollection {
 
     /** Current used id */
-    public static HashSet<Long> idCollection = new HashSet<>();
+    public static HashSet<Integer> idCollection = new HashSet<>();
 
 
     /**
@@ -16,7 +16,7 @@ public class IdCollection {
     public static Integer createWorkerId(){
         Integer id;
         do{
-            id = Math.toIntExact((System.currentTimeMillis() & 0xffff));
+            id = Math.toIntExact((System.currentTimeMillis() & 0xffffff));
         } while (idCollection.contains(id));
         return id;
     }

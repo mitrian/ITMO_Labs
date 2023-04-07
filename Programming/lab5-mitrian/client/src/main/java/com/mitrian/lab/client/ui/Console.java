@@ -49,7 +49,8 @@ public class Console {
            try{
                AbstractCommand command = resolver.resolve(input);
                if (executor.execute(command)){
-                   printer.println("------------------------------------------------------------------------");
+
+                   printer.println("----------------------------------------------------------------------------------------");
                }
            } catch (Exception e){
                throw new RuntimeException(e);

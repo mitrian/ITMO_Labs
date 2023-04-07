@@ -45,13 +45,15 @@ public class CommandFactory {
             case "min_by_name" -> new MinByNameCommand(printer, arguments);
             case "remove_by_id" -> new RemoveByIdCommand(printer, arguments);
             case "remove_first" -> new RemoveFirstCommand(printer, arguments);
-            case "remove_greater" -> new RemoveFirstCommand(printer, arguments);
+            case "remove_greater" -> new RemoveGreaterCommand(printer, arguments);
             case "remove_head" -> new RemoveHeadCommand(printer, arguments);
             case "show" -> new ShowCommand(printer, arguments);
             case "execute_script" -> new ExecuteScriptCommand(printer, arguments);
             case "info" -> new InfoCommand(printer, arguments);
             case "save" -> new SaveCommand(printer, arguments);
             case "update" -> new UpdateCommand(printer, arguments);
+            case "print_unique_person" -> new PrintUniquePersonCommand(printer,arguments);
+
 
             default -> throw new CommandNotFoundException("Такой команды не существует");
 

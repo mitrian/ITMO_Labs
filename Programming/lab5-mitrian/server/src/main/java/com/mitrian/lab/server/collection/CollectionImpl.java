@@ -1,13 +1,19 @@
 package com.mitrian.lab.server.collection;
 
+import com.mitrian.lab.common.elements.Person;
 import com.mitrian.lab.common.elements.Status;
 import com.mitrian.lab.common.elements.Worker;
 import com.mitrian.lab.common.exceptions.CollectionException;
+import com.mitrian.lab.common.exceptions.FileException;
+import com.mitrian.lab.common.exceptions.IncorrectFieldException;
 import com.mitrian.lab.common.exceptions.impl.collection.CollectionEmptyException;
 import com.mitrian.lab.common.exceptions.impl.collection.IdUnavailableException;
 import com.mitrian.lab.server.file.csv.CsvLoader;
+import com.mitrian.lab.server.file.csv.CsvReader;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
@@ -23,6 +29,8 @@ public class CollectionImpl implements Collection<Worker> {
     private final File file;
     /** Current worker creationDate */
     private LocalDate creationDate = LocalDate.now();
+    /** Current unique persons */
+    private final Set<Person> persons = new HashSet<>();
 
 
     /**
@@ -30,6 +38,7 @@ public class CollectionImpl implements Collection<Worker> {
      * @param file file for initializing file field
      */
     public CollectionImpl(File file){
+
         workers = new LinkedList<>();
         this.file = file;
     }
@@ -42,6 +51,15 @@ public class CollectionImpl implements Collection<Worker> {
     @Override
     public List<Worker> getAllElements() {
         return workers;
+    }
+
+    @Override
+    public Set<Person> printUniquePerson() {
+        persons.clear();
+        for (Worker worker: workers){
+            persons.add(worker.getPerson());
+        }
+        return persons;
     }
 
 
@@ -100,10 +118,16 @@ public class CollectionImpl implements Collection<Worker> {
 
     @Override
     public void save() throws IOException {
-//        TODO: implement save method
         CsvLoader csvLoader = new CsvLoader(file);
         csvLoader.load(workers);
         csvLoader.close();
+    }
+
+    @Override
+    public void load() throws IOException, IncorrectFieldException {
+        CsvReader csvReader = new CsvReader(this, new FileReader(file));
+        workers.addAll(csvReader.read());
+        csvReader.close();
     }
 
     @Override

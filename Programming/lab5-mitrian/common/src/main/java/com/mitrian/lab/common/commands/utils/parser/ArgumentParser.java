@@ -1,4 +1,4 @@
-package com.mitrian.lab.common.commands.utils;
+package com.mitrian.lab.common.commands.utils.parser;
 
 import com.mitrian.lab.common.exceptions.IncorrectFieldException;
 import com.mitrian.lab.common.elements.Color;
@@ -31,7 +31,7 @@ public class ArgumentParser {
         try {
             return Long.parseLong(line.trim());
         } catch (NumberFormatException e) {
-            throw new IncorrectFieldException("Введенные данные имеют неправильный формат.");
+            throw new IncorrectFieldException("Введенные данные имеют неправильный формат. Long");
         }
     }
 
@@ -50,27 +50,7 @@ public class ArgumentParser {
                 throw  new NumberFormatException();
             }
         } catch (NumberFormatException e) {
-            throw new IncorrectFieldException("Введенные данные имеют неправильный формат");
-        }
-    }
-
-
-    /**
-     * Parse Float fields which can be null and must be more than comparable
-     * @param line to parse & number to compare with parsed line
-     * @return Float field
-     */
-    public static Float parseFloatNullableAndMore(String line, Float numberCompare) throws IncorrectFieldException {
-        float number;
-        try {
-            number = Float.parseFloat(line);
-            if (number > numberCompare) {
-                return number;
-            } else {
-                throw new NumberFormatException();
-            }
-        } catch (NumberFormatException e) {
-            throw new IncorrectFieldException("Введенные данные имеют неправильный формат");
+            throw new IncorrectFieldException("Введенные данные имеют неправильный формат. Float");
         }
     }
 
@@ -84,7 +64,7 @@ public class ArgumentParser {
         try {
             return line;
         } catch (IllegalArgumentException e) {
-            throw new IncorrectFieldException("Введенные данные имеют неправильный формат. ");
+            throw new IncorrectFieldException("Введенные данные имеют неправильный формат. String");
         }
     }
 
@@ -98,7 +78,7 @@ public class ArgumentParser {
         try {
             return  Integer.parseInt(line.trim());
         } catch (NumberFormatException e) {
-            throw new IncorrectFieldException("Введенные данные имеют неправильный формат. ");
+            throw new IncorrectFieldException("Введенные данные имеют неправильный формат. Integer");
         }
     }
 
@@ -110,14 +90,14 @@ public class ArgumentParser {
      */
     public static Date parseDate(String line) throws IncorrectFieldException {
             try{
-                if ("".equals(line)){
+                if ("".equals(line) || line == null){
                     return null;
                 }
                 String localLine = line.trim();
                 Date localDate = new SimpleDateFormat("yyyy-MM-dd").parse(localLine);
                 return localDate;
             } catch (ParseException e){
-                throw new IncorrectFieldException("Введенные данные имеют неправильный формат.");
+                throw new IncorrectFieldException("Введенные данные имеют неправильный формат. Date");
             }
         }
 
@@ -131,7 +111,7 @@ public class ArgumentParser {
         try{
             return LocalDate.parse(line.trim(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         } catch (DateTimeParseException e){
-            throw new IncorrectFieldException("Введенные данные имеют неправильный формат.");
+            throw new IncorrectFieldException("Введенные данные имеют неправильный формат. LocalDate");
         }
     }
 
@@ -145,7 +125,7 @@ public class ArgumentParser {
         try{
             return LocalDateTime.parse(line.trim(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         } catch (DateTimeParseException e){
-            throw new IncorrectFieldException("Введенные данные имеют неправильный формат.");
+            throw new IncorrectFieldException("Введенные данные имеют неправильный формат. LocalDateTime");
         }
     }
 
@@ -161,7 +141,7 @@ public class ArgumentParser {
                 }
                 return Status.valueOf(line.trim());
             } catch (IllegalArgumentException e) {
-                throw new IncorrectFieldException("Введенные данные имеют неправильный формат.");
+                throw new IncorrectFieldException("Введенные данные имеют неправильный формат. Status");
             }
     }
 
@@ -174,7 +154,7 @@ public class ArgumentParser {
             try {
                 return Double.parseDouble(line);
             } catch (NumberFormatException e) {
-                throw new IncorrectFieldException("Введенные данные имеют неправильный формат.");
+                throw new IncorrectFieldException("Введенные данные имеют неправильный формат. Double");
             }
     }
 
@@ -187,7 +167,7 @@ public class ArgumentParser {
             try {
                 return Color.valueOf(line.trim());
             } catch (IllegalArgumentException e) {
-                throw new IncorrectFieldException("Введенные данные имеют неправильный формат.");
+                throw new IncorrectFieldException("Введенные данные имеют неправильный формат. Color");
             }
     }
 
@@ -203,7 +183,7 @@ public class ArgumentParser {
             }
             return Country.valueOf(line.trim());
         } catch (IllegalArgumentException e) {
-            throw new IncorrectFieldException("Введенные данные имеют неправильный формат.");
+            throw new IncorrectFieldException("Введенные данные имеют неправильный формат. Country");
         }
     }
 }

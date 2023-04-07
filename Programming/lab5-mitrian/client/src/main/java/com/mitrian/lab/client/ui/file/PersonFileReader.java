@@ -1,7 +1,7 @@
 package com.mitrian.lab.client.ui.file;
 
-import com.mitrian.lab.common.commands.utils.ArgumentParser;
-import com.mitrian.lab.common.commands.utils.ArgumentValidator;
+import com.mitrian.lab.common.commands.utils.parser.ArgumentParser;
+import com.mitrian.lab.common.commands.utils.validator.ArgumentValidator;
 import com.mitrian.lab.common.elements.Color;
 import com.mitrian.lab.common.elements.Country;
 import com.mitrian.lab.common.elements.Location;
@@ -33,7 +33,11 @@ public class PersonFileReader {
      */
     public Double readWeight() throws ReaderException {
         try {
-            return ArgumentValidator.validationWeight(ArgumentParser.parseDouble(scanner.nextLine()));
+            Double weight = ArgumentParser.parseDouble(scanner.nextLine());
+            if (ArgumentValidator.validationWeight(weight)){
+                return weight;
+            }
+            return 0d;
         } catch (IncorrectFieldException e) {
             throw new ReaderException("Ошибка при считывании поля weight");
         }
@@ -47,7 +51,11 @@ public class PersonFileReader {
      */
     public Color readColor() throws ReaderException {
        try {
-           return ArgumentValidator.validationColor(ArgumentParser.parseColor(scanner.nextLine()));
+           Color hairColor = ArgumentParser.parseColor(scanner.nextLine());
+           if (ArgumentValidator.validationHairColor(hairColor)){
+               return hairColor;
+           }
+           return null;
        } catch (IncorrectFieldException e){
            throw new ReaderException("Ошибка при считывании поля color");
        }
@@ -61,7 +69,11 @@ public class PersonFileReader {
      */
     public Country readCountry() throws ReaderException {
         try{
-            return ArgumentValidator.validationCountry(ArgumentParser.parseCountry(scanner.nextLine()));
+            Country nationality = ArgumentParser.parseCountry(scanner.nextLine());
+            if (ArgumentValidator.validationCountry(nationality)){
+                return nationality;
+            }
+            return null;
         } catch (IncorrectFieldException e) {
             throw new ReaderException("Ошибка при считывании поля country");
         }

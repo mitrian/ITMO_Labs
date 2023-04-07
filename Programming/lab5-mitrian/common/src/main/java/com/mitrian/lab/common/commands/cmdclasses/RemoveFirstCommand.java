@@ -32,16 +32,8 @@ public class RemoveFirstCommand extends AbstractCommand {
      */
     @Override
     public boolean execute() throws CollectionException {
-        try {
-            if (arguments.size() != 0){
-                throw new IncorrectCommandArgumentException("Введено неправильное количество аргументов");
-            }
-            dao.removeFirst();
-            return true;
-        } catch (IncorrectCommandArgumentException e){
-            printer.println(e.getMessage());
-            return false;
-        }
+        dao.removeFirst();
+        return true;
     }
 
 

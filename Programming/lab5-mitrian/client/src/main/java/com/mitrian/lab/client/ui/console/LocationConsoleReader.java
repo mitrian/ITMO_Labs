@@ -1,7 +1,7 @@
 package com.mitrian.lab.client.ui.console;
 
-import com.mitrian.lab.common.commands.utils.ArgumentParser;
-import com.mitrian.lab.common.commands.utils.ArgumentValidator;
+import com.mitrian.lab.common.commands.utils.parser.ArgumentParser;
+import com.mitrian.lab.common.commands.utils.validator.ArgumentValidator;
 import com.mitrian.lab.common.exceptions.ForcedShutdownException;
 import com.mitrian.lab.common.exceptions.IncorrectFieldException;
 import com.mitrian.lab.common.elements.Location;
@@ -42,7 +42,10 @@ public class LocationConsoleReader {
                 if (!scanner.hasNextLine()){
                     throw new ForcedShutdownException("Принудительно закрыто");
                 }
-                return ArgumentValidator.validationXLocation(ArgumentParser.parseLong(scanner.nextLine()));
+                Long x = ArgumentParser.parseLong(scanner.nextLine());
+                if  (ArgumentValidator.validationXLocation(x)){
+                    return x;
+                }
             } catch (IncorrectFieldException e) {
                 printer.print(e.getMessage()+ " Повторите ввод: ");
             }
@@ -62,7 +65,10 @@ public class LocationConsoleReader {
                 if (!scanner.hasNextLine()){
                     throw new ForcedShutdownException("Принудительно закрыто");
                 }
-                return ArgumentValidator.validationYLocation(ArgumentParser.parseDouble(scanner.nextLine()));
+                double y = ArgumentParser.parseDouble(scanner.nextLine());
+                if (ArgumentValidator.validationYLocation(y)){
+                    return y;
+                }
             } catch (IncorrectFieldException e) {
                 printer.print(e.getMessage() + "Повторите ввод.");
             }
@@ -83,7 +89,10 @@ public class LocationConsoleReader {
                 if (!scanner.hasNextLine()){
                     throw new ForcedShutdownException("Принудительно закрыто");
                 }
-                return ArgumentValidator.validationZLocation(ArgumentParser.parseInteger(scanner.nextLine()));
+                int z = ArgumentParser.parseInteger(scanner.nextLine());
+                if (ArgumentValidator.validationZLocation(z)){
+                    return z;
+                }
             } catch (IncorrectFieldException e) {
                 printer.print(e.getMessage() + "Повторите ввод.");
             }

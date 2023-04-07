@@ -33,12 +33,9 @@ public class MinByNameCommand extends AbstractCommand {
     @Override
     public boolean execute() throws CollectionException {
         try {
-            if (arguments.size() != 0){
-                throw new IncorrectCommandArgumentException("Введено неправильное количество аргументов");
-            }
             printer.println(dao.getMinByName().toString());
             return true;
-        } catch (IncorrectCommandArgumentException | CollectionElementException e){
+        } catch (CollectionElementException e){
             printer.println(e.getMessage());
             return false;
         }

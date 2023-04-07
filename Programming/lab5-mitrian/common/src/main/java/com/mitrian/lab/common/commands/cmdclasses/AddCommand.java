@@ -32,18 +32,9 @@ public class AddCommand extends AbstractCommand {
      */
     @Override
     public boolean execute() {
-        try {
-            if (arguments.size() != 0){
-                throw new IncorrectCommandArgumentException("Введено неправильное количество аргументов");
-            }
             Worker worker = (Worker) additionalArg;
-//        if worker exists
             dao.add(worker);
             return true;
-        } catch (IncorrectCommandArgumentException e){
-            printer.println(e.getMessage());
-            return false;
-        }
     }
 
 

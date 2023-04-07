@@ -1,13 +1,14 @@
 package com.mitrian.lab.client.ui.file;
 
 
-import com.mitrian.lab.common.commands.utils.ArgumentParser;
-import com.mitrian.lab.common.commands.utils.ArgumentValidator;
+import com.mitrian.lab.common.commands.utils.parser.ArgumentParser;
+import com.mitrian.lab.common.commands.utils.validator.ArgumentValidator;
 import com.mitrian.lab.common.elements.*;
 import com.mitrian.lab.common.elements.initializer.IdCollection;
 import com.mitrian.lab.common.exceptions.IncorrectFieldException;
 import com.mitrian.lab.common.exceptions.ReaderException;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Scanner;
@@ -37,7 +38,11 @@ public class WorkerFileReader {
      */
     public String readWorkerName() throws ReaderException {
         try{
-            return ArgumentValidator.validationName(ArgumentParser.parseString(scanner.nextLine()));
+            String name = ArgumentParser.parseString(scanner.nextLine());
+            if (ArgumentValidator.validationName(name)){
+                return name;
+            }
+            return "";
         } catch (IncorrectFieldException e){
             throw new ReaderException("Ошибка при считывании поля name");
         }
@@ -51,7 +56,11 @@ public class WorkerFileReader {
      */
     public Float readSalary() throws ReaderException {
         try{
-            return ArgumentValidator.validationSalary(ArgumentParser.parseFloat(scanner.nextLine()));
+            Float salary = ArgumentParser.parseFloat(scanner.nextLine());
+            if  (ArgumentValidator.validationSalary(salary)){
+                return  salary;
+            }
+            return 0f;
         } catch (IncorrectFieldException e) {
             throw new ReaderException("Ошибка при считывании поля salary");
         }
@@ -65,8 +74,11 @@ public class WorkerFileReader {
      */
     public LocalDate readStartDate() throws ReaderException {
         try{
-            startingDate = ArgumentValidator.validationStartDate(ArgumentParser.parseLocalDate(scanner.nextLine()));
-            return startingDate;
+            startingDate = ArgumentParser.parseLocalDate(scanner.nextLine());
+            if (ArgumentValidator.validationStartDate(startingDate)){
+                return startingDate;
+            }
+            return LocalDate.now();
         } catch (IncorrectFieldException e){
             throw new ReaderException("Ошибка при считывании поля startDate");
         }
@@ -80,7 +92,11 @@ public class WorkerFileReader {
      */
     public Date readEndDate() throws ReaderException {
         try{
-            return ArgumentValidator.validationEndDate(ArgumentParser.parseDate(scanner.nextLine()), startingDate);
+            Date endDate = ArgumentParser.parseDate(scanner.nextLine());
+            if (ArgumentValidator.validationEndDate(endDate, startingDate)){
+                return endDate;
+            }
+            return Date.from(Instant.now());
         } catch (IncorrectFieldException e){
             throw new ReaderException("Ошибка при считывании поля endDate");
         }
@@ -94,18 +110,15 @@ public class WorkerFileReader {
      */
     public Status readStatus() throws ReaderException {
         try {
-            return ArgumentValidator.validationStatus(ArgumentParser.parseStatus(scanner.nextLine()));
+            Status status = ArgumentParser.parseStatus(scanner.nextLine());
+            if (ArgumentValidator.validationStatus(status)){
+                return status;
+            }
+            return null;
         } catch (IncorrectFieldException e){
             throw new ReaderException("Ошибка при считывании поля status");
         }
     }
-
-
-
-//    public Country readCountry() throws ForcedShutdownException {
-//        printer.print("Введите национальность. ");
-//        return ConsoleArgumentParser.validationCountryNullable();
-//    }
 
 
     /**
@@ -119,7 +132,7 @@ public class WorkerFileReader {
         String name = readWorkerName();
         CoordinatesFileReader coordinatesCreating = new CoordinatesFileReader(scanner);
         Coordinates c = coordinatesCreating.createCoordinatesObject();
-        LocalDate creationDate = ArgumentValidator.validationCreationDate(LocalDate.now());
+        LocalDate creationDate = LocalDate.now();
         Float salary = readSalary();
         LocalDate startDate = readStartDate();
         Date endDate = readEndDate();

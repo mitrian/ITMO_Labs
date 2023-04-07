@@ -7,6 +7,7 @@ import com.mitrian.lab.common.exceptions.IncorrectCommandArgumentException;
 import com.mitrian.lab.common.exceptions.impl.file.ScriptRecursionException;
 import com.mitrian.lab.common.utils.Printer;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,8 +17,6 @@ import java.util.Set;
  */
 public class ExecuteScriptCommand extends AbstractCommand {
 
-    /** Current field of executing files */
-    private static final Set<String> openFiles = new HashSet<>();
     /** Current name of command field */
     private String name = "execute_script";
 
@@ -40,21 +39,11 @@ public class ExecuteScriptCommand extends AbstractCommand {
      */
     @Override
     public boolean execute()  {
-        try{
-            if (arguments.size()!=1){
-                throw new IncorrectCommandArgumentException("Введено неправильное количество аргументов");
-            }
-            try {
-
-                executor.execute(resolver.resolve(FileManager.getFileByName(arguments.get(0))));
-                return true;
-
-
-            } catch ( Exception e){
-                printer.println(e.getMessage());
-                return false;
-            }
-        } catch (IncorrectCommandArgumentException e) {
+        try {
+            File file = FileManager.getFileByName(arguments.get(0));
+            boolean executing = executor.execute(file.getName(),resolver.resolve(file));
+            return executing;
+        } catch ( Exception e){
             printer.println(e.getMessage());
             return false;
         }

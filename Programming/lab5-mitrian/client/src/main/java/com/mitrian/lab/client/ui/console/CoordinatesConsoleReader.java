@@ -1,7 +1,7 @@
 package com.mitrian.lab.client.ui.console;
 
-import com.mitrian.lab.common.commands.utils.ArgumentParser;
-import com.mitrian.lab.common.commands.utils.ArgumentValidator;
+import com.mitrian.lab.common.commands.utils.parser.ArgumentParser;
+import com.mitrian.lab.common.commands.utils.validator.ArgumentValidator;
 import com.mitrian.lab.common.exceptions.ForcedShutdownException;
 import com.mitrian.lab.common.exceptions.IncorrectFieldException;
 import com.mitrian.lab.common.elements.Coordinates;
@@ -43,7 +43,10 @@ public class CoordinatesConsoleReader {
                 if (!scanner.hasNextLine()){
                     throw new ForcedShutdownException("Принудительно закрыто");
                 }
-                return ArgumentValidator.validationXCoordinates(ArgumentParser.parseLong(scanner.nextLine()));
+                long x = ArgumentParser.parseLong(scanner.nextLine());
+                if (ArgumentValidator.validationXCoordinates(x)){
+                    return x;
+                }
             } catch (IncorrectFieldException e){
                 printer.print(e.getMessage()+" Повторите ввод: ");
             }
@@ -63,7 +66,10 @@ public class CoordinatesConsoleReader {
                 if (!scanner.hasNextLine()){
                     throw new ForcedShutdownException("Принудительно закрыто");
                 }
-                return ArgumentValidator.validationYCoordinates(ArgumentParser.parseInteger(scanner.nextLine()));
+                Integer y = ArgumentParser.parseInteger(scanner.nextLine());
+                if (ArgumentValidator.validationYCoordinates(y)){
+                    return y;
+                }
             } catch (IncorrectFieldException e){
                 printer.print(e.getMessage()+" Повторите ввод: ");
             }

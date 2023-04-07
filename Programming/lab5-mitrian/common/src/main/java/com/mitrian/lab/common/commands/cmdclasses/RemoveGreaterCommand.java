@@ -32,9 +32,9 @@ public class RemoveGreaterCommand extends AbstractCommand {
      */
     @Override
     public boolean execute() throws CollectionException {
-            Worker worker = (Worker) additionalArg;
-            dao.removeGreater(worker);
-            return true;
+        Worker worker = (Worker) additionalArg;
+        dao.removeGreater(worker);
+        return true;
     }
 
 
