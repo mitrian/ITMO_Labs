@@ -28,18 +28,10 @@ public class HelpCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean execute() {
-        try (BufferedReader reader = new BufferedReader(
-                new FileReader(HelpCommand.class.getClassLoader().getResource("Help.txt").getFile())
-        )){
-            for (String line: reader.lines().toList()){
-                printer.println(line);
-            }
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public boolean execute() throws IOException {
+        byte[] helpBytes = HelpCommand.class.getClassLoader().getResourceAsStream("Help.txt").readAllBytes();
+        String help = new String(helpBytes);
+        printer.println(help);
         return true;
     }
 
