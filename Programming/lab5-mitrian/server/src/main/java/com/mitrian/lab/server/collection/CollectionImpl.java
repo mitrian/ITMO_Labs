@@ -133,12 +133,15 @@ public class CollectionImpl implements Collection<Worker> {
                     throw new CommaException("Файл не корректен, уберите лишние запятые");
                 }
             }
+            reading.close();
         } catch (CommaException e) {
             throw new CommaException(e.getMessage());
         }
-        CsvReader csvReader = new CsvReader(this, fileCheck);
+        Reader fileCSV = new FileReader(file);
+        CsvReader csvReader = new CsvReader(this, fileCSV);
         workers.addAll(csvReader.read());
         csvReader.close();
+
     }
 
     @Override
