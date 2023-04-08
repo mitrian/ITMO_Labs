@@ -40,7 +40,7 @@ public class FileCommandResolver implements Resolver {
     @Override
     public List<AbstractCommand> resolve(File file) throws CommandNotFoundException, NoSuchFileException, ReaderException, IncorrectFieldException, ScriptRecursionException {
 //        if (openFiles.contains(file.getName())){
-//            throw new ScriptRecursionException("Рекурсия дебил");
+//            throw new ScriptRecursionException("Рекурсия");
 //        }
 //        openFiles.add(file.getName());
         List<AbstractCommand> commands = new ArrayList<>();
@@ -55,7 +55,6 @@ public class FileCommandResolver implements Resolver {
                 if (localCommand instanceof ExecuteScriptCommand){
                     localCommand.setResolver(this);
                 }
-                //TODO
                 if (localCommand.getInputElement()){
                     localCommand.setAdditionalArg(workerFileReader.createWorkerObject());
                 }

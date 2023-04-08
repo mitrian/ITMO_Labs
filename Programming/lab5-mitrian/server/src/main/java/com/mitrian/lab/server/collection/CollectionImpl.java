@@ -8,13 +8,11 @@ import com.mitrian.lab.common.exceptions.FileException;
 import com.mitrian.lab.common.exceptions.IncorrectFieldException;
 import com.mitrian.lab.common.exceptions.impl.collection.CollectionEmptyException;
 import com.mitrian.lab.common.exceptions.impl.collection.IdUnavailableException;
+import com.mitrian.lab.common.exceptions.impl.file.CommaException;
 import com.mitrian.lab.server.file.csv.CsvLoader;
 import com.mitrian.lab.server.file.csv.CsvReader;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -124,8 +122,21 @@ public class CollectionImpl implements Collection<Worker> {
     }
 
     @Override
-    public void load() throws IOException, IncorrectFieldException {
-        CsvReader csvReader = new CsvReader(this, new FileReader(file));
+    public void load() throws IOException, IncorrectFieldException, CommaException {
+        Reader fileCheck =  new FileReader(file);
+        try {
+            BufferedReader reading  = new BufferedReader(fileCheck);
+            String line;
+            int head = reading.readLine().split(",").length;
+            while ( (line = reading.readLine()) != null){
+                if (head != line.split(",").length){
+                    throw new CommaException("Файл не корректен, уберите лишние запятые");
+                }
+            }
+        } catch (CommaException e) {
+            throw new CommaException(e.getMessage());
+        }
+        CsvReader csvReader = new CsvReader(this, fileCheck);
         workers.addAll(csvReader.read());
         csvReader.close();
     }

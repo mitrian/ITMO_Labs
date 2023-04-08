@@ -4,6 +4,8 @@ import com.mitrian.lab.common.commands.resolvers.Resolver;
 import com.mitrian.lab.common.commands.AbstractCommand;
 import com.mitrian.lab.common.exetutors.Executor;
 import com.mitrian.lab.common.utils.Printer;
+import sun.misc.Signal;
+
 import java.util.Scanner;
 
 /**
@@ -42,6 +44,9 @@ public class Console {
     public void run()
     {
         while (true) {
+            Signal.handle(new Signal("INT"),(handler)->{
+                printer.print("SignalCatch");
+            });
             if (!scanner.hasNextLine()){
                 printer.println("НЕ НАДО ТАК");
             }

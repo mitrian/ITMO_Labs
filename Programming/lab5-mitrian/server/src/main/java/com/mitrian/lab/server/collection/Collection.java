@@ -5,6 +5,7 @@ import com.mitrian.lab.common.elements.Status;
 import com.mitrian.lab.common.exceptions.CollectionException;
 import com.mitrian.lab.common.exceptions.IncorrectFieldException;
 import com.mitrian.lab.common.exceptions.impl.collection.IdUnavailableException;
+import com.mitrian.lab.common.exceptions.impl.file.CommaException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -23,7 +24,7 @@ public interface Collection<T> {
     void remove(Integer id) throws CollectionException;
     void clear();
     void save() throws IOException;
-    void load() throws IOException, IncorrectFieldException;
+    void load() throws IOException, IncorrectFieldException, CommaException;
     void removeFirst() throws CollectionException;
     Optional<T> removeHead() throws CollectionException;
     void removeGreater(T item);
