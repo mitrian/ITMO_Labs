@@ -13,9 +13,6 @@ import java.util.List;
  */
 public class PrintUniquePersonCommand extends AbstractCommand {
 
-    /** Current name of command field */
-    private String name = "print_unique_person";
-
     /**
      * Constructor for initialize fields
      * @param printer      param for initialize printer field
@@ -40,9 +37,9 @@ public class PrintUniquePersonCommand extends AbstractCommand {
 
 
     /**
-     * Getter of name field
+     * Getter name of command
      */
     public String getNameOfCommand(){
-        return name;
+        return "print_unique_person";
     }
 }

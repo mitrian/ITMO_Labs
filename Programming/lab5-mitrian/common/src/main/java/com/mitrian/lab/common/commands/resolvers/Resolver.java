@@ -5,7 +5,6 @@ import com.mitrian.lab.common.commands.AbstractCommand;
 import java.io.File;
 import java.util.List;
 
-// TODO: check id in collection
 /**
  * Class for retrieving command object and arguments
  */
@@ -19,7 +18,6 @@ public interface Resolver {
      */
     default AbstractCommand resolve(String userInput) throws Exception {
         throw new UnsupportedOperationException("");
-        // TODO: implement throwing an exception: trying to use default method
     }
 
     /**
@@ -30,6 +28,5 @@ public interface Resolver {
      */
     default List<AbstractCommand> resolve(File file) throws Exception {
         throw new UnsupportedOperationException("");
-        // TODO: implement throwing an exception: trying to use default method
     }
 }

@@ -15,11 +15,10 @@ import com.mitrian.lab.common.exceptions.IncorrectFieldException;
 import com.mitrian.lab.common.exceptions.impl.collection.IdUnavailableException;
 import com.mitrian.lab.common.exceptions.impl.commands.CommandNotFoundException;
 import com.mitrian.lab.common.exceptions.impl.file.ScriptRecursionException;
-import com.mitrian.lab.common.utils.ConsolePriner;
+import com.mitrian.lab.common.utils.ConsolePrinter;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
 
 /**
@@ -63,7 +62,7 @@ public class SingleCommandResolver implements Resolver {
             }
         }
         if (localCommand.getInputElement()){
-            WorkerConsoleReader workerConsoleReader = new WorkerConsoleReader(new Scanner(System.in), new ConsolePriner());
+            WorkerConsoleReader workerConsoleReader = new WorkerConsoleReader(new Scanner(System.in), new ConsolePrinter());
             localCommand.setAdditionalArg(workerConsoleReader.createWorkerObject());
         }
         if (localCommand instanceof ExecuteScriptCommand){

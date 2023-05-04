@@ -13,7 +13,7 @@ public class SingleCommandExecutor implements Executor {
 
     //dao
     //constr with dao
-    private Dao<Worker> workerDao;
+    private final Dao<Worker> workerDao;
 
     public SingleCommandExecutor(Dao<Worker> workerDao){
         this.workerDao = workerDao;

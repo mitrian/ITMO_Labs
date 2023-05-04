@@ -13,9 +13,6 @@ import java.util.List;
  */
 public class UpdateCommand extends AbstractCommand {
 
-    /** Current name of command field */
-    private String name = "update";
-
 
     /**
      * Constructor for initialize fields
@@ -39,9 +36,9 @@ public class UpdateCommand extends AbstractCommand {
 
 
     /**
-     * Getter of name field
+     * Getter name of command
      */
     public String getNameOfCommand(){
-        return name;
+        return "update";
     }
 }

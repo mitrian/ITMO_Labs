@@ -2,10 +2,11 @@ package com.mitrian.lab.common.elements;
 
 import com.mitrian.lab.common.elements.initializer.IdCollection;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
 
-public class Worker implements Comparable<Worker> {
+public class Worker implements Comparable<Worker>, Serializable {
 
     private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
@@ -68,7 +69,8 @@ public class Worker implements Comparable<Worker> {
         return person;
     }
 
-    public void setId(Integer id){ this.id = id;}
+    public void setId(Integer id){ this.id = id;
+    IdCollection.idCollection.add(id);}
     public void setName(String name){ this.name = name;}
     public void setCoordinates(Coordinates coordinates){ this.coordinates = coordinates;}
 
@@ -93,7 +95,6 @@ public class Worker implements Comparable<Worker> {
 
     public static class Builder{
 
-        private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
         private String name; //Поле не может быть null, Строка не может быть пустой
         private Coordinates coordinates; //Поле не может быть null
         private LocalDate creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически

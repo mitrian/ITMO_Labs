@@ -93,7 +93,7 @@ public class ArgumentValidator {
      * @throws IncorrectFieldException field is incorrect
      */
     public static boolean validationSalary(Float salary) throws IncorrectFieldException {
-        if (salary > 0f){
+        if (salary > 0f || salary == null){
             return true;
         } else {
             throw new IncorrectFieldException("Значение поля salary должно быть больше 0.");
@@ -125,6 +125,7 @@ public class ArgumentValidator {
         if (endDate == null && startDate != null){
             return true;
         }
+        assert endDate != null;
         if (endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().isBefore(startDate)){
             throw new IncorrectFieldException("Значение поля endDate должно быть больше startDate.");
         }
@@ -150,7 +151,7 @@ public class ArgumentValidator {
      */
     public static boolean validationWeight(Double weight) throws IncorrectFieldException {
         if (!Double.isInfinite(weight)){
-            if (weight == null || Double.compare(weight, 0) < 0) {
+            if (Double.compare(weight, 0) < 0) {
                 throw new IncorrectFieldException("Значение поля weight должно быть больше 0");
             }
             return true;

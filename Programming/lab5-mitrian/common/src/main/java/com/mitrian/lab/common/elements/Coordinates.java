@@ -1,5 +1,8 @@
 package com.mitrian.lab.common.elements;
-public class Coordinates {
+
+import java.io.Serializable;
+
+public class Coordinates implements Serializable {
     private Long x; //Максимальное значение поля: 884
     private Integer y; //Поле не может быть null
 

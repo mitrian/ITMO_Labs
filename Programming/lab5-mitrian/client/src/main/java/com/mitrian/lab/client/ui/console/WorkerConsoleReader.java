@@ -71,7 +71,11 @@ public class WorkerConsoleReader {
                 if (!scanner.hasNextLine()){
                     throw new ForcedShutdownException("Принудительно закрыто");
                 }
-                Float salary = ArgumentParser.parseFloat(scanner.nextLine());
+                String line = scanner.nextLine();
+                if ("".equals(line.trim())){
+                    return null;
+                }
+                Float salary = ArgumentParser.parseFloat(line);
                 if  (ArgumentValidator.validationSalary(salary)){
                     return  salary;
                 }
@@ -110,7 +114,6 @@ public class WorkerConsoleReader {
      * @return parsed endDate
      * @throws ForcedShutdownException ctl+D exception
      */
-    //TODO : change println
     public Date readEndDate() throws  ForcedShutdownException {
         printer.print("Введите дату окончания работ. ");
         while (true){
@@ -123,7 +126,6 @@ public class WorkerConsoleReader {
                 if (ArgumentValidator.validationEndDate(endDate, startingDate)){
                     return endDate;
                 }
-                //TODO: compare Date
                 return endDate;
             } catch (IncorrectFieldException e) {
                 printer.println(e.getMessage()+ " Повторите ввод. ");
@@ -176,14 +178,11 @@ public class WorkerConsoleReader {
         Person p = personCreating.createPersonObject();
 
 
-
-        Worker worker = new Worker.Builder(name, c, startDate, p).setCreationDate()
+        return new Worker.Builder(name, c, startDate, p)
+                .setCreationDate()
                 .setEndDate(endDate)
                 .setStatus(status)
                 .setSalary(salary)
                 .build();
-
-
-        return worker;
     }
 }

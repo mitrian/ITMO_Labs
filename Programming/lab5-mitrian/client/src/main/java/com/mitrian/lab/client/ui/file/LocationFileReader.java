@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class LocationFileReader {
 
     /** Current scanner field */
-    private Scanner scanner;
+    private final Scanner scanner;
 
 
     /**
@@ -34,10 +34,8 @@ public class LocationFileReader {
     public Long readXLocation() throws ReaderException {
         try {
             Long x = ArgumentParser.parseLong(scanner.nextLine());
-            if  (ArgumentValidator.validationXLocation(x)){
-                return x;
-            }
-            return 0L;
+            ArgumentValidator.validationXLocation(x);
+            return x;
         } catch (Exception e) {
             throw new ReaderException("Ошибка при считывании поля x location");
         }

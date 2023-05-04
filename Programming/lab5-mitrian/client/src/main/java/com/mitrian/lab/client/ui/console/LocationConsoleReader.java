@@ -14,9 +14,9 @@ import java.util.Scanner;
 public class LocationConsoleReader {
 
     /** Current scanner field */
-    private Scanner scanner;
+    private final Scanner scanner;
     /** Current printer field */
-    private Printer printer;
+    private final Printer printer;
 
 
     /**
@@ -74,7 +74,6 @@ public class LocationConsoleReader {
             }
         }
     }
-
 
 
     /**

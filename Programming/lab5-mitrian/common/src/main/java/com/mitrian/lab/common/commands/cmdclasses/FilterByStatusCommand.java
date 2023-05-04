@@ -14,9 +14,6 @@ import java.util.List;
  */
 public class FilterByStatusCommand extends AbstractCommand {
 
-    /** Current name of command field */
-    private String name = "filter_by_id";
-
 
     /**
      * Constructor for initialize fields
@@ -42,10 +39,10 @@ public class FilterByStatusCommand extends AbstractCommand {
 
 
     /**
-     * Getter of name field
+     * Getter name of command
      */
     public String getNameOfCommand(){
-        return name;
+        return "filter_by_id";
     }
 
 }

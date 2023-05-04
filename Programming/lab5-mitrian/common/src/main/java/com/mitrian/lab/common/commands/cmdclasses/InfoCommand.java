@@ -11,8 +11,7 @@ import java.util.List;
  */
 public class InfoCommand extends AbstractCommand {
 
-    /** Current name of command field */
-    private String name = "info";
+
 
 
     /**
@@ -34,9 +33,9 @@ public class InfoCommand extends AbstractCommand {
 
 
     /**
-     * Getter of name field
+     * Getter name of command
      */
     public String getNameOfCommand(){
-        return name;
+        return "info";
     }
 }

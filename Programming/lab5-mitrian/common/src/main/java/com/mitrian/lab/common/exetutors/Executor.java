@@ -14,7 +14,6 @@ public interface Executor {
      */
     default boolean execute(AbstractCommand command) throws Exception {
         return false;
-        //TODO
     }
 
 
@@ -26,6 +25,5 @@ public interface Executor {
      */
     default boolean execute(String fileName, List<AbstractCommand> lines) throws Exception {
         return false;
-        //TODO
     }
 }

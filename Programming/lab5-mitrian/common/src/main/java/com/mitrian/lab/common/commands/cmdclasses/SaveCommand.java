@@ -9,9 +9,6 @@ import java.util.List;
 
 public class SaveCommand extends AbstractCommand {
 
-    /** Current name of command field */
-    private String name = "save";
-
     /**
      * Constructor for initialize fields
      * @param printer param for initialize printer field
@@ -34,9 +31,9 @@ public class SaveCommand extends AbstractCommand {
 
 
     /**
-     * Getter of name field
+     * Getter name of command
      */
     public String getNameOfCommand(){
-        return name;
+        return "save";
     }
 }

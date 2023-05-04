@@ -12,9 +12,6 @@ import java.util.List;
  */
 public class RemoveFirstCommand extends AbstractCommand {
 
-    /** Current name of command field */
-    private String name = "remove_first";
-
 
     /**
      * Constructor for initialize fields
@@ -38,9 +35,9 @@ public class RemoveFirstCommand extends AbstractCommand {
 
 
     /**
-     * Getter of name field
+     * Getter name of command
      */
     public String getNameOfCommand(){
-        return name;
+        return "remove_first";
     }
 }

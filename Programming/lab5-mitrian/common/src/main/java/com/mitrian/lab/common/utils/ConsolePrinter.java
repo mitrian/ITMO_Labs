@@ -3,7 +3,7 @@ package com.mitrian.lab.common.utils;
 /**
  * Class for printing
  */
-public class ConsolePriner implements Printer {
+public class ConsolePrinter implements Printer {
 
     @Override
     public void print(String printable) {

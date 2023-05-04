@@ -13,9 +13,6 @@ import java.util.List;
  */
 public class MinByNameCommand extends AbstractCommand {
 
-    /** Current name of command field */
-    private String name = "min_by_id";
-
     /**
      * Constructor for initialize fields
      * @param printer param for initialize printer field
@@ -43,9 +40,9 @@ public class MinByNameCommand extends AbstractCommand {
 
 
     /**
-     * Getter of name field
+     * Getter name of command
      */
     public String getNameOfCommand(){
-        return name;
+        return "min_by_id";
     }
 }

@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class PersonFileReader {
 
     /** Current scanner field */
-    private Scanner scanner;
+    private final Scanner scanner;
 
 
     /**

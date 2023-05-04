@@ -49,10 +49,8 @@ public class CoordinatesFileReader {
     public Integer readYCoordinates() throws ReaderException {
         try {
             Integer y = ArgumentParser.parseInteger(scanner.nextLine());
-            if (ArgumentValidator.validationYCoordinates(y)){
-                return y;
-            }
-            return 0;
+            ArgumentValidator.validationYCoordinates(y);
+            return y;
         } catch (IncorrectFieldException e) {
             throw new ReaderException("Ошибка при считывании поля y coordinates");
         }

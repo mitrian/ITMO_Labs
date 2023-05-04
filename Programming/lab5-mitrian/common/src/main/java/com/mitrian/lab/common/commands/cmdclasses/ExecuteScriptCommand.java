@@ -17,9 +17,6 @@ import java.util.Set;
  */
 public class ExecuteScriptCommand extends AbstractCommand {
 
-    /** Current name of command field */
-    private String name = "execute_script";
-
 
     /**
      * Constructor for initialize fields
@@ -41,8 +38,7 @@ public class ExecuteScriptCommand extends AbstractCommand {
     public boolean execute()  {
         try {
             File file = FileManager.getFileByName(arguments.get(0));
-            boolean executing = executor.execute(file.getName(),resolver.resolve(file));
-            return executing;
+            return executor.execute(file.getName(),resolver.resolve(file));
         } catch ( Exception e){
             printer.println(e.getMessage());
             return false;
@@ -51,9 +47,9 @@ public class ExecuteScriptCommand extends AbstractCommand {
 
 
     /**
-     * Getter of name field
+     * Getter name of command
      */
     public String getNameOfCommand(){
-        return name;
+        return "execute_script";
     }
 }

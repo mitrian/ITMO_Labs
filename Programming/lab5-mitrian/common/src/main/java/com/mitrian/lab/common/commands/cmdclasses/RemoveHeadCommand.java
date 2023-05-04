@@ -12,9 +12,6 @@ import java.util.List;
  */
 public class RemoveHeadCommand extends AbstractCommand {
 
-    /** Current name of command field */
-    private String name = "remove_head";
-
     /**
      * Constructor for initialize fields
      * @param printer param for initialize printer field
@@ -45,9 +42,9 @@ public class RemoveHeadCommand extends AbstractCommand {
 
 
     /**
-     * Getter of name field
+     * Getter name of command
      */
     public String getNameOfCommand(){
-        return name;
+        return "remove_head";
     }
 }

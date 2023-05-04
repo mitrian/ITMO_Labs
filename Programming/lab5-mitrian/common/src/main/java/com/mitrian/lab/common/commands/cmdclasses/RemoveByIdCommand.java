@@ -13,9 +13,6 @@ import java.util.List;
  */
 public class RemoveByIdCommand extends AbstractCommand {
 
-    /** Current name of command field */
-    private String name = "remove_by_id";
-
     /**
      * Constructor for initialize fields
      * @param printer param for initialize printer field
@@ -43,9 +40,9 @@ public class RemoveByIdCommand extends AbstractCommand {
 
 
     /**
-     * Getter of name field
+     * Getter name of command
      */
     public String getNameOfCommand(){
-        return name;
+        return "remove_by_id";
     }
 }

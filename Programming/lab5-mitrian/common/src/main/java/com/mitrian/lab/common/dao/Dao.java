@@ -24,7 +24,7 @@ public interface Dao<T> {
     void removeFirst() throws CollectionException;
     Optional<T> removeHead() throws CollectionException;
     void removeGreater(T item);
-    Optional<T> getMinByName() throws CollectionException;
+    T getMinByName() throws CollectionException;
     List<T> filterByStatus(Status status);
 
     LocalDate getCreationDate();

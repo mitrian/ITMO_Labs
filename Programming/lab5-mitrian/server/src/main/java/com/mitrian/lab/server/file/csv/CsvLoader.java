@@ -4,6 +4,7 @@ import com.mitrian.lab.common.elements.Coordinates;
 import com.mitrian.lab.common.elements.Location;
 import com.mitrian.lab.common.elements.Person;
 import com.mitrian.lab.common.elements.Worker;
+import com.mitrian.lab.common.utils.Printer;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
@@ -16,19 +17,16 @@ import java.util.List;
 public class CsvLoader {
 
     /** Current heading for csv */
-    private final static String[] HEADINGS = { "id", "name", "Coordinates_x", "Coordinates_y",
-            "creationDate", "salary", "startDate", "endDate", "Status", "person_weight",
+    private final static String[] HEADINGS = { "id", "name", "coordinates_x", "coordinates_y",
+            "creationDate", "salary", "startDate", "endDate", "status", "person_weight",
             "person_hairColor", "person_nationality", "location_x", "location_y", "location_z"};
 
     /** Current csv formater for building */
-    private CSVFormat csvFormat;
+    private final CSVFormat csvFormat;
     /** Current field for writing in file */
-    private FileWriter fileWriter;
+    private final FileWriter fileWriter;
     /** Current file for writing */
     private File file;
-
-
-    private PrintWriter printWriter;
 
     /**
      * Contracture for creating object of Person Console Reader class
@@ -45,13 +43,12 @@ public class CsvLoader {
     public void load(List<Worker> workerCollection) throws IOException {
         CSVPrinter csvPrinter = csvFormat.print(fileWriter);
         for (Worker element: workerCollection){
-            Worker worker = element;
-            Coordinates coordinates = worker.getCoordinates();
-            Person person = worker.getPerson();
+            Coordinates coordinates = element.getCoordinates();
+            Person person = element.getPerson();
             Location location = person.getLocation();
-            csvPrinter.printRecord(worker.getId(), worker.getName(), coordinates.getX(),
-                    coordinates.getY(), worker.getCreationDate(), worker.getSalary(),
-                    worker.getStartDate(), worker.getEndDate(), worker.getStatus(),
+            csvPrinter.printRecord(element.getId(), element.getName(), coordinates.getX(),
+                    coordinates.getY(), element.getCreationDate(), element.getSalary(),
+                    element.getStartDate(), element.getEndDate(), element.getStatus(),
                     person.getWeight(), person.getHairColor(), person.getNationality(),
                     location.getX(), location.getY(), location.getZ());
         }

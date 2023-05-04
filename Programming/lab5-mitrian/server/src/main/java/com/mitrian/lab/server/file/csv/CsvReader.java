@@ -20,8 +20,8 @@ import java.util.List;
 public class CsvReader {
 
     /** Current heading for csv */
-    private final static String[] HEADINGS = { "id", "name", "Coordinates_x", "Coordinates_y",
-            "creationDate", "salary", "startDate", "endDate", "Status", "person_weight",
+    private final static String[] HEADINGS = { "id", "name", "coordinates_x", "coordinates_y",
+            "creationDate", "salary", "startDate", "endDate", "status", "person_weight",
             "person_hairColor", "person_nationality", "location_x", "location_y", "location_z"};
 
     /** Current field for reader */
@@ -46,13 +46,13 @@ public class CsvReader {
         for (CSVRecord record: records){
             Integer id = ArgumentParser.parseInteger(record.get("id"));
             String name = ArgumentParser.parseString(record.get("name"));
-            Long coordinatesX = ArgumentParser.parseLong(record.get("Coordinates_x"));
-            Integer coordinatesY = ArgumentParser.parseInteger(record.get("Coordinates_y"));
+            Long coordinatesX = ArgumentParser.parseLong(record.get("coordinates_x"));
+            Integer coordinatesY = ArgumentParser.parseInteger(record.get("coordinates_y"));
             LocalDate creationDate = ArgumentParser.parseLocalDate(record.get("creationDate"));
             Float salary = ArgumentParser.parseFloat(record.get("salary"));
             LocalDate startDate = ArgumentParser.parseLocalDate(record.get("startDate"));
             Date endDate = ArgumentParser.parseDate(record.get("endDate"));
-            Status status = ArgumentParser.parseStatus(record.get("Status"));
+            Status status = ArgumentParser.parseStatus(record.get("status"));
             Double weight = ArgumentParser.parseDouble(record.get("person_weight"));
             Color hairColor = ArgumentParser.parseColor(record.get("person_hairColor"));
             Country nationality = ArgumentParser.parseCountry(record.get("person_nationality"));

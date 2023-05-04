@@ -16,7 +16,7 @@ import java.util.Scanner;
 public class WorkerFileReader {
 
     /** Current scanner field */
-    private Scanner scanner;
+    private final Scanner scanner;
     /** Current startingDate field to compare it with endDate */
     private LocalDate startingDate;
 
@@ -56,6 +56,10 @@ public class WorkerFileReader {
      */
     public Float readSalary() throws ReaderException {
         try{
+            String line = scanner.nextLine();
+            if ("".equals(line.trim())){
+                return null;
+            }
             Float salary = ArgumentParser.parseFloat(scanner.nextLine());
             if  (ArgumentValidator.validationSalary(salary)){
                 return  salary;
@@ -127,12 +131,10 @@ public class WorkerFileReader {
      * @throws ReaderException wrong field for initializing
      */
     public Worker createWorkerObject() throws ReaderException, IncorrectFieldException {
-        long id =  IdCollection.createWorkerId();
         PersonFileReader personCreating = new PersonFileReader(scanner);
         String name = readWorkerName();
         CoordinatesFileReader coordinatesCreating = new CoordinatesFileReader(scanner);
         Coordinates c = coordinatesCreating.createCoordinatesObject();
-        LocalDate creationDate = LocalDate.now();
         Float salary = readSalary();
         LocalDate startDate = readStartDate();
         Date endDate = readEndDate();
@@ -140,14 +142,10 @@ public class WorkerFileReader {
         Person p = personCreating.createPersonObject();
 
 
-
-        Worker worker = new Worker.Builder(name, c, startDate, p).setCreationDate()
+        return new Worker.Builder(name, c, startDate, p).setCreationDate()
                 .setEndDate(endDate)
                 .setStatus(status)
                 .setSalary(salary)
                 .build();
-
-
-        return worker;
     }
 }

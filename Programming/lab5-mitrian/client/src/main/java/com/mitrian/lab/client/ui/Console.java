@@ -2,6 +2,8 @@ package com.mitrian.lab.client.ui;
 
 import com.mitrian.lab.common.commands.resolvers.Resolver;
 import com.mitrian.lab.common.commands.AbstractCommand;
+import com.mitrian.lab.common.elements.initializer.IdCollection;
+import com.mitrian.lab.common.exceptions.ForcedShutdownException;
 import com.mitrian.lab.common.exetutors.Executor;
 import com.mitrian.lab.common.utils.Printer;
 import sun.misc.Signal;
@@ -41,18 +43,18 @@ public class Console {
     /**
      * running app from console
      */
-    public void run()
-    {
+    public void run() throws ForcedShutdownException {
         while (true) {
             Signal.handle(new Signal("INT"),(handler)->{
                 printer.print("SignalCatch");
             });
             if (!scanner.hasNextLine()){
-                printer.println("НЕ НАДО ТАК");
+                throw new ForcedShutdownException("Не надо так");
             }
             String input = scanner.nextLine().trim();
            try{
                AbstractCommand command = resolver.resolve(input);
+               //TODO в реквест
                if (executor.execute(command)){
 
                    printer.println("----------------------------------------------------------------------------------------");

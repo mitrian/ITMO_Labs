@@ -77,7 +77,7 @@ public class WorkerDaoImpl implements Dao<Worker> {
     }
 
     @Override
-    public Optional<Worker> getMinByName() throws CollectionException {
+    public Worker getMinByName() throws CollectionException {
         return workerCollection.getMinByName();
     }
 

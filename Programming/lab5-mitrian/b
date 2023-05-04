@@ -1,1 +1,2 @@
-execute_script c
+show
+execute_script a

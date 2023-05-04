@@ -1,6 +1,8 @@
 package com.mitrian.lab.common.elements;
 
-public class Person {
+import java.io.Serializable;
+
+public class Person implements Serializable {
     private Double weight; //Поле не может быть null, Значение поля должно быть больше 0
     private Color hairColor; //Поле не может быть null
     private Country nationality; //Поле может быть null
@@ -14,9 +16,6 @@ public class Person {
         this.location = builder.location;
     }
 
-    public static boolean checkWeight(Double weight){
-        return (weight>0);
-    }
 
     public Double getWeight(){
         return weight;

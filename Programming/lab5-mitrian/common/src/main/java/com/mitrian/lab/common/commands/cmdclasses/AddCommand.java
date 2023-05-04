@@ -12,9 +12,6 @@ import java.util.List;
  */
 public class AddCommand extends AbstractCommand {
 
-    /** Current name of command field */
-    private String name = "add";
-
 
     /**
      * Constructor for initialize fields
@@ -39,10 +36,10 @@ public class AddCommand extends AbstractCommand {
 
 
     /**
-     * Getter of name field
+     * Getter name of command
      */
     public String getNameOfCommand(){
-        return name;
+        return "add";
     }
 
 }

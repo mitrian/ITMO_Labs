@@ -38,11 +38,7 @@ public class FileCommandResolver implements Resolver {
      * @throws ReaderException wrong Worker field
      */
     @Override
-    public List<AbstractCommand> resolve(File file) throws CommandNotFoundException, NoSuchFileException, ReaderException, IncorrectFieldException, ScriptRecursionException {
-//        if (openFiles.contains(file.getName())){
-//            throw new ScriptRecursionException("Рекурсия");
-//        }
-//        openFiles.add(file.getName());
+    public List<AbstractCommand> resolve(File file) throws CommandNotFoundException, NoSuchFileException, ReaderException, IncorrectFieldException {
         List<AbstractCommand> commands = new ArrayList<>();
         try (Scanner scanner = new Scanner(new InputStreamReader(new FileInputStream(file)))){
             WorkerFileReader workerFileReader = new WorkerFileReader(scanner);
