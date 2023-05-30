@@ -7,8 +7,7 @@ import java.net.InetSocketAddress;
  * An abstract response entity
  *
  */
-public abstract class Response implements Serializable
-{
+public abstract class Response implements Serializable {
 	/**
 	 * The address of sender
 	 *
@@ -33,8 +32,7 @@ public abstract class Response implements Serializable
 	 * @param to destination address
 	 * @param code response code
 	 */
-	public Response(InetSocketAddress from, InetSocketAddress to, ResponseCode code)
-	{
+	public Response(InetSocketAddress from, InetSocketAddress to, ResponseCode code) {
 		this.from = from;
 		this.to = to;
 		this.code = code;

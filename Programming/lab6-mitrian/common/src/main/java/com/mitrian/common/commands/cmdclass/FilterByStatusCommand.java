@@ -22,8 +22,7 @@ public class FilterByStatusCommand extends AbstractCommand {
         super(1, arguments, false);
     }
 
-    public FilterByStatusCommand()
-    {
+    public FilterByStatusCommand() {
     }
 
 

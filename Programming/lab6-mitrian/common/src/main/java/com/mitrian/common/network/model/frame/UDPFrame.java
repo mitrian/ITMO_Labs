@@ -6,8 +6,7 @@ import java.io.Serializable;
  * This class represents a piece of data sent over the UPD proto
  *
  */
-public final class UDPFrame implements Serializable
-{
+public final class UDPFrame implements Serializable {
 	/**
 	 * The data
 	 *
@@ -26,8 +25,7 @@ public final class UDPFrame implements Serializable
 	 * @param data the data that is being transmitted
 	 * @param last is the frame last
 	 */
-	public UDPFrame(byte[] data, boolean last)
-	{
+	public UDPFrame(byte[] data, boolean last) {
 		this.data = data;
 		this.last = last;
 	}

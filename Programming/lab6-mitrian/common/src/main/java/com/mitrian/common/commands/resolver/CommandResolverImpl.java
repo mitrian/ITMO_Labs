@@ -22,7 +22,7 @@ public class CommandResolverImpl implements Resolver
      */
     @Override
     public AbstractCommand resolve(String userInput) throws CommandNotFoundException
-    {
+	{
         String[] localLine = userInput.trim().split(" ");
         List<String> args = Arrays.asList(
                 Arrays.copyOfRange(localLine, 1, localLine.length)

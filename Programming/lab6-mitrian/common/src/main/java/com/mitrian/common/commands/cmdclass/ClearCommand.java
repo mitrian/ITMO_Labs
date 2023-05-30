@@ -20,8 +20,7 @@ public class ClearCommand extends AbstractCommand {
         super(0, arguments, false);
     }
 
-    public ClearCommand()
-    {
+    public ClearCommand() {
     }
 
 

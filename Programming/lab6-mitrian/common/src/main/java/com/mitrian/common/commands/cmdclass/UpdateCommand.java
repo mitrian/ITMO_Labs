@@ -21,8 +21,7 @@ public class UpdateCommand extends AbstractCommand {
         super(1, arguments, true);
     }
 
-    public UpdateCommand()
-    {
+    public UpdateCommand() {
     }
 
     /**

@@ -21,8 +21,7 @@ public class RemoveFirstCommand extends AbstractCommand {
         super(0, arguments, false);
     }
 
-    public RemoveFirstCommand()
-    {
+    public RemoveFirstCommand() {
     }
 
     /**

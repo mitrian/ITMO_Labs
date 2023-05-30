@@ -6,8 +6,7 @@ import com.mitrian.common.commands.util.ExecutionStatus;
 import java.io.Serializable;
 import java.net.InetSocketAddress;
 
-public final class CommandResponse extends Response implements Serializable
-{
+public final class CommandResponse extends Response implements Serializable {
 	private final ExecutionResult result;
 
 	public CommandResponse(
@@ -15,8 +14,7 @@ public final class CommandResponse extends Response implements Serializable
 			InetSocketAddress to,
 			ResponseCode code,
 			ExecutionResult result
-	)
-	{
+	) {
 		super(from, to, code);
 		this.result = result;
 	}

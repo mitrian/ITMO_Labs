@@ -22,8 +22,7 @@ public class HelpCommand extends AbstractCommand {
         super(0, arguments, false);
     }
 
-    public HelpCommand()
-    {
+    public HelpCommand() {
     }
 
     @Override

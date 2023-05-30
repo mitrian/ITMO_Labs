@@ -20,8 +20,7 @@ public class PrintUniquePersonCommand extends AbstractCommand {
         super(0, arguments, false);
     }
 
-    public PrintUniquePersonCommand()
-    {
+    public PrintUniquePersonCommand() {
     }
 
 

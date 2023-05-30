@@ -19,8 +19,7 @@ public class ExitCommand extends AbstractCommand {
         super(0, arguments, false);
     }
 
-    public ExitCommand()
-    {
+    public ExitCommand() {
     }
 
     /**

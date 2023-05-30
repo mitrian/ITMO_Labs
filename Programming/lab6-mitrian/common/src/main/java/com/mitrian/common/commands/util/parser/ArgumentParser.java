@@ -27,8 +27,7 @@ public class ArgumentParser {
      * @param line to parse
      * @return Long field
      */
-    public static Long parseLong(String line) throws IncorrectFieldException
-    {
+    public static Long parseLong(String line) throws IncorrectFieldException {
         try {
             return Long.parseLong(line.trim());
         } catch (NumberFormatException e) {

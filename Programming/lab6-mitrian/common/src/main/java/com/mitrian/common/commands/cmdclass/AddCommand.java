@@ -20,8 +20,7 @@ public class AddCommand extends AbstractCommand {
         super(0, arguments, true);
     }
 
-    public AddCommand()
-    {
+    public AddCommand() {
     }
 
 

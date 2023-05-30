@@ -5,12 +5,10 @@ import com.mitrian.common.commands.AbstractCommand;
 import java.io.Serializable;
 import java.net.InetSocketAddress;
 
-public final class CommandRequest extends Request implements Serializable
-{
+public final class CommandRequest extends Request implements Serializable {
 	private final AbstractCommand command;
 
-	public CommandRequest(InetSocketAddress from, InetSocketAddress to, AbstractCommand command)
-	{
+	public CommandRequest(InetSocketAddress from, InetSocketAddress to, AbstractCommand command) {
 		super(from, to);
 		this.command = command;
 	}

@@ -15,8 +15,7 @@ import java.util.List;
  * Utility class for network interactions
  *
  */
-public class NetworkUtils
-{
+public class NetworkUtils {
 
 	/**
 	 * Default request buffer size
@@ -37,13 +36,11 @@ public class NetworkUtils
 	 * @param chunk chunk size
 	 * @return list of chunks
 	 */
-	public static List<byte[]> splitArrayIntoChunks(byte[] array, int chunk)
-	{
+	public static List<byte[]> splitArrayIntoChunks(byte[] array, int chunk) {
 		List<byte[]> chunks = new ArrayList<>();
 
 //		Prevent excessive operations if chunk size is 1
-		if (chunk == 1)
-		{
+		if (chunk == 1) {
 			for (byte item : array)
 				chunks.add(new byte[] { item });
 
@@ -57,8 +54,7 @@ public class NetworkUtils
 //		Pointer initialization
 		int pointer = 0;
 
-		while(pointer <= array.length)
-		{
+		while(pointer <= array.length) {
 			if (pointer == array.length)
 				chunks.add(new byte[] {array[array.length - 1]});
 
@@ -79,8 +75,7 @@ public class NetworkUtils
 	 * @param chunks request chunks
 	 * @return list of {@link UDPFrame}
 	 */
-	public static List<UDPFrame> wrapChunksWithUDPFrames(List<byte[]> chunks)
-	{
+	public static List<UDPFrame> wrapChunksWithUDPFrames(List<byte[]> chunks) {
 //		Getting request chunks from raw bytes
 		List<UDPFrame> frames = new ArrayList<>();
 
@@ -103,14 +98,11 @@ public class NetworkUtils
 	public static List<DatagramPacket> wrapUDPFramesWithDatagramPackets(
 			List<UDPFrame> frames,
 			InetSocketAddress destination
-	) throws NetworkException
-	{
+	) throws NetworkException {
 		List<DatagramPacket> packets = new ArrayList<>();
 
-		try
-		{
-			for (UDPFrame frame : frames)
-			{
+		try {
+			for (UDPFrame frame : frames) {
 //				Mapping every frame to raw bytes
 				byte[] frameBytes = FrameMapper.mapFromInstanceToBytes(frame);
 //				Wrapping every frame byte array with datagram packet
@@ -119,8 +111,7 @@ public class NetworkUtils
 
 			return packets;
 		}
-		catch (MappingException e)
-		{
+		catch (MappingException e) {
 			throw new NetworkException(
 					"Failed to wrap UDPFrames with datagram packets: mapping exception occured", e
 			);
@@ -134,25 +125,21 @@ public class NetworkUtils
 	 * @param second second array to be concatenated
 	 * @return concatenation result
 	 */
-	public static byte[] concatTwoByteArrays(byte[] first, byte[] second)
-	{
+	public static byte[] concatTwoByteArrays(byte[] first, byte[] second) {
 		byte[] result = new byte[first.length + second.length];
 		System.arraycopy(first, 0, result, 0, first.length);
 		System.arraycopy(second, 0, result, first.length, second.length);
 		return result;
 	}
 
-	public static List<byte[]> udpFramesToBytes(List<UDPFrame> frames) throws NetworkException
-	{
+	public static List<byte[]> udpFramesToBytes(List<UDPFrame> frames) throws NetworkException {
 		List<byte[]> bytes = new ArrayList<>();
 
-		try
-		{
+		try {
 			for (UDPFrame frame : frames)
 				bytes.add(FrameMapper.mapFromInstanceToBytes(frame));
 		}
-		catch (MappingException e)
-		{
+		catch (MappingException e) {
 			throw new NetworkException("Failed to map frame to bytes", e);
 		}
 

@@ -21,8 +21,7 @@ import java.util.concurrent.TimeUnit;
  * This class is a UDPSocket client implementation
  *
  */
-public class UDPSocketClient implements AutoCloseable
-{
+public class UDPSocketClient implements AutoCloseable {
 	/**
 	 * Opened datagram socket
 	 *
@@ -56,10 +55,8 @@ public class UDPSocketClient implements AutoCloseable
 			int serverPort,
 			RequestMapper requestMapper,
 			ResponseMapper responseMapper
-	) throws NetworkException
-	{
-		try
-		{
+	) throws NetworkException {
+		try {
 			this.socket = new DatagramSocket(port);
 			this.serverAddr = new InetSocketAddress(serverPort);
 			this.requestMapper = requestMapper;
@@ -69,8 +66,7 @@ public class UDPSocketClient implements AutoCloseable
 			this.socket.setReuseAddress(true);
 			this.socket.setSoTimeout(2000);
 		}
-		catch (SocketException e)
-		{
+		catch (SocketException e) {
 			throw new NetworkException("Unable to open datagram socket", e);
 		}
 	}
@@ -85,15 +81,13 @@ public class UDPSocketClient implements AutoCloseable
 	 * if the server response data was corrupted, if it failed to receive response from the server or
 	 * request mapping failed
 	 */
-	public <T extends Response> T sendRequestAndWaitResponse(Request request) throws NetworkException, ServerNotAvailable
-	{
+	public <T extends Response> T sendRequestAndWaitResponse(Request request) throws NetworkException, ServerNotAvailable {
 //		Throwing an NPE if the provided request is null
 		Objects.requireNonNull(request);
 
 		request.setTo(serverAddr);
 
-		try
-		{
+		try {
 //			First of all, we should get our request byte representation
 			byte[] requestBytes = requestMapper.mapFromInstanceToBytes(request);
 
@@ -106,8 +100,7 @@ public class UDPSocketClient implements AutoCloseable
 //			Waiting for response
 			return waitForResponse();
 		}
-		catch (MappingException e)
-		{
+		catch (MappingException e) {
 			throw new NetworkException("Failed to map request from instance to bytes during request proceeding", e);
 		}
 	}
@@ -119,8 +112,7 @@ public class UDPSocketClient implements AutoCloseable
 	 * @param destination request destination
 	 * @throws NetworkException if it's failed to send some of DatagramPackets
 	 */
-	private void sendRequestWithOverhead(byte[] requestBytes, InetSocketAddress destination) throws NetworkException, ServerNotAvailable
-	{
+	private void sendRequestWithOverhead(byte[] requestBytes, InetSocketAddress destination) throws NetworkException, ServerNotAvailable {
 //		Get request chunks from raw request bytes
 		List<byte[]> requestChunks = NetworkUtils.splitArrayIntoChunks(requestBytes, NetworkUtils.REQUEST_BUFFER_SIZE);
 
@@ -134,24 +126,20 @@ public class UDPSocketClient implements AutoCloseable
 		);
 
 //		Trying to send datagram packets
-		try
-		{
-			for (DatagramPacket packet : datagramPackets)
-			{
-				try
-				{
+		try {
+			for (DatagramPacket packet : datagramPackets) {
+
+				try {
 					TimeUnit.MILLISECONDS.sleep(10);
 				}
 				catch (InterruptedException ignored) {}
 				socket.send(packet);
 			}
 		}
-		catch (SocketTimeoutException e)
-		{
+		catch (SocketTimeoutException e) {
 			throw new ServerNotAvailable("Server is not currently available");
 		}
-		catch (IOException e)
-		{
+		catch (IOException e) {
 //			LOGGER.severe("Failed to send packets: " + e.getMessage());
 			throw new NetworkException("Failed to send packets", e);
 		}
@@ -164,10 +152,8 @@ public class UDPSocketClient implements AutoCloseable
 	 * @param destination request destination
 	 * @throws NetworkException if it's failed to send DatagramPacket
 	 */
-	private void sendRequestNoOverhead(byte[] requestBytes, InetSocketAddress destination) throws NetworkException, ServerNotAvailable
-	{
-		try
-		{
+	private void sendRequestNoOverhead(byte[] requestBytes, InetSocketAddress destination) throws NetworkException, ServerNotAvailable {
+		try {
 //			Wrap raw bytes with UDPFrame
 			UDPFrame udpFrame = new UDPFrame(requestBytes, true);
 
@@ -180,16 +166,13 @@ public class UDPSocketClient implements AutoCloseable
 //			Trying to send the request
 			socket.send(requestPacket);
 		}
-		catch (SocketTimeoutException e)
-		{
+		catch (SocketTimeoutException e) {
 			throw new ServerNotAvailable("Server is not currently available");
 		}
-		catch (MappingException e)
-		{
+		catch (MappingException e) {
 			throw new NetworkException("Failed to map UDPFrame to raw bytes", e);
 		}
-		catch (IOException e)
-		{
+		catch (IOException e) {
 //			LOGGER.severe("Failed to send request with no overhead: " + e.getMessage());
 			throw new NetworkException("Failed to send request with no overhead", e);
 		}
@@ -203,20 +186,17 @@ public class UDPSocketClient implements AutoCloseable
 	 * @throws NetworkException if it's failed to receive response from the server
 	 */
 	@SuppressWarnings("unchecked")
-	private <T extends Response> T waitForResponse() throws NetworkException
-	{
+	private <T extends Response> T waitForResponse() throws NetworkException {
 //		Response byte buffer initiation
 		byte[] responseBytes = new byte[NetworkUtils.RESPONSE_BUFFER_SIZE];
 
 //		After the request was sent we should prepare a datagram packet for response
 		DatagramPacket responsePacket = new DatagramPacket(responseBytes, responseBytes.length);
 
-		try
-		{
+		try {
 			byte[] allResponseBytes = new byte[0];
 			boolean gotAll = false;
-			do
-			{
+			do {
 //				Receiving a response frame
 				socket.receive(responsePacket);
 
@@ -239,13 +219,11 @@ public class UDPSocketClient implements AutoCloseable
 
 			return (T) response;
 		}
-		catch (MappingException e)
-		{
+		catch (MappingException e) {
 //			throw new NetworkException("Mapping operation failure detected", e);
 			throw new RuntimeException(e);
 		}
-		catch (IOException e)
-		{
+		catch (IOException e) {
 //			LOGGER.severe("Failed to receive response from the server: " + e.getMessage());
 			throw new NetworkException("Failed to receive response from the server", e);
 		}

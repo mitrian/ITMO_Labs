@@ -3,8 +3,7 @@ package com.mitrian.common.network.model.response;
 import java.io.Serializable;
 import java.net.InetSocketAddress;
 
-public class IdResponse extends Response implements Serializable
-{
+public class IdResponse extends Response implements Serializable {
 	/**
 	 * Response constructor
 	 *

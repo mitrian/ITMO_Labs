@@ -8,8 +8,7 @@ import com.mitrian.common.network.model.response.Response;
  *
  */
 @FunctionalInterface
-public interface RequestHandler
-{
+public interface RequestHandler {
 	/**
 	 * Handling method
 	 *

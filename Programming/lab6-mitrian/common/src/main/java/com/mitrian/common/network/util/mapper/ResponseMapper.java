@@ -9,8 +9,7 @@ import org.apache.commons.lang3.SerializationUtils;
  * This class converts element response instance into a byte array and in an opposite way
  *
  */
-public final class ResponseMapper
-{
+public final class ResponseMapper {
 
 	/**
 	 * This method maps response instance into raw response bytes
@@ -19,14 +18,11 @@ public final class ResponseMapper
 	 * @return response raw bytes
 	 * @throws MappingException if serialization not succeed
 	 */
-	public byte[] mapFromInstanceToBytes(Response response) throws MappingException
-	{
-		try
-		{
+	public byte[] mapFromInstanceToBytes(Response response) throws MappingException {
+		try {
 			return SerializationUtils.serialize(response);
 		}
-		catch (SerializationException e)
-		{
+		catch (SerializationException e) {
 			throw new MappingException("Failed to map Response instance to bytes", e);
 		}
 	}
@@ -39,14 +35,11 @@ public final class ResponseMapper
 	 * @throws MappingException if deserialization not succeed
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends Response> T mapFromBytesToInstance(byte[] bytes) throws MappingException
-	{
-		try
-		{
+	public <T extends Response> T mapFromBytesToInstance(byte[] bytes) throws MappingException {
+		try {
 			return SerializationUtils.deserialize(bytes);
 		}
-		catch (SerializationException e)
-		{
+		catch (SerializationException e) {
 			throw new MappingException("Failed to map Response bytes to instance", e);
 		}
 	}

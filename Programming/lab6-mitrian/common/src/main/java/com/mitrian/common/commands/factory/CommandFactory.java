@@ -21,7 +21,6 @@ public class CommandFactory {
      */
     public static AbstractCommand newCommand(String commandLine, List<String> arguments) throws CommandNotFoundException {
 
-//        TODO: to be remoworked
         AbstractCommand command = switch (commandLine) {
             case "add" -> new AddCommand(arguments);
             case "clear" -> new ClearCommand( arguments);

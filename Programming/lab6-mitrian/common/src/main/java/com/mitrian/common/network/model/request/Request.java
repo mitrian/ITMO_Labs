@@ -8,8 +8,7 @@ import java.net.InetSocketAddress;
  * An abstract request entity
  *
  */
-public abstract class Request implements Serializable
-{
+public abstract class Request implements Serializable {
 	/**
 	 * The address of sender
 	 *
@@ -28,8 +27,7 @@ public abstract class Request implements Serializable
 	 * @param from source address
 	 * @param to destination address
 	 */
-	public Request(InetSocketAddress from, InetSocketAddress to)
-	{
+	public Request(InetSocketAddress from, InetSocketAddress to) {
 		this.from = from;
 		this.to = to;
 	}

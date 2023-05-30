@@ -9,8 +9,7 @@ import org.apache.commons.lang3.SerializationUtils;
  * This class converts element request instance into a byte array and in an opposite way
  *
  */
-public final class RequestMapper
-{
+public final class RequestMapper {
 	/**
 	 * This method maps request instance into raw request bytes
 	 *
@@ -18,14 +17,11 @@ public final class RequestMapper
 	 * @return request raw bytes
 	 * @throws MappingException if serialization not succeed
 	 */
-	public byte[] mapFromInstanceToBytes(Request request) throws MappingException
-	{
-		try
-		{
+	public byte[] mapFromInstanceToBytes(Request request) throws MappingException {
+		try {
 			return SerializationUtils.serialize(request);
 		}
-		catch (SerializationException e)
-		{
+		catch (SerializationException e) {
 			throw new MappingException("Failed to map Request instance to bytes", e);
 		}
 	}
@@ -39,14 +35,11 @@ public final class RequestMapper
 	 * @throws MappingException if deserialization not succeed
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends Request> T mapFromBytesToInstance(byte[] bytes) throws MappingException
-	{
-		try
-		{
+	public <T extends Request> T mapFromBytesToInstance(byte[] bytes) throws MappingException {
+		try {
 			return SerializationUtils.deserialize(bytes);
 		}
-		catch (SerializationException e)
-		{
+		catch (SerializationException e) {
 			throw new MappingException("Failed to map Request bytes to instance", e);
 		}
 	}

@@ -3,8 +3,7 @@ package com.mitrian.common.network.model.request;
 import java.io.Serializable;
 import java.net.InetSocketAddress;
 
-public class IdRequest extends Request implements Serializable
-{
+public class IdRequest extends Request implements Serializable {
 	private final Integer id;
 
 	/**
@@ -13,8 +12,7 @@ public class IdRequest extends Request implements Serializable
 	 * @param from source address
 	 * @param to   destination address
 	 */
-	public IdRequest(InetSocketAddress from, InetSocketAddress to, Integer id)
-	{
+	public IdRequest(InetSocketAddress from, InetSocketAddress to, Integer id) {
 		super(from, to);
 		this.id = id;
 	}

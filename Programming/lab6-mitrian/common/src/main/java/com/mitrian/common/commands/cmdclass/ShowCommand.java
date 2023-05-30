@@ -20,8 +20,7 @@ public class ShowCommand extends AbstractCommand {
         super(0, arguments, false);
     }
 
-    public ShowCommand()
-    {
+    public ShowCommand() {
     }
 
     /**

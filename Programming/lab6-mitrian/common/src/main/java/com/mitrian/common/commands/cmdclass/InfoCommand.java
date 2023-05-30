@@ -19,8 +19,7 @@ public class InfoCommand extends AbstractCommand {
         super(0, arguments, false);
     }
 
-    public InfoCommand()
-    {
+    public InfoCommand() {
     }
 
     @Override

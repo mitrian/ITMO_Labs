@@ -22,8 +22,7 @@ public class RemoveByIdCommand extends AbstractCommand {
         super(1, arguments, false);
     }
 
-    public RemoveByIdCommand()
-    {
+    public RemoveByIdCommand() {
     }
 
 

@@ -20,8 +20,7 @@ public class RemoveGreaterCommand extends AbstractCommand {
         super(0, arguments, true);
     }
 
-    public RemoveGreaterCommand()
-    {
+    public RemoveGreaterCommand() {
     }
 
 

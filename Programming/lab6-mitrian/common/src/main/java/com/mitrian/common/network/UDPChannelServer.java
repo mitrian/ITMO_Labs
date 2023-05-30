@@ -24,8 +24,7 @@ import java.util.logging.Logger;
 /**
  * This class is a UDPChannel server implementation
  */
-public class UDPChannelServer implements AutoCloseable
-{
+public class UDPChannelServer implements AutoCloseable {
 	/**
 	 * Logger instance
 	 *
@@ -59,8 +58,7 @@ public class UDPChannelServer implements AutoCloseable
 	 * Server will be bind to DEFAULT_PORT
 	 *
 	 */
-	public UDPChannelServer(RequestMapper requestMapper, ResponseMapper responseMapper) throws NetworkException
-	{
+	public UDPChannelServer(RequestMapper requestMapper, ResponseMapper responseMapper) throws NetworkException {
 		this(DEFAULT_PORT, requestMapper, responseMapper);
 	}
 
@@ -73,8 +71,7 @@ public class UDPChannelServer implements AutoCloseable
 			int port,
 			RequestMapper requestMapper,
 			ResponseMapper responseMapper
-	) throws NetworkException
-	{
+	) throws NetworkException {
 		this(new InetSocketAddress("localhost", port), requestMapper, responseMapper);
 	}
 
@@ -87,13 +84,11 @@ public class UDPChannelServer implements AutoCloseable
 			InetSocketAddress address,
 			RequestMapper requestMapper,
 			ResponseMapper responseMapper
-	) throws NetworkException
-	{
+	) throws NetworkException {
 		this.requestMapper = requestMapper;
 		this.responseMapper = responseMapper;
 
-		try
-		{
+		try {
 			this.channel = DatagramChannel.open();
 
 //			Channel configuration
@@ -104,8 +99,7 @@ public class UDPChannelServer implements AutoCloseable
 
 			LOGGER.info("Server successfully started on port " + address.getPort());
 		}
-		catch (IOException e)
-		{
+		catch (IOException e) {
 			throw new NetworkException("Failed to open DatagramChannel or Selector", e);
 		}
 
@@ -118,8 +112,7 @@ public class UDPChannelServer implements AutoCloseable
 	 * @param handler request handler
 	 * @throws NetworkException if it's failed to select a channel or send the response
 	 */
-	public void listenAndHandleRequests(RequestHandler handler) throws NetworkException
-	{
+	public void listenAndHandleRequests(RequestHandler handler) throws NetworkException {
 //		while (true)
 //		{
 			Request request = waitRequest();
@@ -136,17 +129,14 @@ public class UDPChannelServer implements AutoCloseable
 	 * @param <T> request type parameter
 	 * @throws NetworkException if it's failed to receive the request from client
 	 */
-	public <T extends Request> T waitRequest() throws NetworkException
-	{
+	public <T extends Request> T waitRequest() throws NetworkException {
 		ByteBuffer incomingBuffer = ByteBuffer.allocate(NetworkUtils.REQUEST_BUFFER_SIZE * 2);
 
-		try
-		{
+		try {
 			byte[] allRequestBytes = new byte[0];
 			boolean gotAll = false;
 
-			do
-			{
+			do {
 //				Receiving incoming byte buffer
 				incomingBuffer.clear();
 				SocketAddress addr = channel.receive(incomingBuffer);
@@ -165,8 +155,7 @@ public class UDPChannelServer implements AutoCloseable
 				allRequestBytes = NetworkUtils.concatTwoByteArrays(allRequestBytes, currentFrame.getData());
 
 //				Change gotAll state if got the last UDPFrame
-				if (currentFrame.isLast())
-				{
+				if (currentFrame.isLast()) {
 					gotAll = true;
 
 				}
@@ -177,12 +166,10 @@ public class UDPChannelServer implements AutoCloseable
 			return requestMapper.mapFromBytesToInstance(allRequestBytes);
 
 		}
-		catch (MappingException e)
-		{
+		catch (MappingException e) {
 			throw new NetworkException("Mapping failure detected", e);
 		}
-		catch (IOException e)
-		{
+		catch (IOException e) {
 			throw new NetworkException("Failed to receive request from server", e);
 		}
 	}
@@ -194,13 +181,11 @@ public class UDPChannelServer implements AutoCloseable
 	 * @throws NetworkException if it's failed to send response with an overhead or
 	 * if it's failed to send response without an overhead
 	 */
-	public void sendResponse(Response response) throws NetworkException
-	{
+	public void sendResponse(Response response) throws NetworkException {
 //		Throwing NPE if response is null
 		Objects.requireNonNull(response);
 
-		try
-		{
+		try {
 //			Mapping response to a byte array
 			byte[] responseBytes = responseMapper.mapFromInstanceToBytes(response);
 
@@ -210,8 +195,7 @@ public class UDPChannelServer implements AutoCloseable
 			else
 				sendResponseNoOverhead(responseBytes, response.getTo());
 		}
-		catch (MappingException e)
-		{
+		catch (MappingException e) {
 			throw new NetworkException("Failed to map response instance to bytes", e);
 		}
 	}
@@ -223,8 +207,7 @@ public class UDPChannelServer implements AutoCloseable
 	 * @param destination response destination
 	 * @throws NetworkException if it's failed to send response with an overhead
 	 */
-	private void sendResponseWithOverhead(byte[] responseBytes, InetSocketAddress destination) throws NetworkException
-	{
+	private void sendResponseWithOverhead(byte[] responseBytes, InetSocketAddress destination) throws NetworkException {
 //		Get response chunks from rew response bytes
 		List<byte[]> responseChunks = NetworkUtils.splitArrayIntoChunks(responseBytes, NetworkUtils.RESPONSE_BUFFER_SIZE);
 
@@ -235,13 +218,11 @@ public class UDPChannelServer implements AutoCloseable
 		List<byte[]> framesBytes = NetworkUtils.udpFramesToBytes(udpFrames);
 
 //		Sending all response frames to the client
-		try
-		{
+		try {
 			for (byte[] frameBytes : framesBytes)
 				channel.send(ByteBuffer.wrap(frameBytes), destination);
 		}
-		catch (IOException e)
-		{
+		catch (IOException e) {
 			LOGGER.severe("Failed to send response with overhead: " + e.getMessage());
 			throw new NetworkException("Failed to send response with an overhead", e);
 		}
@@ -254,10 +235,8 @@ public class UDPChannelServer implements AutoCloseable
 	 * @param destination response destination
 	 * @throws NetworkException if it's failed to send response without an overhead
 	 */
-	public void sendResponseNoOverhead(byte[] responseBytes, InetSocketAddress destination) throws NetworkException
-	{
-		try
-		{
+	public void sendResponseNoOverhead(byte[] responseBytes, InetSocketAddress destination) throws NetworkException {
+		try {
 //			Wrap raw response bytes with UDPFrame
 			UDPFrame udpFrame = new UDPFrame(responseBytes, true);
 
@@ -267,12 +246,10 @@ public class UDPChannelServer implements AutoCloseable
 //			Sending response frame to the client
 			channel.send(ByteBuffer.wrap(udpFrameBytes), destination);
 		}
-		catch (MappingException e)
-		{
+		catch (MappingException e) {
 			throw new NetworkException("Failed to map frame to bytes", e);
 		}
-		catch (IOException e)
-		{
+		catch (IOException e) {
 			LOGGER.severe("Failed to send response without overhead: " + e.getMessage());
 			throw new NetworkException("Failed to send response without an overhead", e);
 		}
@@ -285,14 +262,11 @@ public class UDPChannelServer implements AutoCloseable
 	 *
 	 */
 	@Override
-	public void close() throws NetworkException
-	{
-		try
-		{
+	public void close() throws NetworkException {
+		try {
 			channel.close();
 		}
-		catch (IOException e)
-		{
+		catch (IOException e) {
 			throw new NetworkException("Unable to close Selector or DatagramChannel", e);
 		}
 	}

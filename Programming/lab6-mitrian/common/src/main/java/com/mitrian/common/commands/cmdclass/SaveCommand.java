@@ -17,8 +17,7 @@ public class SaveCommand extends AbstractCommand {
         super(0, arguments, false);
     }
 
-    public SaveCommand()
-    {
+    public SaveCommand() {
     }
 
 

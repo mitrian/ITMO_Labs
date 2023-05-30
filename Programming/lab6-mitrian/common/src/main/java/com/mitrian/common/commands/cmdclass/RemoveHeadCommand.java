@@ -20,8 +20,7 @@ public class RemoveHeadCommand extends AbstractCommand {
         super(0, arguments, false);
     }
 
-    public RemoveHeadCommand()
-    {
+    public RemoveHeadCommand() {
     }
 
 

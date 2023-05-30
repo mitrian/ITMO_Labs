@@ -20,8 +20,7 @@ public class MinByNameCommand extends AbstractCommand {
         super(0, arguments, false);
     }
 
-    public MinByNameCommand()
-    {
+    public MinByNameCommand() {
     }
 
 

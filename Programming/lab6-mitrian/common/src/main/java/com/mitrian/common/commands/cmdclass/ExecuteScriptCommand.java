@@ -26,8 +26,7 @@ public class ExecuteScriptCommand extends AbstractCommand {
         super(1, arguments, false);
     }
 
-    public ExecuteScriptCommand()
-    {
+    public ExecuteScriptCommand() {
     }
 
 
