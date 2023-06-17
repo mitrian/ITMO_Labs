@@ -107,21 +107,6 @@ public class CollectionImpl implements Collection<Worker>
             return;
             // nado
         }
-
-//        workers.stream()
-//                .forEach(worker -> {
-//                    if (id.compareTo(worker.getId()) == 0){
-//                        worker.setName(item.getName());
-//                        worker.setCoordinates(item.getCoordinates());
-//                        worker.setCreationDate();
-//                        worker.setSalary(item.getSalary());
-//                        worker.setStartDate(item.getStartDate());
-//                        worker.setEndDate(item.getEndDate());
-//                        worker.setStatus(item.getStatus());
-//                        worker.setPerson(item.getPerson());
-//                        return;
-//                    }
-//                });
         throw new IdUnavailableException("Такого id не существует");
     }
 

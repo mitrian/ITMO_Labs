@@ -5,96 +5,21 @@ import com.mitrian.common.elements.*;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
-import java.util.LinkedList;
-import java.util.List;
 
-public class DatabaseManager {
+public class DatabaseUtilies {
 
-    private  DBConnectionManagerImpl databaseConnectionManager;
+    public static int insertElement(Connection connection, Worker worker) throws SQLException {
 
-    public DatabaseManager(DBConnectionManagerImpl databaseConnectionManager) {
-        this.databaseConnectionManager = databaseConnectionManager;
-    }
-
-    public List<Worker> getAllWorkers(Connection connection) throws SQLException {
-        String sqlGetWorkers = """
-                SELECT w.id, w.name, c.x_coordinates, c.y_coordinates, w.creationDate, w.salary, w.startDate, w.endDate, w.status,
-                p.weight, p.hairColor, p.nationality, l.x, l.y, l.z
-                  FROM Workes w 
-                  JOIN Coordinates c ON c.id = w.coordinates_id
-                  JOIN Persons p ON p.id = w.person_id
-                  JOIN Locations l ON p.location_id = l.id;
-                """;
-        PreparedStatement getWorkers = connection.prepareStatement(sqlGetWorkers);
-        ResultSet workerFields = getWorkers.executeQuery();
-        List<Worker> workers = new LinkedList<>();
-        while (workerFields.next()){
-            String workerName = workerFields.getString("name");
-            long coordinatesX = workerFields.getLong("x_coordinates");
-            int coordinatesY = workerFields.getInt("x_coordinates");
-            LocalDate creationDate = ((Date) workerFields.getDate("creationDate")).toLocalDate();
-            Float salary = workerFields.getFloat("salary");
-            LocalDate startDate = ((Date) workerFields.getDate("startDate")).toLocalDate();
-            Date endDate = workerFields.getDate("endDate");
-            Status status = Status.valueOf(workerFields.getString("status"));
-            Double weight = workerFields.getDouble("weight");
-            Color hairColor = Color.valueOf(workerFields.getString("hairColor"));
-            Country nationality = Country.valueOf(workerFields.getString("nationality"));
-            long locationX = workerFields.getInt("x");
-            long locationY = workerFields.getLong("y");
-            int locationZ = workerFields.getInt("z");
-            Location location =  Location.newBuilder()
-                    .setX(locationX)
-                    .setY(locationY)
-                    .setZ(locationZ)
-                    .build();
-            Person person = new Person.Builder(weight, hairColor)
-                    .setLocation(location)
-                    .setNationality(nationality)
-                    .build();
-            Coordinates coordinates = Coordinates.newBuilder().setX(coordinatesX).setY(coordinatesY).build();
-            Worker worker = new Worker.Builder(workerName,coordinates,startDate,person)
-                    .setFileCreationDate(creationDate)
-                    .setEndDate(endDate)
-                    .setSalary(salary)
-                    .setStatus(status)
-                    .build();
-            workers.add(worker);
-        }
-        return workers;
-    }
-
-    public void deleteAllWorkers(Connection connection){
+        connection.setAutoCommit(false);
+        int workerId = insertElement(connection, worker);
+        connection.commit();
+        connection.setAutoCommit(true);
+        return workerId;
 
     }
 
-    public int insertWorker(Worker worker) throws SQLException {
-        Connection connection = databaseConnectionManager.getConnection();
-        try (connection){
-            connection.setAutoCommit(false);
-            int workerId = insertWorker(worker, connection);
-            connection.commit();
-            connection.setAutoCommit(true);
-            return workerId;
-        }
-    }
 
-    public void createTablesIfNotExists() throws SQLException{
-        Connection connection = databaseConnectionManager.getConnection();
-        try (connection) {
-            connection.setAutoCommit(false);
-            createLocationsTable(connection);
-            createCoordinatesTable(connection);
-            createPersonsTable(connection);
-            createWorkersTable(connection);
-            connection.commit();
-            connection.setAutoCommit(true);
-
-        }
-    }
-
-
-    public  void createLocationsTable(Connection connection) throws SQLException {
+    public static void createLocationsTable(Connection connection) throws SQLException {
         String sqlLocationsTable = """
                 CREATE TABLE IF NOT EXISTS Locations(id SERIAL PRIMARY KEY, x BIGSERIAL, y DOUBLE PRECISION, z INT);
                 """;
@@ -102,19 +27,19 @@ public class DatabaseManager {
         createLocations.executeUpdate();
     }
 
-    public void createCoordinatesTable(Connection connection) throws SQLException {
+    public static void createCoordinatesTable(Connection connection) throws SQLException {
         String sqlCoordinatesTable = """
                 CREATE TABLE IF NOT EXISTS Coordinates(
                 id SERIAL PRIMARY KEY, 
-                x_coordinates INT CHECK (x <= 884),
-                y_coordinates BIGINT NOT NULL
+                x BIGSERIAL CHECK (x <= 884),
+                y BIGINT NOT NULL
                 );
                 """;
         PreparedStatement createCoordinates = connection.prepareStatement(sqlCoordinatesTable);
         createCoordinates.executeUpdate();
     }
 
-    public void  createPersonsTable(Connection connection) throws SQLException {
+    public static void createPersonsTable(Connection connection) throws SQLException {
         String sqlPersonsTable = """
                 CREATE TABLE IF NOT EXISTS Persons(id SERIAL PRIMARY KEY, weight DOUBLE PRECISION CHECK (weqight>0), 
                 hairColor VARCHAR(31), nationality VARCHAR(31), location_id SERIAL REFERENCES Locations);
@@ -123,9 +48,9 @@ public class DatabaseManager {
         createPersons.executeUpdate();
     }
 
-    public void createWorkersTable (Connection connection) throws SQLException {
+    public static void createWorkersTable(Connection connection) throws SQLException {
         String sqlWorkersTable = """
-                CREATE TABLE IF NOT EXISTS Workers(id SERIAL PRIMARY KEY, name VARCHAR NOT NULL CHECK (length(name)>0), 
+                CREATE TABLE IF NOT EXISTS Workers(id SERIAL PRIMARY KEY, name VARCHAR(31) NOT NULL CHECK (length(name)>0), 
                 coordionates_id BIGSERIAL NOT NULL REFERENCES Coordinates, creationDate DATE NOT NULL, salary FLOAT CHECK(salary>0), 
                 startDate DATE NOT NULL, endDate Date, status VARCHAR(31), person_id SERIAL NOT NULL REFERENCES Persons);
                 """;
@@ -133,7 +58,7 @@ public class DatabaseManager {
         createWorkers.executeUpdate();
     }
 
-    private int insertWorker(Worker worker, Connection connection) throws SQLException {
+    public static int insertWorkers(Worker worker, Connection connection) throws SQLException {
         long coordinatesId = insertCoordinates(worker.getCoordinates(), connection);
         long personId = insertPerson(worker.getPerson(), connection);
         String sqlInsertWorker = """
@@ -141,8 +66,8 @@ public class DatabaseManager {
                 status, person_id);
                 """;
         PreparedStatement insertWorkers = connection.prepareStatement(sqlInsertWorker);
-        insertWorkers.setString(1,worker.getName());
-        insertWorkers.setLong(2,coordinatesId);
+        insertWorkers.setString(1, worker.getName());
+        insertWorkers.setLong(2, coordinatesId);
         insertWorkers.setDate(3, Date.valueOf(worker.getCreationDate()));
         insertWorkers.setFloat(4, worker.getSalary());
         insertWorkers.setDate(5, (Date) worker.getEndDate());
@@ -153,9 +78,9 @@ public class DatabaseManager {
         return resultWorkers.getInt("id");
     }
 
-    private int insertCoordinates(Coordinates coordinates, Connection connection) throws SQLException {
+    public static int insertCoordinates(Coordinates coordinates, Connection connection) throws SQLException {
         String sqlInsertCoordinates = """
-                INSERT INTO Coordinates(x_coordinates,y_coordinates) VALUES (?,?,?) RETURNING ig;
+                INSERT INTO Coordinates(x,y) VALUES (?,?,?) RETURNING ig;
                 """;
         PreparedStatement insertCoorindates = connection.prepareStatement(sqlInsertCoordinates);
         insertCoorindates.setLong(1, coordinates.getX());
@@ -165,7 +90,7 @@ public class DatabaseManager {
         return resultCoordinates.getInt("id");
     }
 
-    private int insertPerson(Person person, Connection connection) throws SQLException {
+    public static int insertPerson(Person person, Connection connection) throws SQLException {
         String sqlInsertPerons = """
                 INSERT INTO Persons(weight, hairColor, nationality, location_id) VALUES(?,?,?,?) RETURNING id;
                 """;
@@ -180,7 +105,7 @@ public class DatabaseManager {
 
     }
 
-    private int insertLocation(Location location, Connection connection) throws SQLException {
+    public static int insertLocation(Location location, Connection connection) throws SQLException {
         String sqlInsertLocation = """
                INSERT INTO Locations(x,y,z) VALUES (?,?,?) RETURNING id;
                 """;
@@ -193,17 +118,7 @@ public class DatabaseManager {
         return resultLocation.getInt("id");
     }
 
-    public void deleteWorker(int workerId) throws SQLException{
-        Connection connection = databaseConnectionManager.getConnection();
-        try (connection){
-            connection.setAutoCommit(false);
-            deleteWorker(workerId, connection);
-            connection.commit();
-            connection.setAutoCommit(true);;
-        }
-    }
-
-    private void deleteWorker(int workerId, Connection connection) throws SQLException {
+    public static void deleteWorkers(int workerId, Connection connection) throws SQLException {
         String sqlDeleteWorkers = """
                 DELETE FROM Workers WHERE id = ? RETURNING coordinates_id, person_id;
                 """;
@@ -217,7 +132,7 @@ public class DatabaseManager {
         deletePersons(person_id, connection);
     }
 
-    private void deletePersons(int personsId, Connection connection) throws SQLException {
+    public static void deletePersons(int personsId, Connection connection) throws SQLException {
         String sqlDeletePersons = """
                 DELETE FROM Persons WHERE id = ? RETURNING location_id;
                 """;
@@ -229,7 +144,7 @@ public class DatabaseManager {
         deleteLocation(location_id, connection);
     }
 
-    private void deleteCoordinates(int coordinatesId, Connection connection) throws SQLException {
+    public static void deleteCoordinates(int coordinatesId, Connection connection) throws SQLException {
         String sqlDeleteCoordinates = """
                 DELETE FROM Coordinates WHERE id = ?;
                 """;
@@ -238,7 +153,7 @@ public class DatabaseManager {
         deleteCoordinates.executeUpdate();
     }
 
-    private void deleteLocation(int locationId, Connection connection) throws SQLException {
+    public static void deleteLocation(int locationId, Connection connection) throws SQLException {
         String sqlDeleteLocation = """
                 DELETE FROM Locations WHERE id = ?;
                 """;
@@ -247,11 +162,10 @@ public class DatabaseManager {
         deleteLocation.executeUpdate();
     }
 
-    public boolean updateWorker(int id, String name, Coordinates coordinates, float salary,
-                                LocalDate startDate, Date endDate, Status status,
-                                Person person, Location location) throws SQLException {
-        Connection connection = databaseConnectionManager.getConnection();
-        try (connection) {
+    public static boolean updateWorker(Connection connection, int id, String name, Coordinates coordinates, float salary,
+                                       LocalDate startDate, Date endDate, Status status,
+                                       Person person, Location location) throws SQLException {
+
             connection.setAutoCommit(false);
             String sqlIds = """
                     SELECT coordinates_id, person_id FROM Workers WHERE id = ?;
@@ -293,7 +207,7 @@ public class DatabaseManager {
             updatePerson.executeUpdate();
 
             String sqlUpdateCoordinates = """
-                    UPDATE Coordinates SET x_coordinates = ?, y_coordinates = ? WHERE id = ?;
+                    UPDATE Coordinates SET x = ?, y = ? WHERE id = ?;
                     """;
             PreparedStatement updateCoordinates = connection.prepareStatement(sqlUpdateCoordinates);
             updateCoordinates.setLong(1, coordinates.getX());
@@ -316,7 +230,8 @@ public class DatabaseManager {
             connection.commit();
             connection.setAutoCommit(false);
             return true;
-        }
 
     }
+
 }
+

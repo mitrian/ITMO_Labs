@@ -5,10 +5,12 @@ import com.mitrian.common.elements.Person;
 import com.mitrian.common.elements.Status;
 import com.mitrian.common.elements.Worker;
 import com.mitrian.common.exceptions.CollectionException;
+import com.mitrian.common.exceptions.DBCollectionException;
 import com.mitrian.common.exceptions.impl.collection.IdUnavailableException;
 import com.mitrian.server.collection.Collection;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -35,12 +37,12 @@ public class WorkerDaoImpl implements Dao<Worker> {
     }
 
     @Override
-    public void add(Worker item) {
+    public void add(Worker item) throws DBCollectionException {
         workerCollection.add(item);
     }
 
     @Override
-    public void update(Integer id, Worker item) throws CollectionException {
+    public void update(Integer id, Worker item) throws CollectionException, DBCollectionException {
         workerCollection.update(id, item);
     }
 
@@ -60,7 +62,7 @@ public class WorkerDaoImpl implements Dao<Worker> {
     }
 
     @Override
-    public void removeFirst() throws CollectionException {
+    public void removeFirst() throws CollectionException, SQLException {
         workerCollection.removeFirst();
     }
 

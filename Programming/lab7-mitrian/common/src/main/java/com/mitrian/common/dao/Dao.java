@@ -3,9 +3,11 @@ package com.mitrian.common.dao;
 import com.mitrian.common.elements.Person;
 import com.mitrian.common.elements.Status;
 import com.mitrian.common.exceptions.CollectionException;
+import com.mitrian.common.exceptions.DBCollectionException;
 import com.mitrian.common.exceptions.impl.collection.IdUnavailableException;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -16,12 +18,12 @@ public interface Dao<T> {
 
     List<T> getAllElements();
     Set<Person> printUniquePerson();
-    void add(T item);
-    void update(Integer id, T item) throws CollectionException;
+    void add(T item) throws DBCollectionException;
+    void update(Integer id, T item) throws CollectionException, DBCollectionException;
     void remove(Integer id) throws CollectionException;
     void clear();
     void save() throws IOException;
-    void removeFirst() throws CollectionException;
+    void removeFirst() throws CollectionException, SQLException;
     Optional<T> removeHead() throws CollectionException;
     void removeGreater(T item);
     T getMinByName() throws CollectionException;
