@@ -13,8 +13,8 @@ allprojects {
 group = 'com.mitrian.lab'
 version = '1.0.0'
 
+tasks.jar.enabled = false
+
 tasks.withType(JavaCompile).configureEach{
     it.options.encoding = 'UTF-8'
 }
-
-tasks.jar.enabled = false
