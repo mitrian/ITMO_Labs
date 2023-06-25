@@ -7,6 +7,12 @@ import com.mitrian.common.commands.util.ExecutionResult;
 import com.mitrian.common.commands.util.ExecutionStatus;
 import com.mitrian.common.dao.Dao;
 import com.mitrian.common.exceptions.DBCollectionException;
+import com.mitrian.common.exceptions.UserException;
+import com.mitrian.common.exceptions.impl.algorithm.SHA512Exception;
+import com.mitrian.common.exceptions.impl.user.UserExistenceException;
+import com.mitrian.common.exceptions.impl.user.UserNameExistenceException;
+import com.mitrian.common.exceptions.impl.user.UserNameLenghtException;
+import com.mitrian.common.exceptions.impl.user.UserPasswordLengthException;
 import com.mitrian.common.executors.Executor;
 import com.mitrian.common.network.model.handler.RequestHandler;
 import com.mitrian.common.network.model.request.*;
@@ -14,6 +20,7 @@ import com.mitrian.common.network.model.response.*;
 import com.mitrian.server.Server;
 
 import java.sql.SQLException;
+import java.sql.SQLOutput;
 import java.util.logging.Logger;
 
 public class DefaultRequestHandler implements RequestHandler {
@@ -35,7 +42,8 @@ public class DefaultRequestHandler implements RequestHandler {
 
     @Override
     public AbstractResponse handle(Request request) {
-        if (request instanceof CommandRequest req){
+
+        if (request instanceof CommandRequest req) {
             logger.info("Proceeding command request");
             AbstractCommand command = req.getCommand();
 
@@ -47,10 +55,12 @@ public class DefaultRequestHandler implements RequestHandler {
                         new ExecutionResult(ExecutionStatus.FAILED)
                                 .append("Empty command got. Failed to execute")
                 );
-
             command.setResolver(resolver);
             try {
+                System.out.println("1");
+                command.setUser(req.getUser());
                 ExecutionResult executionResult = executor.execute(command);
+                System.out.println("hurray");
                 if (executionResult.getStatus() == ExecutionStatus.SUCCEED) {
                     return new CommandResponse(
                             req.getTo(),
@@ -60,13 +70,13 @@ public class DefaultRequestHandler implements RequestHandler {
                     );
                 }
                 return new CommandResponse(req.getTo(), req.getFrom(), ResponseCode.FAILED, executionResult);
-            } catch (ExecutionResult | DBCollectionException e){
+            } catch (ExecutionResult | DBCollectionException | SQLException | UserExistenceException e) {
                 return new CommandResponse(
                         req.getTo(),
                         req.getFrom(),
                         ResponseCode.FAILED,
                         new ExecutionResult(ExecutionStatus.FAILED)
-                            .append("Some troubles with execution")
+                                .append("Some troubles with execution")
                 );
             }
         }
@@ -85,10 +95,10 @@ public class DefaultRequestHandler implements RequestHandler {
             logger.info("Proceeding login request");
             User user = (req).getUser();
             try {
-                if (workerDao.signIn(user)){
-                    return new LoginResponse(req.getTo(), req.getFrom(),ResponseCode.SUCCEED);
-                } else {
+                if (!workerDao.signIn(user)){
                     return new LoginResponse(req.getTo(), req.getFrom(),ResponseCode.FAILED);
+                } else {
+                    return new LoginResponse(req.getTo(), req.getFrom(),ResponseCode.SUCCEED);
                 }
             } catch (SQLException e){
                 return new LoginResponse(req.getTo(), req.getFrom(),ResponseCode.FAILED);
@@ -100,12 +110,11 @@ public class DefaultRequestHandler implements RequestHandler {
             logger.info("Proceeding register request");
             User user = (req).getUser();
             try {
-                if (workerDao.signIn(user)){
-                    return new LoginResponse(req.getTo(), req.getFrom(),ResponseCode.SUCCEED);
-                } else {
-                    return new RegisterResponse(req.getTo(), req.getFrom(),ResponseCode.FAILED);
-                }
-            } catch (SQLException e){
+                workerDao.register(user);
+                return new RegisterResponse(req.getTo(), req.getFrom(),ResponseCode.SUCCEED);
+                } catch (UserPasswordLengthException e) {
+                throw new RuntimeException(e);
+            } catch (SQLException | SHA512Exception | UserException e) {
                 return new RegisterResponse(req.getTo(), req.getFrom(),ResponseCode.FAILED);
             }
         }

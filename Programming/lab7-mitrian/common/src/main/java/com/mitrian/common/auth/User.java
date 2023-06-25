@@ -3,11 +3,11 @@ package com.mitrian.common.auth;
 import com.mitrian.common.auth.utils.SHA512Generator;
 import com.mitrian.common.exceptions.impl.algorithm.SHA512Exception;
 
-import java.io.Serializable;
+import java.io.*;
 
 public class User implements Serializable {
-    private final String userName;
-    private final String password;
+    private String userName;
+    private String password;
 
     public User(String userName, String password) {
         String password1;
@@ -27,4 +27,5 @@ public class User implements Serializable {
     public String getPassword(){
         return password;
     }
+
 }

@@ -4,7 +4,9 @@ import com.mitrian.common.commands.AbstractCommand;
 import com.mitrian.common.commands.util.ExecutionResult;
 import com.mitrian.common.commands.util.ExecutionStatus;
 import com.mitrian.common.elements.Person;
+import com.mitrian.common.exceptions.impl.user.UserExistenceException;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -29,11 +31,11 @@ public class PrintUniquePersonCommand extends AbstractCommand {
      * @return status of executing
      */
     @Override
-    public ExecutionResult execute() {
+    public ExecutionResult execute() throws SQLException, UserExistenceException {
 
         ExecutionResult result = new ExecutionResult(ExecutionStatus.SUCCEED);
 
-        for (Person person: dao.printUniquePerson())
+        for (Person person: dao.printUniquePerson(user))
             result.append(person.toString());
 
         return result;

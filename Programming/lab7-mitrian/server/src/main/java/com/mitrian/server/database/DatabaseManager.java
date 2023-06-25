@@ -93,7 +93,7 @@ public class DatabaseManager {
 				CHECK (length((username)::text)>4), 
 				password VARCHAR NOT NULL CONSTRAINT users_password_check
 				CHECK (length((password)::text) >4), 
-				salt VARCHAR NOT NULL);
+				salt VARCHAR(10) NOT NULL);
 				""";
         PreparedStatement createUsers = connection.prepareStatement(sqlCreateUsers);
         createUsers.executeUpdate();
@@ -104,6 +104,7 @@ public class DatabaseManager {
         Connection connection = databaseConnectionManager.getConnection();
         try (connection){
             connection.setAutoCommit(false);
+            System.out.println("b sql");
             int workerId = insertWorker(worker, connection);
             connection.commit();
             connection.setAutoCommit(true);
@@ -167,21 +168,33 @@ public class DatabaseManager {
         int personId = insertPerson(worker.getPerson(), connection);
         String sqlInsertWorker = """
                 INSERT INTO Workers(name, coordintes_id, creationDate, salary, startDate, endDate, 
-                status, person_id, user_id);
-                VALUES (?,?,?,?,?,?,?,?,?)
+                status, person_id, user_id) VALUES (?,?,?,?,?,?,?,?,?) RETURNING id;
                 """;
+        System.out.println("okne?");
         PreparedStatement insertWorkers = connection.prepareStatement(sqlInsertWorker);
+        System.out.println("1");
         insertWorkers.setString(1,worker.getName());
+        System.out.println("2");
         insertWorkers.setLong(2,coordinatesId);
+        System.out.println("3");
         insertWorkers.setDate(3, Date.valueOf(worker.getCreationDate()));
+        System.out.println("4");
         insertWorkers.setFloat(4, worker.getSalary());
+        System.out.println("5");
         insertWorkers.setDate(5,Date.valueOf(worker.getStartDate()));
+        System.out.println("6");
         insertWorkers.setDate(6, (Date) worker.getEndDate());
+        System.out.println("7");
         insertWorkers.setString(7, worker.getStatus().toString());
+        System.out.println("8");
         insertWorkers.setLong(8, personId);
-        insertWorkers.setInt(9, worker.getUserId());
+        System.out.println("9");
+        insertWorkers.setInt(9, getUserId(worker.getUserName()));
+        System.out.println("10");
         ResultSet resultWorkers = insertWorkers.executeQuery();
+        System.out.println("11");
         resultWorkers.next();
+        System.out.println("12");
         return resultWorkers.getInt("id");
     }
 
@@ -203,8 +216,8 @@ public class DatabaseManager {
                 """;
         PreparedStatement insertPerson = connection.prepareStatement(sqlInsertPerons);
         insertPerson.setDouble(1, person.getWeight());
-        insertPerson.setString(2, person.getHairColor().toString()); //TODO
-        insertPerson.setString(3, person.getNationality().toString()); //TODO
+        insertPerson.setString(2, person.getHairColor().toString());
+        insertPerson.setString(3, person.getNationality().toString());
         insertPerson.setLong(4, insertLocation(person.getLocation(), connection));
         ResultSet resultPersons = insertPerson.executeQuery();
         resultPersons.next();
@@ -401,10 +414,10 @@ public class DatabaseManager {
     public boolean usernameExist(String username) throws SQLException {
         Connection connection = databaseConnectionManager.getConnection();
         try(connection){
-            String sqlUserExistence = "SELECT exists(SELECT username FROM users WHERE username=?)";
-            PreparedStatement UserExistence = connection.prepareStatement(sqlUserExistence);
-            UserExistence.setString(1, username);
-            ResultSet resultExists = UserExistence.executeQuery();
+            String sqlUserExist = "Select exists(SELECT username FROM users WHERE username=?)";
+            PreparedStatement UserExists = connection.prepareStatement(sqlUserExist);
+            UserExists.setString(1, username);
+            ResultSet resultExists = UserExists.executeQuery();
             resultExists.next();
             return resultExists.getBoolean("exists");
         }
@@ -414,12 +427,12 @@ public class DatabaseManager {
     public Pair<String, String> getPasswordAndSalty(String username) throws SQLException{
         Connection connection = databaseConnectionManager.getConnection();
         try(connection){
-            String sqlGetSaltyAndPassword = "SELECT password, salty FROM users where username=?";
+            String sqlGetSaltyAndPassword = "SELECT password, salt FROM users where username=?";
             PreparedStatement getSaltyAndPassword = connection.prepareStatement(sqlGetSaltyAndPassword);
             getSaltyAndPassword.setString(1, username);
             ResultSet resultSaltyPassword = getSaltyAndPassword.executeQuery();
             resultSaltyPassword.next();
-            String salty = resultSaltyPassword.getString("salty");
+            String salty = resultSaltyPassword.getString("salt");
             String password = resultSaltyPassword.getString("password");
             return new ImmutablePair<>(password, salty);
         }

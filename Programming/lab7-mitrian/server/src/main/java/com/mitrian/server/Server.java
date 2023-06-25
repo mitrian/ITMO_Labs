@@ -54,9 +54,9 @@ public class Server
 		Resolver resolver = new CommandResolverImpl();
 
 
-		try(UDPChannelServer server = new UDPChannelServer(Integer.parseInt(args[0]), requestMapper, responseMapper))
+		try
 		{
-
+			UDPChannelServer server = new UDPChannelServer(Integer.parseInt(args[0]), requestMapper, responseMapper);
 			String url = "jdbc:postgresql://pg:5432/studs";
 			String userName = System.getenv("user");
 			String password = System.getenv("password");
@@ -89,9 +89,10 @@ public class Server
 
 			server.setRequestHandler(defaultRequestHandler);
 
-//			server.listenAndHandleRequests();
+			//server.listenAndHandleRequests();
+
+
 			receivingFixedThreadPool.submit(new ReceivingTask(server, handlingFixedThreadPool));
-			System.out.println("1");
 			(new ServerCLIThread()).start();
 
 		}
@@ -103,10 +104,6 @@ public class Server
 		catch (Exception e) {
 			e.printStackTrace();
 			LOGGER.warning(e.getMessage());
-//		} catch (ExecutionResult e) {
-//			LOGGER.severe(e.getMessage());
-//			System.exit(0);//TODO
-//		}
 		}
 	}
 }

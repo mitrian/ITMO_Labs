@@ -34,65 +34,63 @@ public class WorkerDaoImpl implements Dao<Worker> {
 
 
     @Override
-    public List<Worker> getAllElements() {
-        return workerCollection.getAllElements();
+    public List<Worker> getAllElements(User user) throws SQLException, UserExistenceException {
+        return workerCollection.getAllElements(user);
     }
 
     @Override
-    public Set<Person> printUniquePerson() {
-        return workerCollection.printUniquePerson();
+    public Set<Person> printUniquePerson(User user) throws SQLException, UserExistenceException {
+        return workerCollection.printUniquePerson(user);
     }
 
     @Override
-    public void add(Worker item) throws DBCollectionException {
-        workerCollection.add(item, new User("ignored", "ignored"));
+    public void add(Worker item) throws DBCollectionException, SQLException, UserExistenceException {
+        workerCollection.add(item);
     }
 
     @Override
-    public void update(Integer id, Worker item) throws CollectionException, DBCollectionException {
-        workerCollection.update(id, item);
+    public void update(Integer id, Worker item, User user) throws CollectionException, DBCollectionException, UserExistenceException {
+        workerCollection.update(id, item, user);
     }
 
     @Override
-    public void remove(Integer id) throws CollectionException, DBCollectionException {
-        workerCollection.remove(id);
+    public void remove(Integer id, User user) throws CollectionException, DBCollectionException, UserExistenceException {
+        workerCollection.remove(id, user);
     }
 
     @Override
-    public void clear() throws DBCollectionException {
-        workerCollection.clear();
+    public void clear(User user) throws DBCollectionException, UserExistenceException {
+        workerCollection.clear(user);
+    }
+
+
+    @Override
+    public void removeFirst(User user) throws CollectionException, SQLException, DBCollectionException, UserExistenceException {
+        workerCollection.removeFirst(user);
     }
 
     @Override
-    public void save() throws IOException {
-        workerCollection.save();
-    }
-
-    @Override
-    public void removeFirst() throws CollectionException, SQLException, DBCollectionException {
-        workerCollection.removeFirst();
-    }
-
-    @Override
-    public Optional<Worker> removeHead() throws CollectionException, DBCollectionException {
-        return workerCollection.removeHead();
+    public Optional<Worker> removeHead(User user) throws CollectionException, DBCollectionException, UserExistenceException {
+        return workerCollection.removeHead(user);
     }
 
 
 
     @Override
-    public void removeGreater(Worker item) throws DBCollectionException {
-        workerCollection.removeGreater(item);
+    public void removeGreater(Worker item, User user) throws DBCollectionException, UserExistenceException {
+        workerCollection.removeGreater(item, user);
     }
 
     @Override
-    public Worker getMinByName() throws CollectionException {
-        return workerCollection.getMinByName();
+    public Worker getMinByName(User user) throws CollectionException, SQLException, UserExistenceException {
+        return workerCollection.getMinByName(user);
     }
 
     @Override
-    public List<Worker> filterByStatus(Status status) {
-        return workerCollection.filterByStatus(status);
+    public List<Worker> filterByStatus(Status status, User user) throws SQLException, UserExistenceException {
+
+        return workerCollection.filterByStatus(status, user);
+
     }
 
     @Override

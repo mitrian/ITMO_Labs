@@ -4,6 +4,7 @@ import com.mitrian.common.commands.AbstractCommand;
 import com.mitrian.common.commands.util.ExecutionResult;
 import com.mitrian.common.commands.util.ExecutionStatus;
 import com.mitrian.common.exceptions.DBCollectionException;
+import com.mitrian.common.exceptions.impl.user.UserExistenceException;
 
 import java.util.List;
 
@@ -30,8 +31,8 @@ public class ClearCommand extends AbstractCommand {
      * @return status of executing
      */
     @Override
-    public ExecutionResult execute() throws DBCollectionException {
-        dao.clear();
+    public ExecutionResult execute() throws DBCollectionException, UserExistenceException {
+        dao.clear(user);
         return new ExecutionResult(ExecutionStatus.SUCCEED)
                 .append("Collection cleared");
     }

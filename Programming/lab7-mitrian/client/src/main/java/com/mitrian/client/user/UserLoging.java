@@ -38,14 +38,12 @@ public class UserLoging {
     }
 
 
-    public RegisterRequest register() throws ForcedShutdownException {
-       User user = readUserData();
+    public RegisterRequest register(User user) throws ForcedShutdownException {
        return new RegisterRequest(adressFrom, adressTo, new User(user.getUserName(), user.getPassword()));
     }
 
 
-    public LoginRequest login() throws ForcedShutdownException {
-        User user = readUserData();
+    public LoginRequest login(User user) throws ForcedShutdownException {
         return new LoginRequest(adressFrom, adressTo, new User(user.getUserName(), user.getPassword()));
     }
 

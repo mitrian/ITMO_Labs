@@ -37,7 +37,8 @@ public final class RequestMapper {
 	@SuppressWarnings("unchecked")
 	public <T extends Request> T mapFromBytesToInstance(byte[] bytes) throws MappingException {
 		try {
-			return SerializationUtils.deserialize(bytes);
+
+			return (T) SerializationUtils.deserialize(bytes);
 		}
 		catch (SerializationException e) {
 			throw new MappingException("Failed to map Request bytes to instance", e);

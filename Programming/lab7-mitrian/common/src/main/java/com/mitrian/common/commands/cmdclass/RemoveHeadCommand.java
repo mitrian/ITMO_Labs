@@ -5,6 +5,7 @@ import com.mitrian.common.commands.util.ExecutionResult;
 import com.mitrian.common.commands.util.ExecutionStatus;
 import com.mitrian.common.exceptions.CollectionException;
 import com.mitrian.common.exceptions.DBCollectionException;
+import com.mitrian.common.exceptions.impl.user.UserExistenceException;
 
 import java.util.List;
 
@@ -30,8 +31,7 @@ public class RemoveHeadCommand extends AbstractCommand {
      * @return status of executing
      */
     @Override
-    public ExecutionResult execute()
-    {
+    public ExecutionResult execute() throws UserExistenceException {
         try
         {
             if (arguments.size() != 0){
@@ -40,7 +40,7 @@ public class RemoveHeadCommand extends AbstractCommand {
             }
 
             return new ExecutionResult(ExecutionStatus.SUCCEED)
-                    .append(dao.removeHead().toString());
+                    .append(dao.removeHead(user).toString());
         }
         catch (CollectionException | DBCollectionException e)
         {

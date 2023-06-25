@@ -5,6 +5,7 @@ import com.mitrian.common.commands.util.ExecutionResult;
 import com.mitrian.common.commands.util.ExecutionStatus;
 import com.mitrian.common.exceptions.CollectionException;
 import com.mitrian.common.exceptions.DBCollectionException;
+import com.mitrian.common.exceptions.impl.user.UserExistenceException;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -31,11 +32,10 @@ public class RemoveFirstCommand extends AbstractCommand {
      * @return status of executing
      */
     @Override
-    public ExecutionResult execute()
-    {
+    public ExecutionResult execute() throws UserExistenceException {
         try
         {
-            dao.removeFirst();
+            dao.removeFirst(user);
             return new ExecutionResult(ExecutionStatus.SUCCEED);
         }
         catch (CollectionException | DBCollectionException | SQLException e)

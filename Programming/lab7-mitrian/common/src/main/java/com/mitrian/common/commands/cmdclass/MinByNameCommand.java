@@ -4,7 +4,9 @@ import com.mitrian.common.commands.AbstractCommand;
 import com.mitrian.common.commands.util.ExecutionResult;
 import com.mitrian.common.commands.util.ExecutionStatus;
 import com.mitrian.common.exceptions.CollectionException;
+import com.mitrian.common.exceptions.impl.user.UserExistenceException;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -29,12 +31,11 @@ public class MinByNameCommand extends AbstractCommand {
      * @return status of executing
      */
     @Override
-    public ExecutionResult execute()
-    {
+    public ExecutionResult execute() throws SQLException, UserExistenceException {
         try
         {
             return new ExecutionResult(ExecutionStatus.SUCCEED)
-                    .append(dao.getMinByName().toString());
+                    .append(dao.getMinByName(user).toString());
         }
         catch (CollectionException e)
         {

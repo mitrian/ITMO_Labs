@@ -24,18 +24,18 @@ import java.util.Set;
 public interface Dao<T> {
 
 
-    List<T> getAllElements();
-    Set<Person> printUniquePerson();
-    void add(T item) throws DBCollectionException;
-    void update(Integer id, T item) throws CollectionException, DBCollectionException;
-    void remove(Integer id) throws CollectionException, DBCollectionException;
-    void clear() throws DBCollectionException;
-    void save() throws IOException;
-    void removeFirst() throws CollectionException, SQLException, DBCollectionException;
-    Optional<T> removeHead() throws CollectionException, DBCollectionException;
-    void removeGreater(T item) throws DBCollectionException;
-    T getMinByName() throws CollectionException;
-    List<T> filterByStatus(Status status);
+    List<T> getAllElements(User user) throws SQLException, UserExistenceException;
+    Set<Person> printUniquePerson(User user) throws SQLException, UserExistenceException;
+    void add(T item) throws DBCollectionException, SQLException, UserExistenceException;
+
+    void update(Integer id, T item, User user) throws CollectionException, DBCollectionException, UserExistenceException;
+    void remove(Integer id, User user) throws CollectionException, DBCollectionException, UserExistenceException;
+    void clear(User user) throws DBCollectionException, UserExistenceException;
+    void removeFirst(User user) throws CollectionException, SQLException, DBCollectionException, UserExistenceException;
+    Optional<T> removeHead(User user) throws CollectionException, DBCollectionException, UserExistenceException;
+    void removeGreater(T item, User user) throws DBCollectionException, UserExistenceException;
+    T getMinByName(User user) throws CollectionException, SQLException, UserExistenceException;
+    List<T> filterByStatus(Status status, User user) throws SQLException, UserExistenceException;
     LocalDate getCreationDate();
     int getSize();
     boolean idUnique (int id) throws IdUnavailableException;

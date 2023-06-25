@@ -18,7 +18,7 @@ public class Worker implements Comparable<Worker>, Serializable {
     private Status status; //Поле может быть null
     private Person person; //Поле не может быть null
 
-    private int userId;
+    private String userName;
 
 
 
@@ -51,8 +51,8 @@ public class Worker implements Comparable<Worker>, Serializable {
         return creationDate;
     }
 
-    public int getUserId(){
-        return this.userId;
+    public String getUserName(){
+        return this.userName;
     }
 
     public Float getSalary(){
@@ -92,6 +92,7 @@ public class Worker implements Comparable<Worker>, Serializable {
     public void setEndDate(Date endDate) {this.endDate = endDate;}
     public void setStatus(Status status){ this.status = status;}
     public void setPerson(Person person){ this.person = person;}
+    public void setUserName(String userName){this.userName = userName;}
 
 
     @Override

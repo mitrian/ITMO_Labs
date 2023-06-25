@@ -7,8 +7,10 @@ import com.mitrian.common.commands.util.ExecutionStatus;
 import com.mitrian.common.dao.Dao;
 import com.mitrian.common.elements.Worker;
 import com.mitrian.common.exceptions.DBCollectionException;
+import com.mitrian.common.exceptions.impl.user.UserExistenceException;
 import com.mitrian.common.executors.Executor;
 
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,16 +21,21 @@ public class CommandExecutorImpl implements Executor
     private static final Set<String> openFiles = new HashSet<>();
 	private final Dao<Worker> workerDao;
 
+
     public CommandExecutorImpl(Dao<Worker> workerDao) {
         this.workerDao = workerDao;
     }
 
     @Override
-    public ExecutionResult execute(AbstractCommand command) throws ExecutionResult, DBCollectionException {
+    public ExecutionResult execute(AbstractCommand command) throws ExecutionResult, DBCollectionException, SQLException, UserExistenceException {
+        System.out.println("2");
         command.setDao(workerDao);
+        System.out.println("3");
         if (command instanceof ExecuteScriptCommand) {
+            System.out.println("4");
             command.setExecutor(this);
         }
+        System.out.println("5");
         return command.execute();
     }
 

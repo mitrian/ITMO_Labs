@@ -1,16 +1,20 @@
 package com.mitrian.common.commands;
 
+import com.mitrian.common.auth.User;
 import com.mitrian.common.commands.resolver.Resolver;
 import com.mitrian.common.commands.util.ExecutionResult;
 import com.mitrian.common.dao.Dao;
 import com.mitrian.common.elements.Worker;
 import com.mitrian.common.exceptions.DBCollectionException;
+import com.mitrian.common.exceptions.UserException;
+import com.mitrian.common.exceptions.impl.user.UserExistenceException;
 import com.mitrian.common.executors.Executor;
 
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -33,6 +37,7 @@ public abstract class AbstractCommand implements Externalizable
     /** Executor instance */
     protected Executor executor;
     protected Resolver resolver;
+    protected User user;
 
     public AbstractCommand()
     {
@@ -73,7 +78,7 @@ public abstract class AbstractCommand implements Externalizable
      * Executing command
      * @return execution result
      */
-    public abstract ExecutionResult execute() throws ExecutionResult, DBCollectionException;
+    public abstract ExecutionResult execute() throws ExecutionResult, DBCollectionException, SQLException, UserExistenceException;
 
     /**
      * Dao setter
@@ -112,6 +117,8 @@ public abstract class AbstractCommand implements Externalizable
     {
         return arguments;
     }
+
+    public void setUser(User user){this.user = user;}
 
     /**
      * Getter of argAmount

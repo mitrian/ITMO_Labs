@@ -71,7 +71,7 @@ public class DatabaseUtilies {
         insertWorkers.setDate(3, Date.valueOf(worker.getCreationDate()));
         insertWorkers.setFloat(4, worker.getSalary());
         insertWorkers.setDate(5, (Date) worker.getEndDate());
-        insertWorkers.setString(6, worker.getStatus().toString()); //TODO
+        insertWorkers.setString(6, worker.getStatus().toString());
         insertWorkers.setLong(7, personId);
         ResultSet resultWorkers = insertWorkers.executeQuery();
         resultWorkers.next();

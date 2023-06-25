@@ -17,7 +17,6 @@ import com.mitrian.common.exceptions.impl.user.UserNameLenghtException;
 import com.mitrian.common.exceptions.impl.user.UserPasswordLengthException;
 import com.mitrian.server.Server;
 import com.mitrian.server.database.DBConnectionManager;
-import com.mitrian.server.database.DBConnectionManagerImpl;
 import com.mitrian.server.database.DatabaseManager;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -66,14 +65,17 @@ public class CollectionDBImpl implements Collection<Worker> {
     }
 
     @Override
-    public List<Worker> getAllElements() {
+    public List<Worker> getAllElements(User user) throws UserExistenceException, SQLException {
+        System.out.println("show is ok");
+        System.out.println("show is ok x 2");
         return workers.stream()
                 .sorted(Comparator.comparing(Worker::getName))
                 .toList();
     }
 
     @Override
-    public Set<Person> printUniquePerson() {
+    public Set<Person> printUniquePerson(User user) throws UserExistenceException, SQLException {
+       // if(!signIn(user)) throw new UserExistenceException("Данные пользователя некорректны");
         persons.clear();
         for (Worker worker : workers) {
             persons.add(worker.getPerson());
@@ -84,9 +86,10 @@ public class CollectionDBImpl implements Collection<Worker> {
 
 
     @Override
-    public void add(Worker item, User user) throws DBCollectionException {
+    public void add(Worker item) throws DBCollectionException, SQLException, UserExistenceException {
         try {
             writeLock.lock();
+            System.out.println("into add");
             databaseManager.insertWorker(item);
             workers.add(item);
         } catch (SQLException e) {
@@ -99,8 +102,9 @@ public class CollectionDBImpl implements Collection<Worker> {
 
 
     @Override
-    public void update(Integer id, Worker item) throws CollectionException, DBCollectionException {
+    public void update(Integer id, Worker item, User user) throws CollectionException, DBCollectionException, UserExistenceException {
         try {
+          //  if(!signIn(user)) throw new UserExistenceException("Данные пользователя некорректны");
             writeLock.lock();
             databaseManager.updateWorker(id, item.getName(), item.getCoordinates(), item.getSalary(),
                     item.getStartDate(), (java.sql.Date) item.getEndDate(), item.getStatus(),
@@ -136,8 +140,9 @@ public class CollectionDBImpl implements Collection<Worker> {
 
 
     @Override
-    public void remove(Integer id) throws CollectionException, DBCollectionException {
+    public void remove(Integer id, User user) throws CollectionException, DBCollectionException, UserExistenceException {
         try {
+           // if(!signIn(user)) throw new UserExistenceException("Данные пользователя некорректны");
             writeLock.lock();
             databaseManager.deleteWorker(id);
             Iterator<Worker> iterator = workers.iterator();
@@ -160,8 +165,9 @@ public class CollectionDBImpl implements Collection<Worker> {
 
 
     @Override
-    public void clear() throws DBCollectionException {
+    public void clear(User user) throws DBCollectionException, UserExistenceException {
         try {
+          //  if(!signIn(user)) throw new UserExistenceException("Данные пользователя некорректны");
             writeLock.lock();
             for (Worker worker : workers) {
                 databaseManager.deleteWorker(worker.getId());
@@ -176,12 +182,7 @@ public class CollectionDBImpl implements Collection<Worker> {
 
 
     @Override
-    public void save() throws IOException {
-    }
-
-
-    @Override
-    public void load() throws DBCollectionException {
+    public void load() throws DBCollectionException, UserExistenceException {
         try {
             writeLock.lock();
             workers.clear();
@@ -194,8 +195,9 @@ public class CollectionDBImpl implements Collection<Worker> {
     }
 
     @Override
-    public void removeFirst() throws CollectionException, SQLException, DBCollectionException {
+    public void removeFirst(User user) throws CollectionException, DBCollectionException, UserExistenceException {
         try {
+           // if(!signIn(user)) throw new UserExistenceException("Данные пользователя некорректны");
             writeLock.lock();
             int idd = workers.get(0).getId();
             databaseManager.deleteWorker(idd);
@@ -213,8 +215,9 @@ public class CollectionDBImpl implements Collection<Worker> {
     }
 
     @Override
-    public Optional<Worker> removeHead() throws CollectionException, DBCollectionException {
+    public Optional<Worker> removeHead(User user) throws CollectionException, DBCollectionException, UserExistenceException {
         try {
+          //  if(!signIn(user)) throw new UserExistenceException("Данные пользователя некорректны");
             writeLock.lock();
             if (workers.size() != 0) {
                 int idd = workers.get(0).getId();
@@ -234,8 +237,9 @@ public class CollectionDBImpl implements Collection<Worker> {
     }
 
     @Override
-    public void removeGreater(Worker item) throws DBCollectionException {
+    public void removeGreater(Worker item, User user) throws DBCollectionException, UserExistenceException {
         try {
+         //   if(!signIn(user)) throw new UserExistenceException("Данные пользователя некорректны");
             writeLock.lock();
             for (Worker worker : workers) {
                 if (worker.compareTo(item) > 0) {
@@ -251,7 +255,8 @@ public class CollectionDBImpl implements Collection<Worker> {
     }
 
     @Override
-    public Worker getMinByName() throws CollectionException {
+    public Worker getMinByName(User user) throws CollectionException, UserExistenceException, SQLException {
+      //  if(!signIn(user)) throw new UserExistenceException("Данные пользователя некорректны");
         Optional<Worker> optionalWorker = workers.stream().min(Comparator.comparing(Worker::getName));
         if (optionalWorker.isPresent())
             return optionalWorker.get();
@@ -259,7 +264,8 @@ public class CollectionDBImpl implements Collection<Worker> {
     }
 
     @Override
-    public List<Worker> filterByStatus(Status status) {
+    public List<Worker> filterByStatus(Status status, User user) throws UserExistenceException, SQLException {
+      //  if(!signIn(user)) throw new UserExistenceException("Данные пользователя некорректны");
         return workers.stream()
                 .filter((worker) -> (worker.getStatus() != null && worker.getStatus() == status))
                 .toList();
@@ -306,6 +312,7 @@ public class CollectionDBImpl implements Collection<Worker> {
         Pair<String, String> passwordAndSalty = databaseManager.getPasswordAndSalty(user.getUserName());
         String realPassword = passwordAndSalty.getLeft();
         String salty = passwordAndSalty.getRight();
+
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-512");
             md.update((pepper + user.getPassword() + salty).getBytes(StandardCharsets.UTF_8));
@@ -319,7 +326,7 @@ public class CollectionDBImpl implements Collection<Worker> {
     @Override
     public boolean checkAccess(User user, Worker worker) throws SQLException, UserExistenceException, CollectionElementException {
         if (!signIn(user)) {
-            throw new UserExistenceException("Введенны неправильные данные");
+            throw new UserExistenceException("Введены неправильные данные");
         }
         if (!workers.contains(worker)) {
             throw new CollectionElementException("В Вашей коллекции такого элемента нет");

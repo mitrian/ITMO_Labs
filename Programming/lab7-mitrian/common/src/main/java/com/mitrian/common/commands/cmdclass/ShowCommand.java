@@ -3,7 +3,9 @@ package com.mitrian.common.commands.cmdclass;
 import com.mitrian.common.commands.AbstractCommand;
 import com.mitrian.common.commands.util.ExecutionResult;
 import com.mitrian.common.commands.util.ExecutionStatus;
+import com.mitrian.common.exceptions.impl.user.UserExistenceException;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -28,10 +30,9 @@ public class ShowCommand extends AbstractCommand {
      * @return status of executing
      */
     @Override
-    public ExecutionResult execute()
-    {
+    public ExecutionResult execute() throws SQLException, UserExistenceException {
         return new ExecutionResult(ExecutionStatus.SUCCEED)
-                .append(dao.getAllElements().toString());
+                .append(dao.getAllElements(user).toString());
     }
 
 

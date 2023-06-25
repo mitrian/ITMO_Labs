@@ -7,6 +7,7 @@ import com.mitrian.common.commands.util.parser.ArgumentParser;
 import com.mitrian.common.exceptions.CollectionException;
 import com.mitrian.common.exceptions.DBCollectionException;
 import com.mitrian.common.exceptions.IncorrectFieldException;
+import com.mitrian.common.exceptions.impl.user.UserExistenceException;
 
 import java.util.List;
 
@@ -32,9 +33,9 @@ public class RemoveByIdCommand extends AbstractCommand {
      * @return status of executing
      */
     @Override
-    public ExecutionResult execute() {
+    public ExecutionResult execute() throws UserExistenceException {
         try {
-            dao.remove(ArgumentParser.parseInteger(arguments.get(0)));
+            dao.remove(ArgumentParser.parseInteger(arguments.get(0)), user);
             return new ExecutionResult(ExecutionStatus.SUCCEED);
         }
         catch (IncorrectFieldException | CollectionException | DBCollectionException e) {

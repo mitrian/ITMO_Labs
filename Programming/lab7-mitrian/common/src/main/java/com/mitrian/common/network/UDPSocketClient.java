@@ -84,18 +84,18 @@ public class UDPSocketClient implements AutoCloseable {
 	public <T extends AbstractResponse> T sendRequestAndWaitResponse(Request request) throws NetworkException, ServerNotAvailable {
 //		Throwing an NPE if the provided request is null
 		Objects.requireNonNull(request);
-
 		request.setTo(serverAddr);
-
+		request.setFrom(new InetSocketAddress(socket.getInetAddress(), socket.getLocalPort()));
 		try {
 //			First of all, we should get our request byte representation
 			byte[] requestBytes = requestMapper.mapFromInstanceToBytes(request);
-
 //			If request size is more than default buffer size - send with overhead : else - send without overhead
-			if (requestBytes.length > NetworkUtils.REQUEST_BUFFER_SIZE)
+			if (requestBytes.length > NetworkUtils.REQUEST_BUFFER_SIZE) {
 				sendRequestWithOverhead(requestBytes, request.getTo());
-			else
+			}
+			else {
 				sendRequestNoOverhead(requestBytes, request.getTo());
+			}
 
 //			Waiting for response
 			return waitForResponse();

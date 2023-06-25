@@ -11,7 +11,9 @@ import com.mitrian.common.network.util.mapper.RequestMapper;
 import com.mitrian.common.network.util.mapper.ResponseMapper;
 import com.mitrian.common.network.util.mapper.FrameMapper;
 import com.mitrian.common.network.util.mapper.exception.MappingException;
+import org.apache.commons.lang3.SerializationUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -33,11 +35,13 @@ public class UDPChannelServer implements AutoCloseable {
 	 */
 	public static final Logger LOGGER = Logger.getLogger(UDPChannelServer.class.getName());
 
+
 	/**
 	 * Default server port
 	 *
 	 */
 	private static final int DEFAULT_PORT = 8080;
+
 
 	/**
 	 * Datagram channel instance
@@ -45,10 +49,12 @@ public class UDPChannelServer implements AutoCloseable {
 	 */
 	private final DatagramChannel channel;
 
+
 	/**
 	 * Request mapper instance
 	 */
 	private final RequestMapper requestMapper;
+
 
 	/**
 	 * Response mapper instance
@@ -56,6 +62,7 @@ public class UDPChannelServer implements AutoCloseable {
 	private final ResponseMapper responseMapper;
 
 	private RequestHandler requestHandler;
+
 
 	/**
 	 * UDPChannelServer constructor without port specified.
@@ -65,24 +72,23 @@ public class UDPChannelServer implements AutoCloseable {
 		this(DEFAULT_PORT, requestMapper, responseMapper);
 	}
 
+
 	/**
 	 * UDPChannelServer constructor with port specified.
 	 * Server will be bind to provided port
-	 *
 	 */
 	public UDPChannelServer(
 			int port,
 			RequestMapper requestMapper,
 			ResponseMapper responseMapper
 	) throws NetworkException {
-
 		this(new InetSocketAddress("localhost", port), requestMapper, responseMapper);
 	}
+
 
 	/**
 	 * UDPChannelServer constructor with server address specified
 	 * Server will be bind to provided address
-	 *
 	 */
 	public UDPChannelServer(
 			InetSocketAddress address,
@@ -109,28 +115,29 @@ public class UDPChannelServer implements AutoCloseable {
 
 	}
 
+
 	/**
 	 * This method handles the request with provided {@link RequestHandler} and
 	 * sends response
 	 *
 	 * @throws NetworkException if it's failed to select a channel or send the response
 	 */
-	public void listenAndHandleRequests() throws NetworkException, SQLException, ExecutionResult {
+	public void listenAndHandleRequests() throws NetworkException, ExecutionResult {
 			Request request = waitRequest();
 			AbstractResponse abstractResponse = requestHandler.handle(request);
 			sendResponse(abstractResponse);
 	}
 
+
 	/**
 	 * Waiting request from clients
-	 *
 	 * @return request instance
 	 * @param <T> request type parameter
 	 * @throws NetworkException if it's failed to receive the request from client
 	 */
 	public <T extends Request> T waitRequest() throws NetworkException {
 		ByteBuffer incomingBuffer = ByteBuffer.allocate(NetworkUtils.REQUEST_BUFFER_SIZE * 2);
-		try {
+		try(var baos = new ByteArrayOutputStream()) {
 			byte[] allRequestBytes = new byte[0];
 			boolean gotAll = false;
 
@@ -138,9 +145,7 @@ public class UDPChannelServer implements AutoCloseable {
 
 //				Receiving incoming byte buffer
 				incomingBuffer.clear();
-				System.out.println("1");
 				SocketAddress addr = channel.receive(incomingBuffer);
-				System.out.println("2");
 //				Skip current iteration if nothing was got in receive
 				if (addr == null) continue;
 				LOGGER.info("Получен новый request");
@@ -153,7 +158,10 @@ public class UDPChannelServer implements AutoCloseable {
 //				Mapping UDPFrame from raw bytes
 				UDPFrame currentFrame = FrameMapper.mapFromBytesToInstance(currentFrameBytes);
 //				Enriching request bytes with new bytes
-				allRequestBytes = NetworkUtils.concatTwoByteArrays(allRequestBytes, currentFrame.getData());
+
+				//allRequestBytes = NetworkUtils.concatTwoByteArrays(allRequestBytes, currentFrame.getData());
+
+				baos.writeBytes(currentFrame.getData());
 
 //				Change gotAll state if got the last UDPFrame
 				if (currentFrame.isLast()) {
@@ -162,9 +170,8 @@ public class UDPChannelServer implements AutoCloseable {
 				}
 
 			} while (!gotAll);
-
-//			Mapping request instance from raw request bytes
-			return requestMapper.mapFromBytesToInstance(allRequestBytes);
+			System.out.println("wait is ok");
+			return requestMapper.mapFromBytesToInstance(baos.toByteArray());
 
 		}
 		catch (MappingException e) {
@@ -189,7 +196,6 @@ public class UDPChannelServer implements AutoCloseable {
 		try {
 //			Mapping response to a byte array
 			byte[] responseBytes = responseMapper.mapFromInstanceToBytes(abstractResponse);
-
 //			Check if response should be divided into separate chunks
 			if (responseBytes.length > NetworkUtils.RESPONSE_BUFFER_SIZE)
 				sendResponseWithOverhead(responseBytes, abstractResponse.getTo());

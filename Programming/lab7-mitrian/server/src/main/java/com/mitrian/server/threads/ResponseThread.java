@@ -18,6 +18,8 @@ public class ResponseThread extends Thread{
     public void run() {
         try {
             udpChannelServer.sendResponse(abstractResponse);
-        } catch (NetworkException ignored) {}
+        } catch (NetworkException ignored) {
+            ignored.printStackTrace();
+        }
     }
 }

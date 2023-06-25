@@ -5,7 +5,9 @@ import com.mitrian.common.commands.util.ExecutionResult;
 import com.mitrian.common.commands.util.ExecutionStatus;
 import com.mitrian.common.elements.Worker;
 import com.mitrian.common.exceptions.DBCollectionException;
+import com.mitrian.common.exceptions.impl.user.UserExistenceException;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -30,7 +32,7 @@ public class AddCommand extends AbstractCommand {
      * @return status of executing
      */
     @Override
-    public ExecutionResult execute() throws DBCollectionException {
+    public ExecutionResult execute() throws DBCollectionException, SQLException, UserExistenceException {
             Worker worker = (Worker) additionalArg;
 
             if (worker == null)

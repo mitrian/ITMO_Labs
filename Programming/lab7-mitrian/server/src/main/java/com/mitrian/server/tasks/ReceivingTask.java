@@ -23,8 +23,10 @@ public class ReceivingTask implements Runnable{
         while (true) {
             try {
                 Request request = udpChannelServer.waitRequest();
+                System.out.println("wait is really ok");
                 handlingPool.submit(new HandlingTask(udpChannelServer, request));
-            } catch (NetworkException ignored) {}
+            } catch (NetworkException ignored) {
+            }
         }
     }
 

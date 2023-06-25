@@ -5,7 +5,9 @@ import com.mitrian.common.commands.util.ExecutionResult;
 import com.mitrian.common.commands.util.ExecutionStatus;
 import com.mitrian.common.elements.Status;
 import com.mitrian.common.elements.Worker;
+import com.mitrian.common.exceptions.impl.user.UserExistenceException;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -31,10 +33,9 @@ public class FilterByStatusCommand extends AbstractCommand {
      * @return status of executing
      */
     @Override
-    public ExecutionResult execute()
-    {
+    public ExecutionResult execute() throws SQLException, UserExistenceException {
         ExecutionResult result = new ExecutionResult(ExecutionStatus.SUCCEED);
-        for (Worker element: dao.filterByStatus(Status.valueOf(arguments.get(0))))
+        for (Worker element: dao.filterByStatus(Status.valueOf(arguments.get(0)), user))
             result.append(element.toString());
 
         return result;

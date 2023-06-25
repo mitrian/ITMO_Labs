@@ -3,12 +3,13 @@ package com.mitrian.client.ui;
 import com.mitrian.client.ui.console.WorkerConsoleReader;
 import com.mitrian.client.user.UserLoging;
 import com.mitrian.client.util.Printer;
+import com.mitrian.common.auth.User;
 import com.mitrian.common.commands.AbstractCommand;
 import com.mitrian.common.commands.cmdclass.ExitCommand;
-import com.mitrian.common.commands.cmdclass.SaveCommand;
 import com.mitrian.common.commands.cmdclass.UpdateCommand;
 import com.mitrian.common.commands.resolver.Resolver;
 import com.mitrian.common.commands.util.parser.ArgumentParser;
+import com.mitrian.common.elements.Worker;
 import com.mitrian.common.exceptions.ForcedShutdownException;
 import com.mitrian.common.network.UDPSocketClient;
 import com.mitrian.common.network.exception.NetworkException;
@@ -39,6 +40,7 @@ public class Console {
 
 	private final UserLoging userLoging;
 
+	private User user;
 
 	/**
 	 * Constructor for initialize fields
@@ -82,10 +84,8 @@ public class Console {
 			printer.println("Для регистрации введите register, для входа login");
 			String lline = scanner.nextLine().trim();
 			if (lline.equals("login")){
-				var logReq = userLoging.login();
-				System.out.println("1");
-				LoginResponse loginResponse = client.sendRequestAndWaitResponse(userLoging.login()) ;
-				System.out.println("2");
+				this.user = userLoging.readUserData();
+				LoginResponse loginResponse = client.sendRequestAndWaitResponse(userLoging.login(user)) ;
 				if (loginResponse.getCode() == ResponseCode.SUCCEED){
 					printer.println("Вы успешно вошли в систему");
 					succesEnter = true;
@@ -93,19 +93,19 @@ public class Console {
 					printer.println("Повторите попытку");
 				}
 			} else if (lline.equals("register")) {
-				System.out.println("1");
-				RegisterResponse registerResponse = client.sendRequestAndWaitResponse(userLoging.register());
-				System.out.println("2");
+				this.user = userLoging.readUserData();
+				RegisterResponse registerResponse = client.sendRequestAndWaitResponse(userLoging.register(user));
 				if (registerResponse.getCode() == ResponseCode.SUCCEED){
 					printer.println("Вы успешно зарегистрировались");
 					succesEnter = true;
 				} else {
 					printer.println("Повторите попытку");
 				}
+			}else {
+				succesEnter = false;
 			}
 		}
 
-		printer.println("QQ");
 		while (true) {
 			try {
 
@@ -116,16 +116,13 @@ public class Console {
 				String input = scanner.nextLine().trim();
 				AbstractCommand command = resolver.resolve(input);
 
+				command.setUser(user);
+				System.out.println("cl ok");
 				if (command instanceof ExitCommand) {
 					printer.println("Terminating current client");
 					System.exit(0);
 				}
 
-				if (command instanceof SaveCommand)
-				{
-					printer.println("This command is not allowed from client side");
-					continue;
-				}
 
 
 //				If update command discovered
@@ -162,7 +159,9 @@ public class Console {
 					try
 					{
 						WorkerConsoleReader workerConsoleReader = new WorkerConsoleReader(scanner, printer);
-						command.setAdditionalArg(workerConsoleReader.createWorkerObject());
+						Worker worker = workerConsoleReader.createWorkerObject();
+						worker.setUserName(user.getUserName());
+						command.setAdditionalArg(worker);
 					}
 					catch (ForcedShutdownException e)
 					{
@@ -174,9 +173,11 @@ public class Console {
 				CommandRequest request = new CommandRequest(
 						SOURCE_ADDR,
 						DESTINATION_ADDR,
-					command
+					command,
+						user
 				);
 
+				System.out.println("v console");
 				CommandResponse response = client.sendRequestAndWaitResponse(request);
 				printer.println(response.getMessage());
 			}

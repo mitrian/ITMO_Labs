@@ -35,7 +35,6 @@ public class CommandFactory {
             case "show" -> new ShowCommand(arguments);
             case "execute_script" -> new ExecuteScriptCommand(arguments);
             case "info" -> new InfoCommand(arguments);
-            case "save" -> new SaveCommand(arguments);
             case "update" -> new UpdateCommand(arguments);
             case "print_unique_person" -> new PrintUniquePersonCommand(arguments);
 
