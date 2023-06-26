@@ -64,7 +64,7 @@ public class UDPSocketClient implements AutoCloseable {
 
 //			Socket configuration
 			this.socket.setReuseAddress(true);
-			this.socket.setSoTimeout(2000);
+			this.socket.setSoTimeout(5000);
 		}
 		catch (SocketException e) {
 			throw new NetworkException("Невозможно открыть datagram socket", e);
@@ -225,6 +225,7 @@ public class UDPSocketClient implements AutoCloseable {
 		}
 		catch (IOException e) {
 //			LOGGER.severe("Failed to receive response from the server: " + e.getMessage());
+			e.printStackTrace();
 			throw new NetworkException("Не удалось получить ответ от сервера", e);
 		}
 	}

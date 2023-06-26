@@ -2,7 +2,7 @@ package com.mitrian.common.commands.util;
 
 import java.io.Serializable;
 
-public class ExecutionResult extends Throwable implements Serializable
+public class ExecutionResult implements Serializable
 {
 	transient private final StringBuilder sb;
 

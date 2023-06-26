@@ -27,7 +27,6 @@ public class HandlingTask implements Runnable{
     public void run() {
         AbstractResponse r = null;
         r = requestHandler.handle(request);
-        System.out.println(r);
         Thread t = new ResponseThread(udpChannelServer, r);
         t.start();
     }

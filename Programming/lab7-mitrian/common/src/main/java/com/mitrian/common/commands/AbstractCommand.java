@@ -6,7 +6,6 @@ import com.mitrian.common.commands.util.ExecutionResult;
 import com.mitrian.common.dao.Dao;
 import com.mitrian.common.elements.Worker;
 import com.mitrian.common.exceptions.DBCollectionException;
-import com.mitrian.common.exceptions.UserException;
 import com.mitrian.common.exceptions.impl.user.UserExistenceException;
 import com.mitrian.common.executors.Executor;
 
@@ -78,7 +77,7 @@ public abstract class AbstractCommand implements Externalizable
      * Executing command
      * @return execution result
      */
-    public abstract ExecutionResult execute() throws ExecutionResult, DBCollectionException, SQLException, UserExistenceException;
+    public abstract ExecutionResult execute() throws DBCollectionException, SQLException, UserExistenceException;
 
     /**
      * Dao setter

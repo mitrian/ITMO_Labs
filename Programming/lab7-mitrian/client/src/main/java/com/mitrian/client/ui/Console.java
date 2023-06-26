@@ -9,7 +9,6 @@ import com.mitrian.common.commands.cmdclass.ExitCommand;
 import com.mitrian.common.commands.cmdclass.UpdateCommand;
 import com.mitrian.common.commands.resolver.Resolver;
 import com.mitrian.common.commands.util.parser.ArgumentParser;
-import com.mitrian.common.elements.Worker;
 import com.mitrian.common.exceptions.ForcedShutdownException;
 import com.mitrian.common.network.UDPSocketClient;
 import com.mitrian.common.network.exception.NetworkException;
@@ -117,21 +116,20 @@ public class Console {
 				AbstractCommand command = resolver.resolve(input);
 
 				command.setUser(user);
-				System.out.println("cl ok");
 				if (command instanceof ExitCommand) {
 					printer.println("Terminating current client");
 					System.exit(0);
 				}
 
-
+				WorkerConsoleReader workerConsoleReader = new WorkerConsoleReader(scanner, printer);
 
 //				If update command discovered
-				if (command instanceof UpdateCommand)
+				if (command instanceof UpdateCommand updateCommand)
 				{
 					IdRequest checkIdRequest = new IdRequest(
 							SOURCE_ADDR,
 							DESTINATION_ADDR,
-						ArgumentParser.parseInteger(command.getArguments().get(0))
+							ArgumentParser.parseInteger(command.getArguments().get(0))
 					);
 
 					IdResponse idResponse = client.sendRequestAndWaitResponse(checkIdRequest);
@@ -140,26 +138,14 @@ public class Console {
 						printer.println("No such id");
 						continue;
 					}
-
-					try
-					{
-						WorkerConsoleReader workerConsoleReader = new WorkerConsoleReader(scanner, printer);
-						command.setAdditionalArg(workerConsoleReader.createWorkerObject());
-					}
-					catch (ForcedShutdownException e)
-					{
-						printer.println("Element input interrupted");
-						continue;
-					}
 				}
 
-//				If non update command uses element from console
-				if (command.getInputElement() && !(command instanceof UpdateCommand))
+				if (command.getInputElement())
 				{
+
 					try
 					{
-						WorkerConsoleReader workerConsoleReader = new WorkerConsoleReader(scanner, printer);
-						Worker worker = workerConsoleReader.createWorkerObject();
+						var worker = workerConsoleReader.createWorkerObject();
 						worker.setUserName(user.getUserName());
 						command.setAdditionalArg(worker);
 					}
@@ -177,7 +163,6 @@ public class Console {
 						user
 				);
 
-				System.out.println("v console");
 				CommandResponse response = client.sendRequestAndWaitResponse(request);
 				printer.println(response.getMessage());
 			}

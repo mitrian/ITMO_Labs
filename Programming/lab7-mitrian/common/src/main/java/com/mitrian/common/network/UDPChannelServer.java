@@ -1,17 +1,15 @@
 package com.mitrian.common.network;
 
-import com.mitrian.common.commands.util.ExecutionResult;
 import com.mitrian.common.network.exception.NetworkException;
 import com.mitrian.common.network.model.frame.UDPFrame;
 import com.mitrian.common.network.model.handler.RequestHandler;
 import com.mitrian.common.network.model.request.Request;
 import com.mitrian.common.network.model.response.AbstractResponse;
 import com.mitrian.common.network.util.NetworkUtils;
+import com.mitrian.common.network.util.mapper.FrameMapper;
 import com.mitrian.common.network.util.mapper.RequestMapper;
 import com.mitrian.common.network.util.mapper.ResponseMapper;
-import com.mitrian.common.network.util.mapper.FrameMapper;
 import com.mitrian.common.network.util.mapper.exception.MappingException;
-import org.apache.commons.lang3.SerializationUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -20,7 +18,6 @@ import java.net.SocketAddress;
 import java.net.StandardSocketOptions;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
@@ -122,7 +119,7 @@ public class UDPChannelServer implements AutoCloseable {
 	 *
 	 * @throws NetworkException if it's failed to select a channel or send the response
 	 */
-	public void listenAndHandleRequests() throws NetworkException, ExecutionResult {
+	public void listenAndHandleRequests() throws NetworkException {
 			Request request = waitRequest();
 			AbstractResponse abstractResponse = requestHandler.handle(request);
 			sendResponse(abstractResponse);
@@ -170,7 +167,6 @@ public class UDPChannelServer implements AutoCloseable {
 				}
 
 			} while (!gotAll);
-			System.out.println("wait is ok");
 			return requestMapper.mapFromBytesToInstance(baos.toByteArray());
 
 		}

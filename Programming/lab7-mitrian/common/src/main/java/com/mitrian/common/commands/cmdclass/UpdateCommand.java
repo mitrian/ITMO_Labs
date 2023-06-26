@@ -31,19 +31,16 @@ public class UpdateCommand extends AbstractCommand {
      * @return status of executing
      */
     @Override
-    public ExecutionResult execute() throws ExecutionResult, UserExistenceException {
+    public ExecutionResult execute() throws UserExistenceException {
         try
         {
             dao.update(Integer.valueOf(arguments.get(0)), (Worker) additionalArg, user);
             return new ExecutionResult(ExecutionStatus.SUCCEED);
         }
-        catch (CollectionException e)
+        catch (DBCollectionException | CollectionException e)
         {
             return new ExecutionResult(ExecutionStatus.FAILED)
                     .append(e.getMessage());
-        } catch (DBCollectionException e1) {
-            throw new ExecutionResult(ExecutionStatus.FAILED)
-                    .append(e1.getMessage());
         }
     }
 

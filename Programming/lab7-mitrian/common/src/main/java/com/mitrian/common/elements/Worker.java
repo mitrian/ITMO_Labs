@@ -1,7 +1,5 @@
 package com.mitrian.common.elements;
 
-import com.mitrian.common.elements.initializer.IdCollection;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
@@ -17,14 +15,12 @@ public class Worker implements Comparable<Worker>, Serializable {
     private Date endDate; //Поле может быть null
     private Status status; //Поле может быть null
     private Person person; //Поле не может быть null
-
     private String userName;
 
 
 
 
     private Worker(Builder builder) {
-        this.id = IdCollection.createWorkerId();
         this.name = builder.name;
         this.coordinates = builder.coordinates;
         this.creationDate = LocalDate.now();
@@ -75,8 +71,11 @@ public class Worker implements Comparable<Worker>, Serializable {
         return person;
     }
 
-    public void setId(Integer id){ this.id = id;
-    IdCollection.idCollection.add(id);}
+    public void setId(Integer id)
+    {
+        this.id = id;
+    }
+
     public void setName(String name){ this.name = name;}
     public void setCoordinates(Coordinates coordinates){ this.coordinates = coordinates;}
 

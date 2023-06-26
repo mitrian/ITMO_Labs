@@ -29,7 +29,7 @@ public class UserLoging {
             InetSocketAddress adressTo,
             InetSocketAddress adressFrom,
             UserReader userReader
-            ) throws ForcedShutdownException {
+            ) {
         this.printer = printer;
         this.scanner = scanner;
         this.adressTo = adressTo;
@@ -38,28 +38,18 @@ public class UserLoging {
     }
 
 
-    public RegisterRequest register(User user) throws ForcedShutdownException {
+    public RegisterRequest register(User user) {
        return new RegisterRequest(adressFrom, adressTo, new User(user.getUserName(), user.getPassword()));
     }
 
 
-    public LoginRequest login(User user) throws ForcedShutdownException {
+    public LoginRequest login(User user) {
         return new LoginRequest(adressFrom, adressTo, new User(user.getUserName(), user.getPassword()));
     }
 
-    public User readUserData(){
-        printer.println("Введите имя пользователя (более 5 символов и менее 50):");
-        String username = userReader.readUsername();
-        while(username.length()<=4 || username.length() > 50){
-            printer.println("Имя пользователя должно содержать более 5 символов");
-            username = userReader.readUsername();
-        }
-        printer.println("Введите пароль(более 5 символов и менее 50): ");
+    public User readUserData() throws ForcedShutdownException {
+        String userName = userReader.readUsername();
         String password = userReader.readPassword();
-        while(password.length()<=4 ||password.length()> 50){
-            printer.println("Пароль должен содержать более 5 символов и менее 50 символов");
-            password = userReader.readPassword();
-        }
-        return new User(username, password);
+        return new User(userName, password);
     }
 }

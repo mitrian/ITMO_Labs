@@ -20,7 +20,6 @@ import com.mitrian.server.database.DBConnectionManager;
 import com.mitrian.server.database.DatabaseManager;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -66,8 +65,6 @@ public class CollectionDBImpl implements Collection<Worker> {
 
     @Override
     public List<Worker> getAllElements(User user) throws UserExistenceException, SQLException {
-        System.out.println("show is ok");
-        System.out.println("show is ok x 2");
         return workers.stream()
                 .sorted(Comparator.comparing(Worker::getName))
                 .toList();
@@ -89,10 +86,10 @@ public class CollectionDBImpl implements Collection<Worker> {
     public void add(Worker item) throws DBCollectionException, SQLException, UserExistenceException {
         try {
             writeLock.lock();
-            System.out.println("into add");
             databaseManager.insertWorker(item);
             workers.add(item);
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new DBCollectionException("Ошибка при добавлении в бд", e);
         } finally {
             writeLock.unlock();
@@ -107,7 +104,7 @@ public class CollectionDBImpl implements Collection<Worker> {
           //  if(!signIn(user)) throw new UserExistenceException("Данные пользователя некорректны");
             writeLock.lock();
             databaseManager.updateWorker(id, item.getName(), item.getCoordinates(), item.getSalary(),
-                    item.getStartDate(), (java.sql.Date) item.getEndDate(), item.getStatus(),
+                    item.getStartDate(), item.getEndDate(), item.getStatus(),
                     item.getPerson(), item.getPerson().getLocation());
 
             Optional<Worker> optionalWorker = workers.stream()

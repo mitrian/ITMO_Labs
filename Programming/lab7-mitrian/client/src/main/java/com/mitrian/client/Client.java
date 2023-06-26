@@ -38,7 +38,7 @@ public class Client
 
 		int port1 = Integer.parseInt(args[0]);
 		int port2 = Integer.parseInt(args[1]);
-		UserReader userReader = new UserReader(scanner);
+		UserReader userReader = new UserReader(scanner, printer);
 
 		UserLoging userLoging = new UserLoging(scanner, printer,
 				new InetSocketAddress(port1),

@@ -15,7 +15,7 @@ public interface Executor {
      * @param command for executing
      * @return executing status
      */
-    default ExecutionResult execute(AbstractCommand command) throws ExecutionResult, DBCollectionException, SQLException, UserExistenceException {
+    default ExecutionResult execute(AbstractCommand command) throws DBCollectionException, SQLException, UserExistenceException {
         return null;
     }
 

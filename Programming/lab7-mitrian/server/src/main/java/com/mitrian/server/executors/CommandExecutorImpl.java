@@ -27,15 +27,17 @@ public class CommandExecutorImpl implements Executor
     }
 
     @Override
-    public ExecutionResult execute(AbstractCommand command) throws ExecutionResult, DBCollectionException, SQLException, UserExistenceException {
-        System.out.println("2");
+    public ExecutionResult execute(AbstractCommand command) throws DBCollectionException, SQLException, UserExistenceException {
         command.setDao(workerDao);
-        System.out.println("3");
+
+//        if (command instanceof UpdateCommand)
+//        {
+//        }
+
         if (command instanceof ExecuteScriptCommand) {
-            System.out.println("4");
             command.setExecutor(this);
         }
-        System.out.println("5");
+
         return command.execute();
     }
 
@@ -61,7 +63,7 @@ public class CommandExecutorImpl implements Executor
                 ExecutionResult cmdResult = command.execute();
                 scriptResult.append(cmdResult.getMessage());
             }
-            catch (Exception | ExecutionResult e) {
+            catch (Exception e) {
                 openFiles.remove(fileName);
                 return new ExecutionResult(ExecutionStatus.FAILED)
                         .append("В исполнении скрипта возникла ошибка")

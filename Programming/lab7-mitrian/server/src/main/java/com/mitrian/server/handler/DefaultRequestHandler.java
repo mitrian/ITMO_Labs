@@ -10,8 +10,6 @@ import com.mitrian.common.exceptions.DBCollectionException;
 import com.mitrian.common.exceptions.UserException;
 import com.mitrian.common.exceptions.impl.algorithm.SHA512Exception;
 import com.mitrian.common.exceptions.impl.user.UserExistenceException;
-import com.mitrian.common.exceptions.impl.user.UserNameExistenceException;
-import com.mitrian.common.exceptions.impl.user.UserNameLenghtException;
 import com.mitrian.common.exceptions.impl.user.UserPasswordLengthException;
 import com.mitrian.common.executors.Executor;
 import com.mitrian.common.network.model.handler.RequestHandler;
@@ -20,7 +18,6 @@ import com.mitrian.common.network.model.response.*;
 import com.mitrian.server.Server;
 
 import java.sql.SQLException;
-import java.sql.SQLOutput;
 import java.util.logging.Logger;
 
 public class DefaultRequestHandler implements RequestHandler {
@@ -55,12 +52,12 @@ public class DefaultRequestHandler implements RequestHandler {
                         new ExecutionResult(ExecutionStatus.FAILED)
                                 .append("Empty command got. Failed to execute")
                 );
+
+            logger.info("Requested command: " + command.getClass().getName());
             command.setResolver(resolver);
             try {
-                System.out.println("1");
                 command.setUser(req.getUser());
                 ExecutionResult executionResult = executor.execute(command);
-                System.out.println("hurray");
                 if (executionResult.getStatus() == ExecutionStatus.SUCCEED) {
                     return new CommandResponse(
                             req.getTo(),
@@ -70,7 +67,8 @@ public class DefaultRequestHandler implements RequestHandler {
                     );
                 }
                 return new CommandResponse(req.getTo(), req.getFrom(), ResponseCode.FAILED, executionResult);
-            } catch (ExecutionResult | DBCollectionException | SQLException | UserExistenceException e) {
+            } catch (DBCollectionException | SQLException | UserExistenceException e) {
+                e.printStackTrace();
                 return new CommandResponse(
                         req.getTo(),
                         req.getFrom(),
