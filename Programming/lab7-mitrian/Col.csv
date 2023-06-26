@@ -1,3 +1,0 @@
-id,name,coordinates_x,coordinates_y,creationDate,salary,startDate,endDate,status,person_weight,person_hairColor,person_nationality,location_x,location_y,location_z
-12,RAK,283,34123,2023-04-22,21.0,2008-01-01,,FIRED,8238.187238917399,GREEN,GERMANY,83798123,8932.12312,923998
-100,VAD,23,3423,2023-04-22,1.0,2009-01-01,,HIRED,8238.187238917399,GREEN,GERMANY,83798123,8932.12312,923998

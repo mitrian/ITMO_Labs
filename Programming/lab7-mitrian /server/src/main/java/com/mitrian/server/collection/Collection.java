@@ -13,7 +13,10 @@ import com.mitrian.common.exceptions.impl.collection.IdUnavailableException;
 import com.mitrian.common.exceptions.impl.file.CommaException;
 import com.mitrian.common.exceptions.impl.file.FileFormatException;
 import com.mitrian.common.exceptions.impl.file.PointerExc;
-import com.mitrian.common.exceptions.impl.user.*;
+import com.mitrian.common.exceptions.impl.user.UserExistenceException;
+import com.mitrian.common.exceptions.impl.user.UserNameExistenceException;
+import com.mitrian.common.exceptions.impl.user.UserNameLenghtException;
+import com.mitrian.common.exceptions.impl.user.UserPasswordLengthException;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -27,8 +30,8 @@ public interface Collection<T> {
     List<T> getAllElements(User user) throws UserExistenceException, SQLException;
     Set<Person> printUniquePerson(User user) throws UserExistenceException, SQLException;
     void add(T item) throws DBCollectionException, SQLException, UserExistenceException;
-    void update(Integer id, T item, User user) throws CollectionException, DBCollectionException, UserExistenceException, UserAccesException;
-    void remove(Integer id, User user) throws CollectionException, DBCollectionException, UserExistenceException, UserAccesException;
+    void update(Integer id, T item, User user) throws CollectionException, DBCollectionException, UserExistenceException;
+    void remove(Integer id, User user) throws CollectionException, DBCollectionException, UserExistenceException;
     void clear(User user) throws DBCollectionException, UserExistenceException;
     void load() throws IOException, IncorrectFieldException, CommaException, FileFormatException, PointerExc, DBCollectionException, UserExistenceException;
     void removeFirst(User user) throws CollectionException, SQLException, DBCollectionException, UserExistenceException;

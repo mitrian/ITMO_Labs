@@ -42,10 +42,6 @@ public class ExecuteScriptCommand extends AbstractCommand {
             BufferedReader reader = new BufferedReader(new FileReader(script));
             BufferedReader testReader = new BufferedReader(new FileReader(script));
             List<AbstractCommand> commands = resolver.resolve(testReader, reader.lines().toList());
-
-            for(AbstractCommand c : commands)
-                c.setUser(user);
-            
             return executor.execute(script.getName(), commands);
         }
         catch (FileException | ScriptResolvingException | FileNotFoundException e)

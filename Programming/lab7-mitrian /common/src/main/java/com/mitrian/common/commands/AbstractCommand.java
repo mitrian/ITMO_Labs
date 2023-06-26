@@ -36,12 +36,6 @@ public abstract class AbstractCommand implements Externalizable
     /** Executor instance */
     protected Executor executor;
     protected Resolver resolver;
-
-    public User getUser()
-    {
-        return user;
-    }
-
     protected User user;
 
     public AbstractCommand()
@@ -67,7 +61,6 @@ public abstract class AbstractCommand implements Externalizable
         out.writeBoolean(inputElement);
         out.writeObject(additionalArg);
         out.writeObject(name);
-        out.writeObject(user);
     }
 
     @Override
@@ -78,7 +71,6 @@ public abstract class AbstractCommand implements Externalizable
         this.inputElement = in.readBoolean();
         this.additionalArg = in.readObject();
         this.name = (String) in.readObject();
-        this.user = (User) in.readObject();
     }
 
     /**

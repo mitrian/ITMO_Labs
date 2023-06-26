@@ -54,7 +54,7 @@ public class CommandResolverImpl implements Resolver
 				String line = scanner.nextLine();
 //				System.out.println("Got line: " + line);
 				AbstractCommand command = resolve(line);
-
+				System.out.println(command.getNameOfCommand());
 
 				if (command.getInputElement())
 				{

@@ -20,7 +20,6 @@ public class CommandExecutorImpl implements Executor
 	/** Current field of executing files */
     private static final Set<String> openFiles = new HashSet<>();
 	private final Dao<Worker> workerDao;
-//    private User user;
 
 
     public CommandExecutorImpl(Dao<Worker> workerDao) {
@@ -30,7 +29,6 @@ public class CommandExecutorImpl implements Executor
     @Override
     public ExecutionResult execute(AbstractCommand command) throws DBCollectionException, SQLException, UserExistenceException {
         command.setDao(workerDao);
-//        user = command.getUser();
 
 
         if (command instanceof ExecuteScriptCommand) {
@@ -56,9 +54,7 @@ public class CommandExecutorImpl implements Executor
             if (command instanceof ExecuteScriptCommand){
                 command.setExecutor(this);
             }
-
             command.setDao(workerDao);
-
 
             try {
                 ExecutionResult cmdResult = command.execute();

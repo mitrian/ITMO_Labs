@@ -56,9 +56,7 @@ public class DefaultRequestHandler implements RequestHandler {
             logger.info("Requested command: " + command.getClass().getName());
             command.setResolver(resolver);
             try {
-
                 command.setUser(req.getUser());
-
                 ExecutionResult executionResult = executor.execute(command);
                 if (executionResult.getStatus() == ExecutionStatus.SUCCEED) {
                     return new CommandResponse(
@@ -70,6 +68,7 @@ public class DefaultRequestHandler implements RequestHandler {
                 }
                 return new CommandResponse(req.getTo(), req.getFrom(), ResponseCode.FAILED, executionResult);
             } catch (DBCollectionException | SQLException | UserExistenceException e) {
+                e.printStackTrace();
                 return new CommandResponse(
                         req.getTo(),
                         req.getFrom(),

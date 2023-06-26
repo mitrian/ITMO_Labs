@@ -35,8 +35,6 @@ public class AddCommand extends AbstractCommand {
     public ExecutionResult execute() throws DBCollectionException, SQLException, UserExistenceException {
             Worker worker = (Worker) additionalArg;
 
-            worker.setUserName(user.getUserName());
-
             if (worker == null)
                 return new ExecutionResult(ExecutionStatus.FAILED)
                         .append("Element was not set");

@@ -9,7 +9,10 @@ import com.mitrian.common.exceptions.DBCollectionException;
 import com.mitrian.common.exceptions.impl.algorithm.SHA512Exception;
 import com.mitrian.common.exceptions.impl.collection.CollectionElementException;
 import com.mitrian.common.exceptions.impl.collection.IdUnavailableException;
-import com.mitrian.common.exceptions.impl.user.*;
+import com.mitrian.common.exceptions.impl.user.UserExistenceException;
+import com.mitrian.common.exceptions.impl.user.UserNameExistenceException;
+import com.mitrian.common.exceptions.impl.user.UserNameLenghtException;
+import com.mitrian.common.exceptions.impl.user.UserPasswordLengthException;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -25,8 +28,8 @@ public interface Dao<T> {
     Set<Person> printUniquePerson(User user) throws SQLException, UserExistenceException;
     void add(T item) throws DBCollectionException, SQLException, UserExistenceException;
 
-    void update(Integer id, T item, User user) throws CollectionException, DBCollectionException, UserExistenceException, UserAccesException;
-    void remove(Integer id, User user) throws CollectionException, DBCollectionException, UserExistenceException, UserAccesException;
+    void update(Integer id, T item, User user) throws CollectionException, DBCollectionException, UserExistenceException;
+    void remove(Integer id, User user) throws CollectionException, DBCollectionException, UserExistenceException;
     void clear(User user) throws DBCollectionException, UserExistenceException;
     void removeFirst(User user) throws CollectionException, SQLException, DBCollectionException, UserExistenceException;
     Optional<T> removeHead(User user) throws CollectionException, DBCollectionException, UserExistenceException;

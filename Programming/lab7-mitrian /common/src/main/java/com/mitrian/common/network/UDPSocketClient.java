@@ -61,6 +61,8 @@ public class UDPSocketClient implements AutoCloseable {
 			this.serverAddr = new InetSocketAddress(serverPort);
 			this.requestMapper = requestMapper;
 			this.responseMapper = responseMapper;
+
+//			Socket configuration
 			this.socket.setReuseAddress(true);
 			this.socket.setSoTimeout(5000);
 		}
@@ -80,12 +82,14 @@ public class UDPSocketClient implements AutoCloseable {
 	 * request mapping failed
 	 */
 	public <T extends AbstractResponse> T sendRequestAndWaitResponse(Request request) throws NetworkException, ServerNotAvailable {
-
+//		Throwing an NPE if the provided request is null
 		Objects.requireNonNull(request);
 		request.setTo(serverAddr);
 		request.setFrom(new InetSocketAddress(socket.getInetAddress(), socket.getLocalPort()));
 		try {
+//			First of all, we should get our request byte representation
 			byte[] requestBytes = requestMapper.mapFromInstanceToBytes(request);
+//			If request size is more than default buffer size - send with overhead : else - send without overhead
 			if (requestBytes.length > NetworkUtils.REQUEST_BUFFER_SIZE) {
 				sendRequestWithOverhead(requestBytes, request.getTo());
 			}
@@ -93,6 +97,7 @@ public class UDPSocketClient implements AutoCloseable {
 				sendRequestNoOverhead(requestBytes, request.getTo());
 			}
 
+//			Waiting for response
 			return waitForResponse();
 		}
 		catch (MappingException e) {
@@ -108,13 +113,19 @@ public class UDPSocketClient implements AutoCloseable {
 	 * @throws NetworkException if it's failed to send some of DatagramPackets
 	 */
 	private void sendRequestWithOverhead(byte[] requestBytes, InetSocketAddress destination) throws NetworkException, ServerNotAvailable {
+//		Get request chunks from raw request bytes
 		List<byte[]> requestChunks = NetworkUtils.splitArrayIntoChunks(requestBytes, NetworkUtils.REQUEST_BUFFER_SIZE);
+
+//		Wrap chunks with UDPFrames
 		List<UDPFrame> udpFrames = NetworkUtils.wrapChunksWithUDPFrames(requestChunks);
+
+//		Wrap UDPFrames with DatagramPackets
 		List<DatagramPacket> datagramPackets = NetworkUtils.wrapUDPFramesWithDatagramPackets(
 				udpFrames,
 				destination
 		);
 
+//		Trying to send datagram packets
 		try {
 			for (DatagramPacket packet : datagramPackets) {
 
@@ -176,30 +187,45 @@ public class UDPSocketClient implements AutoCloseable {
 	 */
 	@SuppressWarnings("unchecked")
 	private <T extends AbstractResponse> T waitForResponse() throws NetworkException {
+//		Response byte buffer initiation
 		byte[] responseBytes = new byte[NetworkUtils.RESPONSE_BUFFER_SIZE];
+
+//		After the request was sent we should prepare a datagram packet for response
 		DatagramPacket responsePacket = new DatagramPacket(responseBytes, responseBytes.length);
 
 		try {
 			byte[] allResponseBytes = new byte[0];
 			boolean gotAll = false;
 			do {
+//				Receiving a response frame
 				socket.receive(responsePacket);
+
+//				Retrieving response raw bytes
 				byte[] currentFrameBytes = responsePacket.getData();
+
+//				Mapping UDPFrame from raw bytes
 				UDPFrame udpFrame = FrameMapper.mapFromBytesToInstance(currentFrameBytes);
+
+//				Enriching response bytes with new bytes
 				allResponseBytes = NetworkUtils.concatTwoByteArrays(allResponseBytes, udpFrame.getData());
 
 				if (udpFrame.isLast())
 					gotAll = true;
 			}
 			while (!gotAll);
+
+//			Mapping response bytes into an instance
 			AbstractResponse abstractResponse = responseMapper.mapFromBytesToInstance(allResponseBytes);
+
 			return (T) abstractResponse;
 		}
 		catch (MappingException e) {
+//			throw new NetworkException("Mapping operation failure detected", e);
 			throw new RuntimeException(e);
 		}
 		catch (IOException e) {
-	//		e.printStackTrace();
+//			LOGGER.severe("Failed to receive response from the server: " + e.getMessage());
+			e.printStackTrace();
 			throw new NetworkException("Не удалось получить ответ от сервера", e);
 		}
 	}

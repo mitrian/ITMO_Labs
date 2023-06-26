@@ -19,6 +19,7 @@ public class ResponseThread extends Thread{
         try {
             udpChannelServer.sendResponse(abstractResponse);
         } catch (NetworkException ignored) {
+            ignored.printStackTrace();
         }
     }
 }

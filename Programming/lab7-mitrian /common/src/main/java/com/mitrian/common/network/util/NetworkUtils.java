@@ -39,6 +39,7 @@ public class NetworkUtils {
 	public static List<byte[]> splitArrayIntoChunks(byte[] array, int chunk) {
 		List<byte[]> chunks = new ArrayList<>();
 
+//		Prevent excessive operations if chunk size is 1
 		if (chunk == 1) {
 			for (byte item : array)
 				chunks.add(new byte[] { item });
@@ -46,9 +47,11 @@ public class NetworkUtils {
 			return chunks;
 		}
 
+//		Array should be simply wrapped with a list if chunk size is equal to array length
 		if (chunk == array.length)
 			return List.of(array);
 
+//		Pointer initialization
 		int pointer = 0;
 
 		while(pointer <= array.length) {
@@ -73,7 +76,10 @@ public class NetworkUtils {
 	 * @return list of {@link UDPFrame}
 	 */
 	public static List<UDPFrame> wrapChunksWithUDPFrames(List<byte[]> chunks) {
+//		Getting request chunks from raw bytes
 		List<UDPFrame> frames = new ArrayList<>();
+
+//		Wrapping separate chunks into separate frames
 		for (int i = 0; i < chunks.size() - 1; i++)
 			frames.add(new UDPFrame(chunks.get(i), false));
 
@@ -97,7 +103,9 @@ public class NetworkUtils {
 
 		try {
 			for (UDPFrame frame : frames) {
+//				Mapping every frame to raw bytes
 				byte[] frameBytes = FrameMapper.mapFromInstanceToBytes(frame);
+//				Wrapping every frame byte array with datagram packet
 				packets.add(new DatagramPacket(frameBytes, frameBytes.length, destination));
 			}
 

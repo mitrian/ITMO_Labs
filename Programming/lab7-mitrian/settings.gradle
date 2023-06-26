@@ -1,2 +1,0 @@
-rootProject.name = 'lab6-mitrian'
-include 'common', 'server', 'client'

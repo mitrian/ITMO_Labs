@@ -40,7 +40,7 @@ public class DatabaseManager {
 		String sqlGetWorkers = """
                 SELECT workers.id, workers.name, coordinates.x_coordinates, coordinates.y_coordinates,
                 workers.creationDate, workers.salary, workers.startDate, workers.endDate, workers.status,
-                persons.weight, persons.hairColor, persons.nationality, locations.x, locations.y, locations.z, workers.user_id
+                persons.weight, persons.hairColor, persons.nationality, locations.x, locations.y, locations.z
                   FROM workers
                   JOIN coordinates ON coordinates.id = workers.coordinates_id
                   JOIN persons ON persons.id = workers.person_id
@@ -84,10 +84,6 @@ public class DatabaseManager {
 					.setSalary(salary)
 					.setStatus(status)
 					.build();
-
-			var uname = getUserName(workerFields.getInt("user_id"));
-
-			worker.setUserName(uname);
 			worker.setId(workerId);
 			workers.add(worker);
 		}
@@ -118,10 +114,6 @@ public class DatabaseManager {
 			connection.commit();
 			connection.setAutoCommit(true);
 			return workerId;
-		}
-		catch (Exception e)
-		{
-			throw new SQLException("bibaexception");
 		}
 	}
 
@@ -186,7 +178,6 @@ public class DatabaseManager {
 	}
 
 	private int insertWorker(Worker worker, Connection connection) throws SQLException {
-
 		int coordinatesId = insertCoordinates(worker.getCoordinates(), connection);
 		int personId = insertPerson(worker.getPerson(), connection);
 		String sqlInsertWorker = """
@@ -196,28 +187,16 @@ public class DatabaseManager {
 		PreparedStatement insertWorkers = connection.prepareStatement(sqlInsertWorker, Statement.RETURN_GENERATED_KEYS);
 		insertWorkers.setString(1, worker.getName());
 		insertWorkers.setInt(2, coordinatesId);
-
 		insertWorkers.setDate(3, Date.valueOf(worker.getCreationDate()));
-
 		insertWorkers.setFloat(4, worker.getSalary());
-
-//		insertWorkers.setTimestamp(5, Timestamp.from(Date.valueOf(worker.getStartDate()).toInstant()));
 		insertWorkers.setDate(5, Date.valueOf(worker.getStartDate()));
-
-//		insertWorkers.setDate(6, Date.from(worker.getEndDate().toInstant()));
-
-//		insertWorkers.setDate(6, (new Date(worker.getEndDate().getTime())));
 		insertWorkers.setDate(6, (worker.getEndDate() == null) ? null : (new Date(worker.getEndDate().getTime())));
-//		insertWorkers.setTimestamp(6, Timestamp.from(worker.getEndDate().toInstant()));
-
 		insertWorkers.setString(7, worker.getStatus().toString());
 		insertWorkers.setInt(8, personId);
 		insertWorkers.setInt(9, getUserId(worker.getUserName()));
-		System.out.println(insertWorkers.executeUpdate());
-
 		var resultWorkers = insertWorkers.getGeneratedKeys();
 		resultWorkers.next();
-		var generatedId = resultWorkers.getInt("id");
+		var generatedId = resultWorkers.getInt("id"); //TODO здесь краш скрипта
 		worker.setId(generatedId);
 		return generatedId;
 	}
@@ -406,6 +385,12 @@ public class DatabaseManager {
 			connection.setAutoCommit(true);
 			return true;
 		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+
 	}
 
 
@@ -419,23 +404,6 @@ public class DatabaseManager {
 			ResultSet resultSalty = getSalty.executeQuery();
 			resultSalty.next();
 			return resultSalty.getInt("id");
-		}
-	}
-
-	public String getUserName(int id) throws SQLException{
-		Connection connection = databaseConnectionManager.getConnection();
-		try(connection){
-			String sqlGetSalty = "SELECT username FROM users WHERE id = ?";
-			PreparedStatement getSalty = connection.prepareStatement(sqlGetSalty);
-			getSalty.setInt(1, id);
-
-			ResultSet resultSalty = getSalty.executeQuery();
-			resultSalty.next();
-			return resultSalty.getString("username");
-		}
-		catch (Exception e)
-		{
-			throw new SQLException("PUPA");
 		}
 	}
 
@@ -500,14 +468,14 @@ public class DatabaseManager {
 	}
 
 
-	public boolean checkAccess(String username, int workerId) throws SQLException{
+	public boolean checkAccess(String username, int studyGroupId) throws SQLException{
 		Connection connection = databaseConnectionManager.getConnection();
 		try(connection) {
 			String sqlGetUsername = "SELECT username FROM (SELECT user_id FROM Workers WHERE id=?) " +
-					"AS workers_id JOIN users ON workers_id.user_id=users.id";
+					"AS workers_id JOIN users ON workers_id.creator_id=users.id";
 
 			PreparedStatement getUsername = connection.prepareStatement(sqlGetUsername);
-			getUsername.setInt(1, workerId);
+			getUsername.setInt(1, studyGroupId);
 			ResultSet resultUserName = getUsername.executeQuery();
 			if(!resultUserName.next()) return false;
 			return username.equals(resultUserName.getString("username"));

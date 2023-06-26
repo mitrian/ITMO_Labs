@@ -28,7 +28,6 @@ public class UserReader {
                 throw new ForcedShutdownException("Принудительно закрыто");
             }
             String userName = scanner.nextLine().trim();
-
             if (userName.length()>=5 & userName.length()<=50){
                 return userName;
             }
@@ -37,6 +36,11 @@ public class UserReader {
     }
 
     public String readPassword() throws ForcedShutdownException {
+//        if(scanner.hasNextLine()){
+//            return scanner.nextLine().trim();
+//        }
+//        System.exit(0);
+//        return null;
         printer.print("Введите пароль пользователя (более 4 символов и менее 50):");
         while (true){
             if (!scanner.hasNextLine()){

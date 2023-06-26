@@ -11,7 +11,10 @@ import com.mitrian.common.exceptions.impl.algorithm.SHA512Exception;
 import com.mitrian.common.exceptions.impl.collection.CollectionElementException;
 import com.mitrian.common.exceptions.impl.collection.CollectionEmptyException;
 import com.mitrian.common.exceptions.impl.collection.IdUnavailableException;
-import com.mitrian.common.exceptions.impl.user.*;
+import com.mitrian.common.exceptions.impl.user.UserExistenceException;
+import com.mitrian.common.exceptions.impl.user.UserNameExistenceException;
+import com.mitrian.common.exceptions.impl.user.UserNameLenghtException;
+import com.mitrian.common.exceptions.impl.user.UserPasswordLengthException;
 import com.mitrian.server.Server;
 import com.mitrian.server.database.DBConnectionManager;
 import com.mitrian.server.database.DatabaseManager;
@@ -86,6 +89,7 @@ public class CollectionDBImpl implements Collection<Worker> {
             databaseManager.insertWorker(item);
             workers.add(item);
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new DBCollectionException("Ошибка при добавлении в бд", e);
         } finally {
             writeLock.unlock();
@@ -95,11 +99,9 @@ public class CollectionDBImpl implements Collection<Worker> {
 
 
     @Override
-    public void update(Integer id, Worker item, User user) throws CollectionException, DBCollectionException, UserExistenceException, UserAccesException {
+    public void update(Integer id, Worker item, User user) throws CollectionException, DBCollectionException, UserExistenceException {
         try {
-            if (!databaseManager.checkAccess(user.getUserName(), id)){
-                throw new UserAccesException("Не Ваш элемент");
-            }
+          //  if(!signIn(user)) throw new UserExistenceException("Данные пользователя некорректны");
             writeLock.lock();
             databaseManager.updateWorker(id, item.getName(), item.getCoordinates(), item.getSalary(),
                     item.getStartDate(), item.getEndDate(), item.getStatus(),
@@ -135,11 +137,9 @@ public class CollectionDBImpl implements Collection<Worker> {
 
 
     @Override
-    public void remove(Integer id, User user) throws CollectionException, DBCollectionException, UserExistenceException, UserAccesException {
+    public void remove(Integer id, User user) throws CollectionException, DBCollectionException, UserExistenceException {
         try {
-            if (!databaseManager.checkAccess(user.getUserName(), id)){
-                throw new UserAccesException("Не Ваш элемент");
-            }
+           // if(!signIn(user)) throw new UserExistenceException("Данные пользователя некорректны");
             writeLock.lock();
             databaseManager.deleteWorker(id);
             Iterator<Worker> iterator = workers.iterator();
@@ -194,6 +194,7 @@ public class CollectionDBImpl implements Collection<Worker> {
     @Override
     public void removeFirst(User user) throws CollectionException, DBCollectionException, UserExistenceException {
         try {
+           // if(!signIn(user)) throw new UserExistenceException("Данные пользователя некорректны");
             writeLock.lock();
             int idd = workers.get(0).getId();
             databaseManager.deleteWorker(idd);
