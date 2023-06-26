@@ -30,9 +30,7 @@ public class CommandExecutorImpl implements Executor
     public ExecutionResult execute(AbstractCommand command) throws DBCollectionException, SQLException, UserExistenceException {
         command.setDao(workerDao);
 
-//        if (command instanceof UpdateCommand)
-//        {
-//        }
+
 
         if (command instanceof ExecuteScriptCommand) {
             command.setExecutor(this);

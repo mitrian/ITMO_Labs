@@ -24,11 +24,11 @@ public class UserLoging {
 
     public UserLoging
             (
-            Scanner scanner,
-            Printer printer,
-            InetSocketAddress adressTo,
-            InetSocketAddress adressFrom,
-            UserReader userReader
+                    Scanner scanner,
+                    Printer printer,
+                    InetSocketAddress adressTo,
+                    InetSocketAddress adressFrom,
+                    UserReader userReader
             ) {
         this.printer = printer;
         this.scanner = scanner;
@@ -39,7 +39,7 @@ public class UserLoging {
 
 
     public RegisterRequest register(User user) {
-       return new RegisterRequest(adressFrom, adressTo, new User(user.getUserName(), user.getPassword()));
+        return new RegisterRequest(adressFrom, adressTo, new User(user.getUserName(), user.getPassword()));
     }
 
 

@@ -187,16 +187,28 @@ public class DatabaseManager {
 		PreparedStatement insertWorkers = connection.prepareStatement(sqlInsertWorker, Statement.RETURN_GENERATED_KEYS);
 		insertWorkers.setString(1, worker.getName());
 		insertWorkers.setInt(2, coordinatesId);
+
 		insertWorkers.setDate(3, Date.valueOf(worker.getCreationDate()));
+
 		insertWorkers.setFloat(4, worker.getSalary());
+
+//		insertWorkers.setTimestamp(5, Timestamp.from(Date.valueOf(worker.getStartDate()).toInstant()));
 		insertWorkers.setDate(5, Date.valueOf(worker.getStartDate()));
+
+//		insertWorkers.setDate(6, Date.from(worker.getEndDate().toInstant()));
+
+//		insertWorkers.setDate(6, (new Date(worker.getEndDate().getTime())));
 		insertWorkers.setDate(6, (worker.getEndDate() == null) ? null : (new Date(worker.getEndDate().getTime())));
+//		insertWorkers.setTimestamp(6, Timestamp.from(worker.getEndDate().toInstant()));
+
 		insertWorkers.setString(7, worker.getStatus().toString());
 		insertWorkers.setInt(8, personId);
 		insertWorkers.setInt(9, getUserId(worker.getUserName()));
+		System.out.println(insertWorkers.executeUpdate());
+
 		var resultWorkers = insertWorkers.getGeneratedKeys();
 		resultWorkers.next();
-		var generatedId = resultWorkers.getInt("id"); //TODO здесь краш скрипта
+		var generatedId = resultWorkers.getInt("id");
 		worker.setId(generatedId);
 		return generatedId;
 	}
@@ -387,7 +399,7 @@ public class DatabaseManager {
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			//e.printStackTrace();
 			return false;
 		}
 
@@ -468,14 +480,14 @@ public class DatabaseManager {
 	}
 
 
-	public boolean checkAccess(String username, int studyGroupId) throws SQLException{
+	public boolean checkAccess(String username, int workerId) throws SQLException{
 		Connection connection = databaseConnectionManager.getConnection();
 		try(connection) {
 			String sqlGetUsername = "SELECT username FROM (SELECT user_id FROM Workers WHERE id=?) " +
 					"AS workers_id JOIN users ON workers_id.creator_id=users.id";
 
 			PreparedStatement getUsername = connection.prepareStatement(sqlGetUsername);
-			getUsername.setInt(1, studyGroupId);
+			getUsername.setInt(1, workerId);
 			ResultSet resultUserName = getUsername.executeQuery();
 			if(!resultUserName.next()) return false;
 			return username.equals(resultUserName.getString("username"));

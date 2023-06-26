@@ -6,6 +6,7 @@ import com.mitrian.common.commands.util.ExecutionStatus;
 import com.mitrian.common.elements.Worker;
 import com.mitrian.common.exceptions.CollectionException;
 import com.mitrian.common.exceptions.DBCollectionException;
+import com.mitrian.common.exceptions.impl.user.UserAccesException;
 import com.mitrian.common.exceptions.impl.user.UserExistenceException;
 
 import java.util.List;
@@ -37,7 +38,7 @@ public class UpdateCommand extends AbstractCommand {
             dao.update(Integer.valueOf(arguments.get(0)), (Worker) additionalArg, user);
             return new ExecutionResult(ExecutionStatus.SUCCEED);
         }
-        catch (DBCollectionException | CollectionException e)
+        catch (DBCollectionException | CollectionException | UserAccesException e)
         {
             return new ExecutionResult(ExecutionStatus.FAILED)
                     .append(e.getMessage());

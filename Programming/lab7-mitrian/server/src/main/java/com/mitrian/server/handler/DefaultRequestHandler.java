@@ -68,7 +68,7 @@ public class DefaultRequestHandler implements RequestHandler {
                 }
                 return new CommandResponse(req.getTo(), req.getFrom(), ResponseCode.FAILED, executionResult);
             } catch (DBCollectionException | SQLException | UserExistenceException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return new CommandResponse(
                         req.getTo(),
                         req.getFrom(),

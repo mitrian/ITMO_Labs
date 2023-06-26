@@ -35,12 +35,19 @@ public class Server
 
 	public static void main(String[] args)
 	{
+
+		//TODO exit
 		handlingFixedThreadPool = Executors.newFixedThreadPool(4);
 		receivingFixedThreadPool = Executors.newFixedThreadPool(1);
 
+
+
 		RequestMapper requestMapper = new RequestMapper();
 		ResponseMapper responseMapper = new ResponseMapper();
+
+
 		Resolver resolver = new CommandResolverImpl();
+
 
 		try
 		{
@@ -49,7 +56,6 @@ public class Server
 			String url = "jdbc:postgresql://pg:5432/studs";
 			String userName = System.getenv("USER");
 			String password = System.getenv("PASSWORD");
-
 
 			DBConnectionManagerImpl dbConnectionManager = new DBConnectionManagerImpl( url, userName, password);
 			DatabaseManager databaseManager = new DatabaseManager(dbConnectionManager);
@@ -63,14 +69,13 @@ public class Server
 				}
 			}));
 
+
 			Collection<Worker> workerCollection = new CollectionDBImpl(dbConnectionManager, databaseManager);
 			workerCollection.load();
 			LOGGER.info("Коллекция успешно загружена");
 
 			Dao<Worker> workerDao = new WorkerDaoImpl(workerCollection);
-
 			Executor executor = new CommandExecutorImpl(workerDao);
-
 			DefaultRequestHandler defaultRequestHandler = new DefaultRequestHandler(resolver, workerDao, executor);
 
 			server.setRequestHandler(defaultRequestHandler);
@@ -85,7 +90,7 @@ public class Server
 			System.exit(0);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			LOGGER.warning(e.getMessage());
 		}
 	}

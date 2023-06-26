@@ -98,7 +98,6 @@ public class UDPChannelServer implements AutoCloseable {
 		try {
 			this.channel = DatagramChannel.open();
 
-//			Channel configuration
 			channel.bind(address);
 			this.channel.configureBlocking(false);
 			this.channel.setOption(StandardSocketOptions.SO_REUSEADDR, true);

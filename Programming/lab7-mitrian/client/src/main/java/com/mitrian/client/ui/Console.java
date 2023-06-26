@@ -123,7 +123,7 @@ public class Console {
 
 				WorkerConsoleReader workerConsoleReader = new WorkerConsoleReader(scanner, printer);
 
-//				If update command discovered
+
 				if (command instanceof UpdateCommand updateCommand)
 				{
 					IdRequest checkIdRequest = new IdRequest(
@@ -172,7 +172,6 @@ public class Console {
 			}
 			catch (Exception e) {
 				printer.println(e.getMessage());
-//				throw new RuntimeException(e);
 			}
 		}
 

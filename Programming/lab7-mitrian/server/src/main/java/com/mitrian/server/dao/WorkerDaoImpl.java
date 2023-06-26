@@ -10,13 +10,9 @@ import com.mitrian.common.exceptions.DBCollectionException;
 import com.mitrian.common.exceptions.impl.algorithm.SHA512Exception;
 import com.mitrian.common.exceptions.impl.collection.CollectionElementException;
 import com.mitrian.common.exceptions.impl.collection.IdUnavailableException;
-import com.mitrian.common.exceptions.impl.user.UserExistenceException;
-import com.mitrian.common.exceptions.impl.user.UserNameExistenceException;
-import com.mitrian.common.exceptions.impl.user.UserNameLenghtException;
-import com.mitrian.common.exceptions.impl.user.UserPasswordLengthException;
+import com.mitrian.common.exceptions.impl.user.*;
 import com.mitrian.server.collection.Collection;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
@@ -49,7 +45,7 @@ public class WorkerDaoImpl implements Dao<Worker> {
     }
 
     @Override
-    public void update(Integer id, Worker item, User user) throws CollectionException, DBCollectionException, UserExistenceException {
+    public void update(Integer id, Worker item, User user) throws CollectionException, DBCollectionException, UserExistenceException, UserAccesException {
         workerCollection.update(id, item, user);
     }
 
