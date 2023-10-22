@@ -5,7 +5,8 @@ VALUES ('Vlad',78),
        ('Andrey',100),
        ('Anton',63),
        ('Vanya', 93),
-       ('Ignat', 67);
+       ('Ignat', 67),
+        ('Боря', 99);
 INSERT INTO galaxy(name, location)
 VALUES ('Milkiway','вселенная 15'),
        ('Snikers','вселенная Mars'),
@@ -33,8 +34,18 @@ VALUES (1,1),
 INSERT INTO  group_members(id_human, id_group)
 VALUES (1,1),
        (2,1),
-       (3,2),
-       (4,2),
+       (3,1),
+       (4,3),
        (5,2),
-       (6,2);
+       (6,2),
+        (7,1);
 COMMIT;
+
+EXPLAIN ANALYZE SELECT "human"."name", "human_group"."name" from  human
+    INNER JOIN group_members ON human.id = group_members.id_human
+    INNER JOIN human_group on human_group.id = group_members.id_group;
+
+
+EXPLAIN ANALYZE SELECT "human"."name", "human_group"."name" from  group_members
+    INNER JOIN human_group on human_group.id = group_members.id_group
+    INNER JOIN human ON human.id = group_members.id_human;

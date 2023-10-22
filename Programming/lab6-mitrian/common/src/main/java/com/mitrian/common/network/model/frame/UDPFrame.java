@@ -3,7 +3,7 @@ package com.mitrian.common.network.model.frame;
 import java.io.Serializable;
 
 /**
- * This class represents a piece of data sent over the UPD proto
+ * This class represents a piece of data sent over the UPD protocol
  *
  */
 public final class UDPFrame implements Serializable {
