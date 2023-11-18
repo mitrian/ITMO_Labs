@@ -46,10 +46,16 @@ $(document).ready(() => {
 	})
 
 	$("#y").on('change keyup paste', (e) => {
-
-		if (($(e.target).val().search('.')) && $(e.target).val().replace(",",".").split(".")[1].length >=7){
-			$(e.target).val('')
+		let value = $(e.target).val().replace(',', '.')
+		if (value && value.search('.') !== -1) {
+			let parts = value.split('.')
+			if (parts.length === 2 && parts[1].length >= 7)
+				$(e.target).val('')
+			if (value.split('-').length !== 1 && value[0] !== '-'){
+				$(e.target).val('')
+			}
 		}
+
 		currentData.y = parseAppropriateFloat($(e.target).val().replace(",","."))
 	})
 
